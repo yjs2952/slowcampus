@@ -157,3 +157,6 @@ fabric.properties
 .idea/misc.xml
 .idea/encodings.xml
 .idea/compiler.xml
+
+.idea
+*.iml
