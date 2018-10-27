@@ -13,6 +13,7 @@ public class Board {
     private Long rootBoardId;
     private Long parentBoardId;
     private String title;
+    private String content;
     private String userId;
     private String ipAddr;
     private int depth;
