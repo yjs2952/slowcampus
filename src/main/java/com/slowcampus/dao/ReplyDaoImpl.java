@@ -81,11 +81,30 @@ public class ReplyDaoImpl implements ReplyDao {
 
     @Override
     public int modifyReply(Reply reply) {
-        return 0;
+        String sql = "UPDATE reply SET content = :content, ip_addr = :ip_addr, moddate = :moddate WHERE id = :id";
+        Map<String, Object> params = new HashMap<>();
+
+        try {
+            params.put("content", reply.getContent());
+            params.put("ip_addr", reply.getIpAddr());
+            params.put("moddate", reply.getModdate());
+            params.put("id", reply.getId());
+
+            return jdbc.update(sql, params);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
     public int deleteReply(Long id) {
-        return 0;
+        String sql = "UPDATE reply SET is_deleted = 1 WHERE id = :id";
+        Map<String, Long> param = Collections.singletonMap("id", id);
+
+        try {
+            return jdbc.update(sql, param);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
