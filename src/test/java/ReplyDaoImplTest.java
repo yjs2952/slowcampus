@@ -35,11 +35,11 @@ public class ReplyDaoImplTest {
         Reply reply = new Reply();
         int count = 0;
 
-        reply.setBoardId(16L);
-        reply.setContent("DAO INSERT 테스트 입니다.3");
-        reply.setUserNickname("테스트9");
-        reply.setParentNickname("테스트9");
-        reply.setIpAddr("192.168.0.1");
+        reply.setBoardId(25L);
+        reply.setContent("Keyholder 적용 insert reply");
+        reply.setUserNickname("집에가자1");
+        reply.setParentNickname("집에가자1");
+        reply.setIpAddr("192.168.0.100");
         reply.setRegdate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
         count = replyDao.writeReply(reply);
@@ -51,13 +51,13 @@ public class ReplyDaoImplTest {
         Reply reply = new Reply();
         int count = 0;
 
-        reply.setBoardId(22L);
-        reply.setContent("자식 댓글 넣기 테스트");
-        reply.setUserNickname("테스트14");
-        reply.setParentNickname("테스트11");
-        reply.setGroupId(21L);
+        reply.setBoardId(25L);
+        reply.setContent("SqlParameter와 KeyHolder 도입 대댓글 달기");
+        reply.setUserNickname("테스트16");
+        reply.setParentNickname("집에가자1");
+        reply.setGroupId(25L);
         reply.setDepth(1);
-        reply.setIpAddr("192.168.0.10");
+        reply.setIpAddr("192.168.0.11");
         reply.setRegdate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
         count = replyDao.writeReply(reply);

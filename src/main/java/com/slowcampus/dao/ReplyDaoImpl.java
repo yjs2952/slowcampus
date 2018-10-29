@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -17,19 +19,15 @@ import java.util.*;
 @Repository
 public class ReplyDaoImpl implements ReplyDao {
     private NamedParameterJdbcTemplate jdbc;
-    private SimpleJdbcInsert simpleJdbcInsert;
 
     @Autowired
     public ReplyDaoImpl(DataSource dataSource) {
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
-        this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName("reply")
-                .usingGeneratedKeyColumns("id");
     }
 
     @Override
     public List<Reply> getList(Long boardId, int page) {
-        String sql = "SELECT id, board_id, content, user_nickname, parent_nickname, group_id, is_deleted, regdate, moddate " +
+        String sql = "SELECT id, board_id, content, user_nickname, parent_nickname, group_id, depth, is_deleted, regdate, moddate " +
                 "FROM reply WHERE board_id = :board_id ORDER BY id DESC";
         try {
             Map<String, Long> params = Collections.singletonMap("board_id", boardId);
@@ -44,35 +42,38 @@ public class ReplyDaoImpl implements ReplyDao {
     @Override
     public int writeReply(Reply reply) {
         String sqlParentReply = "INSERT INTO reply(id, board_id, content, user_nickname, parent_nickname, group_id, ip_addr, regdate) " +
-                "VALUES(null, :board_id, :content, :user_nickname, :parent_nickname, (SELECT LAST_INSERT_ID() + 1), :ip_addr, :regdate)";
+                "VALUES(null, :boardId, :content, :userNickname, :parentNickname, (SELECT LAST_INSERT_ID() + 1), :ipAddr, :regdate)";
         String sqlChildReply = "INSERT INTO reply(id, board_id, content, user_nickname, parent_nickname, group_id, depth, ip_addr, regdate) " +
-                "VALUES(null, :board_id, :content, :user_nickname, :parent_nickname, :group_id, :depth, :ip_addr, :regdate)";
-        Map<String, Object> params = new HashMap<>();
+                "VALUES(null, :boardId, :content, :userNickname, :parentNickname, :groupId, :depth, :ipAddr, :regdate)";
+        SqlParameterSource params = new BeanPropertySqlParameterSource(reply);
 
         try {
+            /**
+             *                 참고용 : 주석 내용과 아래 내용은 같다.
+             *                 Map<String, Object> params = new HashMap<>();
+             *                 params.put("board_id", reply.getBoardId());
+             *                 params.put("content", reply.getContent());
+             *                 params.put("user_nickname", reply.getUserNickname());
+             *                 // 일반 댓글(부모 댓글)의 경우 userNickname과 parentNIckname은 동일합니다.
+             *                 params.put("parent_nickname", reply.getUserNickname());
+             *                 params.put("ip_addr", reply.getIpAddr());
+             *                 params.put("regdate", reply.getRegdate());
+             *
+             *                 return jdbc.update(sqlParentReply, params);
+             */
             if (reply.getDepth() == 0) {
                 // 일반 댓글(부모 댓글) Query 시작합니다.
-                params.put("board_id", reply.getBoardId());
-                params.put("content", reply.getContent());
-                params.put("user_nickname", reply.getUserNickname());
-                // 일반 댓글(부모 댓글)의 경우 userNickname과 parentNIckname은 동일합니다.
-                params.put("parent_nickname", reply.getUserNickname());
-                params.put("ip_addr", reply.getIpAddr());
-                params.put("regdate", reply.getRegdate());
+                KeyHolder keyHolder = new GeneratedKeyHolder();
+                jdbc.update(sqlParentReply, params, keyHolder);
 
-                return jdbc.update(sqlParentReply, params);
+                return keyHolder.getKey().intValue();
+
             } else {
                 // 자식 댓글(대댓글) Query 시작
-                params.put("board_id", reply.getBoardId());
-                params.put("content", reply.getContent());
-                params.put("user_nickname", reply.getUserNickname());
-                params.put("parent_nickname", reply.getParentNickname());
-                params.put("group_id", reply.getGroupId());
-                params.put("depth", 1);
-                params.put("ip_addr", reply.getIpAddr());
-                params.put("regdate", reply.getRegdate());
+                KeyHolder keyHolder = new GeneratedKeyHolder();
+                jdbc.update(sqlChildReply, params, keyHolder);
 
-                return jdbc.update(sqlChildReply, params);
+                return keyHolder.getKey().intValue();
             }
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -88,6 +89,7 @@ public class ReplyDaoImpl implements ReplyDao {
             params.put("content", reply.getContent());
             params.put("ip_addr", reply.getIpAddr());
             params.put("moddate", reply.getModdate());
+
             params.put("id", reply.getId());
 
             return jdbc.update(sql, params);
