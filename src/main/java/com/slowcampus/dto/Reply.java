@@ -15,8 +15,9 @@ public class Reply {
     private String userNickname;
     private String parentNickname;
     private Long groupId;
+    private int depth;
     private String ipAddr;
     private int isDeleted;
-    private Date regDate;
-    private Date modDate;
+    private Date regdate;
+    private Date moddate;
 }

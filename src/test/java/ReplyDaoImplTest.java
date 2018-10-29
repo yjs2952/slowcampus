@@ -22,7 +22,7 @@ public class ReplyDaoImplTest {
 
     @Test
     public void replyDaoTest() throws Exception {
-        List<Reply> replyList = new ArrayList<>();
+        List<Reply> replyList;
 
         replyList = replyDao.getList(20L, 0);
         for (Reply reply : replyList) {
@@ -36,31 +36,23 @@ public class ReplyDaoImplTest {
         Reply reply = new Reply();
         int count = 0;
 
-        reply.setBoardId(11L);
-        reply.setContent("DAO INSERT 테스트 입니다.2");
-        reply.setUserNickname("테스트1");
-        reply.setParentNickname("테스트1");
-        reply.setGroupId(4L);
-//        reply.setIpAddr("192.168.0.1");
-        reply.setIsDeleted(0);
-        reply.setRegDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        reply.setBoardId(16L);
+        reply.setContent("DAO INSERT 테스트 입니다.3");
+        reply.setUserNickname("테스트9");
+        reply.setParentNickname("테스트9");
+        reply.setIpAddr("192.168.0.1");
+        reply.setRegdate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+
+//        reply.setBoardId(22L);
+//        reply.setContent("자식 댓글 넣기 테스트");
+//        reply.setUserNickname("테스트12");
+//        reply.setParentNickname("테스트11");
+//        reply.setGroupId(21L);
+//        reply.setDepth(1);
+//        reply.setIpAddr("192.168.0.10");
+//        reply.setRegdate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
         count = replyDao.writeReply(reply);
         System.out.println(count);
-
-//        ApplicationContext ac = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-//        DataSource ds = ac.getBean(DataSource.class);
-//        ReplyDaoImpl replyDao = new ReplyDaoImpl(ds);
-//        LocalDateTime.now();
-//
-//        reply.setBoardId(10L);
-//        reply.setContent("DAO INSERT 테스트 입니다.");
-//        reply.setUserNickName("안기모");
-//        reply.setIpAddr("192.168.0.1");
-//        reply.setIsDeleted(0);
-//        reply.setRegDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-//
-//        count = replyDao.writeReply(reply);
-//        System.out.println(count);
     }
 }
