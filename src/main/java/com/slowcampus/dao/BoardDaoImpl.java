@@ -4,7 +4,8 @@ import com.slowcampus.dto.Board;
 
 import java.util.List;
 
-public class QnABoardDaoImpl implements BoardDao {
+public class BoardDaoImpl implements BoardDao {
+
     @Override
     public List<Board> getList(int page, String keyword) {
         return null;

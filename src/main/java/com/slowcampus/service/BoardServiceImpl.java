@@ -4,7 +4,7 @@ import com.slowcampus.dto.Board;
 
 import java.util.List;
 
-public class QnAServiceImpl implements BoardService {
+public class BoardServiceImpl implements BoardService {
     @Override
     public List<Board> getList(int page, String keyword) {
         return null;
