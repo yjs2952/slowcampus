@@ -1,8 +1,8 @@
-package com.slowcampus.service;
+package com.slowcampus.dao;
 
 import com.slowcampus.dto.Member;
 
-public interface MemberService {
+public interface MemberDao {
     public void loginMember();
 
     public void logoutMember();
