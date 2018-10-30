@@ -5,7 +5,7 @@ import com.slowcampus.dto.Board;
 import java.util.List;
 
 public interface BoardService {
-    public List<Board> getList(int page, String keyword);
+    public List<Board> getList(int category);
 
     public Board getBoardCotent(Long id);
 
