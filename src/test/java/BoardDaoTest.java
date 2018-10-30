@@ -15,7 +15,7 @@ public class BoardDaoTest {
     BoardDaoImpl boardDao;
 
     @Test
-    public void init(){
+    public void init() {
         System.out.println("init");
     }
 
@@ -34,26 +34,17 @@ public class BoardDaoTest {
         System.out.println(board.toString());
     }*/
 
-    /*@Test
-    public void addBoard(){
-        Board board = new Board();
-        board.setTitle("sss");
-        board.setUserId("super");
-        board.setNickname("blackpink");
-        board.setCategory(2);
-        board.setDepth(0);
-        board.setDepthOrder(0);
-        board.setIpAddr("");
-        board.setReadCount(0);
-        board.setParentBoardId(1L);
-        board.setRootBoardId(1L);
+    @Test
+    public void addBoard() {
 
-        Long id = boardDao.writeBoard(board);
 
-        board.setId(id);
+
+        //System.out.println(board.toString());
+
+        /*board.setId(id);
         board.setContent("aaaaaaaaaqqqqqqqqqqqq");
-        boardDao.writeBoardContent(board);
-    }*/
+        boardDao.writeBoardContent(board);*/
+    }
 
     /*@Test
     public void updateTest(){
@@ -67,8 +58,8 @@ public class BoardDaoTest {
         boardDao.modifyBoardContent(board);
     }*/
 
-    @Test
+    /*@Test
     public void deleteTest(){
         boardDao.deleteBoard(33L);
-    }
+    }*/
 }

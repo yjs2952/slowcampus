@@ -18,6 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author yjs
+ * @since 2018.10.29
+ */
 @Repository
 @Log
 public class BoardDaoImpl implements BoardDao {
@@ -40,7 +44,7 @@ public class BoardDaoImpl implements BoardDao {
                      "WHERE category = :category "+
                      "ORDER BY root_board_id, depth, depth_order";
 
-        // TODO: 2018-10-29 : 추후 페이징 처리 해야됨 (start, limit)
+        // TODO: 2018-10-29 (yjs) :  추후 페이징 처리 해야됨 (start, limit)
         try {
             RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
             Map<String, Integer> map = new HashMap<>();
