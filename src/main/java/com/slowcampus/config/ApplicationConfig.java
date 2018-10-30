@@ -9,4 +9,7 @@ import org.springframework.context.annotation.Import;
         "com.slowcampus.service"})
 @Import({ DBConfig.class})
 public class ApplicationConfig {
+
+
+
 }
