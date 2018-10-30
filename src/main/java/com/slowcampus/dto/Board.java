@@ -12,6 +12,7 @@ public class Board {
     private Long id;
     private Long rootBoardId;
     private Long parentBoardId;
+    private String nickname;
     private String title;
     private String content;
     private String userId;
@@ -20,6 +21,7 @@ public class Board {
     private int depthOrder;
     private int readCount;
     private int category;
+    private int isDeleted;
     private Date regDate;
     private Date modDate;
 }
