@@ -1,5 +1,6 @@
-<!doctype html>
-<html lang="en">
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -8,6 +9,8 @@
     <title>Document</title>
 </head>
 <body>
+<h1>TEST!!!</h1>
 
+<img src="https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_10_30/dahyun.jpg"/>
 </body>
 </html>

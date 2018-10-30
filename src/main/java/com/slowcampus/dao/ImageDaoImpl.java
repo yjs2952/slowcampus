@@ -7,6 +7,7 @@ import java.util.List;
 public class ImageDaoImpl implements ImageDao {
     @Override
     public List<Image> getList(Long boardId) {
+
         return null;
     }
 
