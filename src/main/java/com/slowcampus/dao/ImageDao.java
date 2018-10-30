@@ -9,7 +9,7 @@ public interface ImageDao {
 
     public Image getImage(Long id);
 
-    public int uploadImage(Image image);
+    public Long uploadImage(Image image);
 
-    public int deleteImage(Long id);
+    public Long deleteImage(Long id);
 }
