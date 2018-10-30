@@ -68,6 +68,8 @@ public class AzureApp
     public void execAzure(String originalName, byte[] fileData)
     {
         File sourceFile = null, downloadedFile = null;
+        String path = null;
+        File deleteDir=null;
         System.out.println("Azure Blob storage quick start sample");
 
         CloudStorageAccount storageAccount;
@@ -97,9 +99,11 @@ public class AzureApp
 
 
 
-            // 임시 저장할 폴더를 생성.(여기에선 프로젝트 내 경로)
+            // 임시 저장할 폴더를 생성.(여기에선 프로젝트 내 경로. 경로 마지막에 / 빼기.)
+            //File dir = new File(".");
             File dir = new File("/Users/choijaeyong/fastcampus/slowcampus");
-            String path = dir.toString();
+            System.out.println("최초 File('.') 했을때! : " + dir.getAbsolutePath());
+            path = dir.getAbsolutePath();
 
             /*
             <img src="https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_10_30/dahyun.jpg"/>
@@ -126,9 +130,12 @@ public class AzureApp
             UUID uid = UUID.randomUUID();
             String savedName = uid.toString() + "_" + originalName;
 
+            // 파일 생성!.
             sourceFile = new File(path , savedName);
             // 올리려는 이미지를 새 파일에 복사.
             FileCopyUtils.copy(fileData,sourceFile);
+
+            System.out.println("path ===============    " + path);
 
             System.out.println("Creating a sample file at: " + sourceFile.toString());
 
@@ -151,6 +158,12 @@ public class AzureApp
             // sourceFile.getAbsolutePath() : /Users/choijaeyong/fastcampus/slowcampus/2018_10_30/chaeyoung.jpg
             blob.uploadFromFile(sourceFile.getAbsolutePath());
 
+
+            // 폴더 지우기용 코드.
+            path = path + File.separator;
+            System.out.println("path : " + path);
+            deleteDir = new File(path);
+            System.out.println("deleteDir.getAbsolutePath() : "+deleteDir.getAbsolutePath());
 
 
 
@@ -177,8 +190,25 @@ public class AzureApp
             if(downloadedFile != null)
                 downloadedFile.deleteOnExit();
 
-            if(sourceFile != null)
+            if(sourceFile != null){
+                System.out.println("파일 삭제전");
                 sourceFile.deleteOnExit();
+                System.out.println("파일 삭제후");
+            }
+
+
+            // 임시로 만들어진 폴더 지우기용
+            // 여기서 이 path는 빈폴더야!. 안에 있는 jpg 파일. 위에 if문에서
+            // 지웠어!. 근데 왜 안돼!?
+            if(path != null){
+                System.out.println("폴더 삭제 될까??");
+                // System.out.println(deleteDir.delete());   // false 나옴... ㅡㅡ;
+                deleteDir.deleteOnExit();
+                System.out.println("폴더 삭제 코드 후");
+            }
+
+
+
         }
     }
 
