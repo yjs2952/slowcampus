@@ -185,7 +185,10 @@
           </li>
           <!-- Tasks: style can be found in dropdown.less -->
           <li>
-            <a class="" href="">Sign Up</a>
+            <a class="" href="/signin">Sign In</a>
+          </li>
+          <li>
+            <a class="" href="/signup">Sign Up</a>
           </li>
 
           <%--<li class="dropdown user user-menu">
@@ -220,15 +223,14 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
-      <div class="user-panel">
+      <%--<div class="user-panel">
         <div class="pull-left image">
           <img src="/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
         </div>
         <div class="pull-left info">
           <p>Alexander Pierce</p>
-
         </div>
-      </div>
+      </div>--%>
       <!-- search form -->
       <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
@@ -312,4 +314,3 @@
         <li class="active">General Elements</li>--%>
       </ol>
     </section>
-</html>

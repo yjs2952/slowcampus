@@ -16,7 +16,7 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body no-padding">
-                    <table class="table table-striped table-responsive">
+                    <table class="table table-responsive table-hover">
                         <colgroup>
                             <col width="10%">
                             <col width="50%">
