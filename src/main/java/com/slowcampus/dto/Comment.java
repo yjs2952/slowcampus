@@ -8,7 +8,7 @@ import java.util.Date;
  * @Data getter, setter, toString 자동 생성해줌
  */
 @Data
-public class Reply {
+public class Comment {
     private Long id;
     private Long boardId;
     private String content;
