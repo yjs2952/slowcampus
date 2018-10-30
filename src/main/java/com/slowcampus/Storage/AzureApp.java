@@ -37,6 +37,7 @@ import java.io.Writer;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Scanner;
+import java.util.UUID;
 
 /* *************************************************************************************************************************
  * Summary: This application demonstrates how to use the Blob Storage service.
@@ -82,71 +83,72 @@ public class AzureApp
             // Create the container if it does not exist with public access.
             System.out.println("Creating container: " + container.getName());
             container.createIfNotExists(BlobContainerPublicAccessType.CONTAINER, new BlobRequestOptions(), new OperationContext());
-            System.out.println("Creating container!!!!");
             //Creating a sample file
-            //sourceFile = File.createTempFile("sampleFile", ".txt");
-            //sourceFile = File.createTempFile("sampleFile",Long.toString(System.nanoTime()));
-            //File sourceFolder = new File("folder1");
-            //sourceFile = new File(sourceFolder,"twice.txt");
 
-            // /Users/choijaeyong/Downloads
-            // File examFile = new File("/Users/choijaeyong/Downloads/twicesana.jpg");
 
-            String savedName =  originalName;
+            // 파일이름 난수 생성부분
+            /*
+            UUID uid = UUID.randomUUID();
+            String savedName = uid.toString() + "_" + originalName;
+            File target = new File(uploadPath,savedName);
+            FileCopyUtils.copy(fildData,target);
+             */
 
+
+
+
+            // 임시 저장할 폴더를 생성.(여기에선 프로젝트 내 경로)
             File dir = new File("/Users/choijaeyong/fastcampus/slowcampus");
             String path = dir.toString();
 
+            /*
+            <img src="https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_10_30/dahyun.jpg"/>
+             */
 
-            Calendar cal2 = Calendar.getInstance();
-            String yearPath2 = String.valueOf(cal2.get(Calendar.YEAR));
-            String monthPath2 = yearPath2 + "_" +
-                    new DecimalFormat("00").format(cal2.get(Calendar.MONTH)+1);
-            String datePath2 = monthPath2 + "_" +
-                    new DecimalFormat("00").format(cal2.get(Calendar.DATE));
+//            Calendar cal2 = Calendar.getInstance();
+//            String yearPath2 = String.valueOf(cal2.get(Calendar.YEAR));
+//            String monthPath2 = yearPath2 + "_" +
+//                    new DecimalFormat("00").format(cal2.get(Calendar.MONTH)+1);
+//            String datePath2 = monthPath2 + "_" +
+//                    new DecimalFormat("00").format(cal2.get(Calendar.DATE));
 
-            String urlPath = datePath2;
+            // datePath=/2018_10_30
+            String datePath = calcPath(path);
 
-            System.out.println("path=path+calc() 전에 : " + path);
-            path = path + calcPath(path);
-            System.out.println("path=path+calc() 후에 : " + path);
+
+            // datePath : /2018_10_30
+            // path : /Users/choijaeyong/fastcampus/slowcampus
+            // path 는 임시로 파일이 생성되어야 할 장소.
+            path = path + datePath;
+            // path : /Users/choijaeyong/fastcampus/slowcampus/2018_10_30
+
+
+            UUID uid = UUID.randomUUID();
+            String savedName = uid.toString() + "_" + originalName;
+
             sourceFile = new File(path , savedName);
-
+            // 올리려는 이미지를 새 파일에 복사.
             FileCopyUtils.copy(fileData,sourceFile);
 
-            System.out.println(sourceFile.length());
-
-            System.out.println("urlPath ======== " + urlPath);
-            System.out.println("path    ======== " + path);
-
-
-
-            //sourceFile = new File("jaeyong");
-            //File sourceFile2 = new File(sourceFile,"sampletxt.txt" );
-
             System.out.println("Creating a sample file at: " + sourceFile.toString());
-
-//            Writer output = new BufferedWriter(new FileWriter(sourceFile2));
-//            output.write("Hello Azure!");
-//            output.close();
-
-            System.out.println("target.getName() : "+ sourceFile.getName());
-            System.out.println("target.toString() : " + sourceFile.toString());
 
             //Getting a blob reference
             // url 경로에 나타날 부분?
             // File() 로 만들면 폴더 뒤에 / 가 붙는데. 그냥 더하니까 안붙길래
             // '/' 하나 추가해준다
-            String url = urlPath + File.separator +sourceFile.getName();
-            System.out.println("url :   =========  " + url);
+            // url : 2018_10_30/chaeyoung.jpg
+            String url = datePath.substring(1) + File.separator +sourceFile.getName();
 
+            // http://~~~~~~/2018_10_30/dddd.jpg 이런식으로 붙는다.
+            // 파라미터로 넣어줘야 하는 값에서 맨 앞에 '/'가 없어야 한다.
+            // 있으면 폴더안에 값이 안들어가고 폴더랑 파일이 따로 만들어지라구~
             CloudBlockBlob blob = container.getBlockBlobReference(url);
 
             //Creating blob and uploading file to it
             System.out.println("Uploading the sample file ");
 
-            System.out.println("======target.getAbsolutePath() : " + sourceFile.getAbsolutePath());
             // temp 파일 경로를 지정해줘야한다.??
+            // sourceFile.getAbsolutePath() : /Users/choijaeyong/fastcampus/slowcampus/2018_10_30/chaeyoung.jpg
             blob.uploadFromFile(sourceFile.getAbsolutePath());
 
 
@@ -195,25 +197,10 @@ public class AzureApp
             dirPath.mkdir();
         }
         //log.info(datePath);
-
-
+        //폴더만 만들고 리턴값은 /년도/월/일 이렇게 리턴한다.
         return datePath;
     }
 
 
-    private void makeDir(String uploadPath , String... paths) {
-        if(new File(uploadPath + paths[paths.length -1]).exists()) {
-            return;
-        }
 
-        for(String path : paths) {
-            File dirPath = new File(uploadPath + path);
-
-            if(! dirPath.exists()) {
-                dirPath.mkdir();
-            }
-
-        }
-
-    }
 }
