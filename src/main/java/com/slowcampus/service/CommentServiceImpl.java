@@ -20,24 +20,24 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public List<Comment> getCommentList(Long boardId, int page) {
-        return null;
+        return commentDao.getCommentList(boardId, page);
     }
 
     @Override
     @Transactional
     public int writeComment(Comment comment) {
-        return 0;
+        return commentDao.writeComment(comment);
     }
 
     @Override
     @Transactional
     public int modifyComment(Comment comment) {
-        return 0;
+        return commentDao.modifyComment(comment);
     }
 
     @Override
     @Transactional
     public int deleteComment(Long id) {
-        return 0;
+        return commentDao.deleteComment(id);
     }
 }
