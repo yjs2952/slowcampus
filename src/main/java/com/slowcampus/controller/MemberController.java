@@ -5,6 +5,7 @@ import com.slowcampus.service.MemberService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -32,8 +33,11 @@ public class MemberController {
     }
 
     @PostMapping
-    public String signinMember(@ModelAttribute Member member) {
-        
+    public String signinMember(ModelMap modelMap, @ModelAttribute Member member) {
+        if (memberService.loginMember(member) != null) {
+
+            return null;
+        }
 
         return null;
     }

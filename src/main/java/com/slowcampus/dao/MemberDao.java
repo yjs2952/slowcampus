@@ -3,7 +3,7 @@ package com.slowcampus.dao;
 import com.slowcampus.dto.Member;
 
 public interface MemberDao {
-    public void loginMember();
+    public Member loginMember(Member member);
 
     public void logoutMember();
 
