@@ -34,4 +34,12 @@ public class MemberDaoImplTest {
 
         Assert.assertEquals(count, 1);
     }
+
+    @Test
+    public void loginTest(){
+        Member member = new Member();
+        member.setId("asdasd");
+        member.setPassword("sana123");
+        memberDao.loginMember(member);
+    }
 }

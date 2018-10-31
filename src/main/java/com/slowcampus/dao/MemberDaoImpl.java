@@ -16,9 +16,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@Repository
+@Repository("memberDao")
 @Log
 public class MemberDaoImpl implements MemberDao {
     private NamedParameterJdbcTemplate jdbc;
@@ -42,9 +43,14 @@ public class MemberDaoImpl implements MemberDao {
             map.put("password", member.getPassword());
             RowMapper<Member> rowMapper = BeanPropertyRowMapper.newInstance(Member.class);
 
-            return jdbc.queryForObject(sql, map, rowMapper);
+            List<Member> loginMember = jdbc.query(sql, map, rowMapper);
+            if (loginMember.size() == 1) {
+                return loginMember.get(0);
+            } else {
+                return null;
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 

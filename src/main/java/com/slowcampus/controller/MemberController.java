@@ -4,14 +4,23 @@ import com.slowcampus.dto.Member;
 import com.slowcampus.service.MemberService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.session.MapSession;
+import org.springframework.session.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @Log
 public class MemberController {
     private MemberService memberService;
+
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signupMember() {
@@ -32,13 +41,23 @@ public class MemberController {
         return "user/signin";
     }
 
-    @PostMapping
-    public String signinMember(ModelMap modelMap, @ModelAttribute Member member) {
-        if (memberService.loginMember(member) != null) {
+    @PostMapping("/signin")
+    public String signinMember(@ModelAttribute Member member) {
+        System.out.println(member.toString());
 
-            return null;
+        Member loginMember = memberService.loginMember(member);
+        System.out.println("alalkasdlksadasdasd");
+        // TODO: 2018-10-31 (yjs) : 세션에 권한정보 넣어줘야함, 권한 정보 조회(member_authority)
+        if (loginMember != null) {
+            Session session = new MapSession();
+            session.setAttribute("id", member.getId());
+            session.setAttribute("nickname", member.getNickname());
+            session.setAttribute("email", member.getEmail());
+
+            // 권한 추가햐야함
+            return "redirect:/";
         }
 
-        return null;
+        return "index";
     }
 }
