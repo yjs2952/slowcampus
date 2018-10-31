@@ -30,7 +30,7 @@
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" oncontextmenu="return false">
 <div class="login-box">
     <div class="login-logo">
         <a href="/"><b>One Week Board</b></a>
@@ -41,10 +41,10 @@
 
         <form id="signinForm" role="form" data-toggle="validator" method="post">
             <div class="form-group has-feedback">
-                <input type="text" name="id" class="form-control" placeholder="ID">
+                <input id="id" type="text" name="id" class="form-control" placeholder="ID">
             </div>
             <div class="form-group has-feedback">
-                <input type="password" name="password" class="form-control" placeholder="Password">
+                <input id="password" type="password" name="password" class="form-control" placeholder="Password">
             </div>
             <div class="row">
                 <div class="col-xs-8">
@@ -57,7 +57,7 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    <button id="submitForm" type="button" class="btn btn-primary btn-block btn-flat">Sign In</button>
                 </div>
                 <!-- /.col -->
             </div>
@@ -83,7 +83,24 @@
             increaseArea: '20%' /* optional */
         });
 
-        
+        $('#submitForm').click(function(){
+            var id = $('#id').val();
+            var pw = $('#password').val();
+
+            console.log(id + ", " + pw);
+
+            if (id == null || id === ""){
+                alert("아이디를 입력해 주세요.");
+                return false;
+            }
+
+            if (pw == null || pw === ""){
+                alert("비밀번호를 입력해 주세요.");
+                return false;
+            }
+
+            $('#signinForm').submit();
+        });
 
         var result = "${result}";
 
