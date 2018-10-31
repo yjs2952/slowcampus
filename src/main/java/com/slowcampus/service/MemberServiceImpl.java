@@ -30,6 +30,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public int signupMember(Member member) {
-        return 0;
+        int resultCount = 0;
+        resultCount = memberDao.signupMember(member);
+
+        return resultCount;
     }
 }
