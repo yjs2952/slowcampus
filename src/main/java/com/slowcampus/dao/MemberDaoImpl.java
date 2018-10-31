@@ -22,7 +22,7 @@ public class MemberDaoImpl implements MemberDao {
         log.info("MemberDao()");
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
         this.insertAction = new SimpleJdbcInsert(dataSource)
-                .withTableName("user");
+                .withTableName("member");
     }
 
     @Override
