@@ -32,7 +32,7 @@ public class ImageDaoImpl implements ImageDao {
 
 
     @Override
-    public List<Image> getList(Long boardId) {
+    public List<Image> getImageList(Long boardId) {
 
         return null;
     }
