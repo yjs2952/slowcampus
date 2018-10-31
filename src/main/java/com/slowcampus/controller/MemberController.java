@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.session.MapSession;
 import org.springframework.session.Session;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -42,7 +43,7 @@ public class MemberController {
     }
 
     @PostMapping("/signin")
-    public String signinMember(@ModelAttribute Member member) {
+    public String signinMember(@ModelAttribute Member member, Model model) {
         System.out.println(member.toString());
 
         Member loginMember = memberService.loginMember(member);
@@ -56,8 +57,10 @@ public class MemberController {
 
             // 권한 추가햐야함
             return "redirect:/";
+        } else {
+            model.addAttribute("result", "아이디 혹은 비밀번호가 일치하지 않습니다.");
         }
 
-        return "index";
+        return "user/signin";
     }
 }

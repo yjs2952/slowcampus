@@ -1,5 +1,6 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html><head>
     <meta charset="utf-8">
@@ -32,13 +33,13 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="../../index2.html"><b>One Week Board</b></a>
+        <a href="/"><b>One Week Board</b></a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <form method="post">
+        <form id="signinForm" role="form" data-toggle="validator" method="post">
             <div class="form-group has-feedback">
                 <input type="text" name="id" class="form-control" placeholder="ID">
             </div>
@@ -49,7 +50,8 @@
                 <div class="col-xs-8">
                     <div class="checkbox icheck">
                         <label>
-                            <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> Remember Me
+                            <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false" style="position: relative;">
+                                <input type="checkbox" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> Remember Me
                         </label>
                     </div>
                 </div>
@@ -72,6 +74,7 @@
 <script src="/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <!-- iCheck -->
 <script src="/resources/plugins/iCheck/icheck.min.js"></script>
+<script src="/resources/plugins/validator/validator.js"></script>
 <script>
     $(function () {
         $('input').iCheck({
@@ -79,6 +82,15 @@
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' /* optional */
         });
+
+        
+
+        var result = "${result}";
+
+        if (result != null && result != "") {
+            alert(result);
+            result = null;
+        }
     });
 </script>
 </body></html>
