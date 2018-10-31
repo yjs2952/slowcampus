@@ -40,10 +40,10 @@
 
         <form method="post">
             <div class="form-group has-feedback">
-                <input type="email" class="form-control" placeholder="Email">
+                <input type="text" name="id" class="form-control" placeholder="ID">
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="Password">
+                <input type="password" name="password" class="form-control" placeholder="Password">
             </div>
             <div class="row">
                 <div class="col-xs-8">
@@ -81,6 +81,4 @@
         });
     });
 </script>
-
-
 </body></html>
