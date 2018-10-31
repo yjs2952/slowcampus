@@ -7,8 +7,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -39,7 +37,7 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public int signupMember(Member member) {
-        String sql = "INSERT INTO user(id, password, nickname, email) " +
+        String sql = "INSERT INTO member(id, password, nickname, email) " +
                 "VALUES(:id, :password, :nickname, :email)";
         SqlParameterSource params = new BeanPropertySqlParameterSource(member);
 
