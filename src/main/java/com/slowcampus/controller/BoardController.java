@@ -1,7 +1,9 @@
 package com.slowcampus.controller;
 
 import com.slowcampus.dto.Board;
+import com.slowcampus.dto.Image;
 import com.slowcampus.service.BoardService;
+import com.slowcampus.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,13 +20,20 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
+    @Autowired
+    private ImageService imageService;
+
 
     @GetMapping("/list/article/detail")
     public String articleDetail(@RequestParam(name="id") Long id, ModelMap modelMap) {
         Board board =boardService.getBoardCotent(id);
         System.out.println(board.getTitle());
-        System.out.println(board.getContent());
         modelMap.addAttribute("board" , board);
+
+        System.out.println("id : " + id);
+        Image image = imageService.getImage(id);
+        System.out.println(image.getPath());
+        modelMap.addAttribute("image", image);
 
 
         return "articleDetail";

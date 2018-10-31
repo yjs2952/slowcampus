@@ -21,14 +21,14 @@ public class ImageTest {
     @Test
     public void addImage() {
         Image image = new Image();
-        String name = "twicemomo.jpg";
+        String name = "mina.jpg";
         UUID uid = UUID.randomUUID();
         String savedName = uid.toString() + "_" + name;
 
-        image.setBoardId(6L);
+        image.setBoardId(3L);
         image.setOriginalName(name);
-        image.setSaveName(savedName);
-        image.setPath("/dddd.com/18_20_10/");
+        image.setSaveName("d18a2266-00c7-4469-95e7-0e75144c71e4_mina");
+        image.setPath("/2018_10_31/d18a2266-00c7-4469-95e7-0e75144c71e4_mina.jpg");
         image.setSize(7777L);
         image.setType("jpg");
         image.setRegDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));

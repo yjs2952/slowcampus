@@ -13,7 +13,7 @@
 <body>
 <form id='form1' action = "uploadForm" method="post"
     enctype="multipart/form-data">
-    <input type="file" name="file"> <input type="submit">
+    <input type="file" name="file" multiple="multiple"> <input type="submit">
 </form>
 
 </body>

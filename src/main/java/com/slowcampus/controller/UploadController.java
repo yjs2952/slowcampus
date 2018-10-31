@@ -29,6 +29,10 @@ public class UploadController {
     @RequestMapping(value="/uploadForm" , method = RequestMethod.POST)
     public void uploadForm(MultipartFile file, Model model) {
         // lombok 플로그인 이용.
+//        System.out.println(files.length);
+//        System.out.println(files.getClass());
+
+
         log.info("originalName : " + file.getOriginalFilename());
         log.info("size : " + file.getSize());
         log.info("contentType : " + file.getContentType());
@@ -47,12 +51,17 @@ public class UploadController {
 
          해야하는 것
          -기능을 좀 세세하게 나눠야 한다.
+         -MultipartFile[] 로 하면! 1개일 경우와 여러개 일때!
+          메소드를 나눠야 할까?? 반복문에 넣으면. 어차피 한번만 반복되니까... 흠.
+          아 Dao 에서 getImageList, getImage 나눠야 하는구나.
          -임시 파일 삭제는 되는데 폴더 삭제가 안된다.  (complete)
          (form에 multiple 설정해주면 List로 받아올 수 있다???)
 
 
 
          */
+        //List<MultipartFile> fileList =  ??
+        //MultipartFile[]    ??
 
         File dir = new File("/tmp");
         System.out.println("최초 File('.') 했을때! : " + dir.getAbsolutePath());
