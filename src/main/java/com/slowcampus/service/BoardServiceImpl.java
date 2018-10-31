@@ -4,10 +4,12 @@ import com.slowcampus.dao.BoardDao;
 import com.slowcampus.dao.BoardDaoImpl;
 import com.slowcampus.dto.Board;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 public class BoardServiceImpl implements BoardService {
 
     private BoardDao boardDao;
@@ -30,7 +32,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int writeBoard(Board board) {
-        Long id = boardDao.writeBoard(board);
+        board.setId(boardDao.writeBoard(board));
         boardDao.writeBoardContent(board);
         return 0;
     }

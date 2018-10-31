@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberServiceImpl implements MemberService {
+
     private MemberDao memberDao;
 
     @Autowired
@@ -16,8 +17,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void loginMember() {
-
+    @Transactional(readOnly = true)
+    public Member loginMember(Member member) {
+        return memberDao.loginMember(member);
     }
 
     @Override
