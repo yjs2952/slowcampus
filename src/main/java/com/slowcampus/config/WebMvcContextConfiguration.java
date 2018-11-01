@@ -1,7 +1,6 @@
 package com.slowcampus.config;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,13 +12,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebMvc
 @ComponentScan(basePackages = { "com.slowcampus.controller", "com.slowcampus.config"})
 public class WebMvcContextConfiguration extends WebMvcConfigurerAdapter {
-
-    private AuthenticationInterceptor interceptor;
-
-    @Autowired
-    WebMvcContextConfiguration(AuthenticationInterceptor interceptor){
-        this.interceptor = interceptor;
-    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -58,8 +50,9 @@ public class WebMvcContextConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(interceptor).addPathPatterns("/write/**")
+        registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/write/**")
                                             .addPathPatterns("/modify/**")
                                             .addPathPatterns("/delete/**");
+        registry.addInterceptor(new SignupInterceptor()).addPathPatterns("/signupPost");
     }
 }

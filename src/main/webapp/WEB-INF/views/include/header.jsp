@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -184,12 +184,21 @@
             </ul>
           </li>
           <!-- Tasks: style can be found in dropdown.less -->
-          <li>
-            <a class="" href="/signin">Sign In</a>
-          </li>
-          <li>
-            <a class="" href="/signup">Sign Up</a>
-          </li>
+          <c:choose>
+              <c:when test="${sessionScope.login == null}">
+              <li>
+                <a class="" href="/signin">Sign In</a>
+              </li>
+              <li>
+                <a class="" href="/signup">Sign Up</a>
+              </li>
+              </c:when>
+              <c:otherwise>
+              <li>
+                <a class="" href="/signout">Sign Out</a>
+              </li>
+              </c:otherwise>
+          </c:choose>
 
           <%--<li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">

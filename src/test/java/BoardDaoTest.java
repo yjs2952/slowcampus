@@ -1,6 +1,7 @@
 import com.slowcampus.config.ApplicationConfig;
 import com.slowcampus.dao.BoardDaoImpl;
 import com.slowcampus.dto.Board;
+import com.slowcampus.service.BoardService;
 import com.slowcampus.service.BoardServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,9 @@ public class BoardDaoTest {
 
     @Autowired
     BoardDaoImpl boardDao;
+
+    @Autowired
+    BoardService boardService;
 
     @Test
     public void init() {
@@ -45,11 +49,9 @@ public class BoardDaoTest {
         board.setIpAddr("000.000.000.000");
         boardDao.writeBoard(board);
 
-
-        //System.out.println(board.toString());
-
-        //board.setContent("aaaaaaaaaqqqqqqqqqqqq");
-        //boardService.writeBoard(board);
+        /*board.setContent("aaaaaaaaaqqqqqqqqqqqq");
+        System.out.println(board.toString());
+        boardService.writeBoard(board);*/
     }
 
     /*@Test

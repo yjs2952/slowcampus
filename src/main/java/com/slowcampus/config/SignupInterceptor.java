@@ -9,22 +9,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Component
-public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
+public class SignupInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         HttpSession session = httpServletRequest.getSession();
 
-        if (session.getAttribute("login") == null) {
-            httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/login");
-            return false;
+        if (session.getAttribute("login") != null) {
+            System.out.println("asdasdasdasd");
+            session.removeAttribute("login");
+            session.invalidate();
         }
 
         return true;
     }
 
-    @Override
+    /*@Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-
-    }
+    }*/
 }

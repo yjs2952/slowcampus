@@ -76,6 +76,7 @@
 <script src="/resources/plugins/iCheck/icheck.min.js"></script>
 <script src="/resources/plugins/validator/validator.js"></script>
 <script>
+
     $(function () {
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
@@ -84,10 +85,9 @@
         });
 
         $('#submitForm').click(function(){
+
             var id = $('#id').val();
             var pw = $('#password').val();
-
-            console.log(id + ", " + pw);
 
             if (id == null || id === ""){
                 alert("아이디를 입력해 주세요.");
@@ -99,7 +99,10 @@
                 return false;
             }
 
-            $('#signinForm').submit();
+            var form = $('#signinForm');
+
+            form.attr("action", "/signupPost");
+            form.submit();
         });
 
         var result = "${result}";
@@ -109,5 +112,6 @@
             result = null;
         }
     });
+
 </script>
 </body></html>
