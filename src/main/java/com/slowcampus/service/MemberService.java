@@ -3,7 +3,7 @@ package com.slowcampus.service;
 import com.slowcampus.dto.Member;
 
 public interface MemberService {
-    public void loginMember();
+    public Member loginMember(Member member);
 
     public void logoutMember();
 
