@@ -28,9 +28,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public int signupMember(Member member) {
-        int resultCount = 0;
-        resultCount = memberDao.signupMember(member);
-
-        return resultCount;
+        return memberDao.signupMember(member);
     }
 }
