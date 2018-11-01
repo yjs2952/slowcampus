@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +34,18 @@ public class ImageDaoImpl implements ImageDao {
 
     @Override
     public List<Image> getImageList(Long boardId) {
+        String sql = "SELECT id, original_name, save_name, path, size, type, board_id, regdate FROM file " +
+                "WHERE board_id = :board_id";
+        try {
+            RowMapper<Image> rowMapper = BeanPropertyRowMapper.newInstance(Image.class);
+            Map<String, Long> map = new HashMap<>();
+            map.put("board_id",boardId);
 
-        return null;
+            return jdbc.query(sql, map, rowMapper);
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     @Override

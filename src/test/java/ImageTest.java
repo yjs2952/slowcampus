@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -19,16 +20,22 @@ public class ImageTest {
     ImageDaoImpl imageDao;
 
     @Test
+    public void getImageList() {
+        List<Image> imageList = imageDao.getImageList(3L);
+        System.out.println(imageList.size());
+    }
+
+    @Test
     public void addImage() {
         Image image = new Image();
-        String name = "mina.jpg";
+        String name = "jeongyeon.jpg";
         UUID uid = UUID.randomUUID();
         String savedName = uid.toString() + "_" + name;
 
         image.setBoardId(3L);
         image.setOriginalName(name);
-        image.setSaveName("d18a2266-00c7-4469-95e7-0e75144c71e4_mina");
-        image.setPath("/2018_10_31/d18a2266-00c7-4469-95e7-0e75144c71e4_mina.jpg");
+        image.setSaveName("9b5d33f8-b5e7-4228-835a-a4341571d752_jeongyeon");
+        image.setPath("/2018_11_01/9b5d33f8-b5e7-4228-835a-a4341571d752_jeongyeon.jpg");
         image.setSize(7777L);
         image.setType("jpg");
         image.setRegDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));

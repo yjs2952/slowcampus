@@ -1,7 +1,9 @@
 package com.slowcampus.service;
 
 import com.slowcampus.dto.Image;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 public interface ImageService {
@@ -12,10 +14,10 @@ public interface ImageService {
      1. 파일 이름 새로 생성.
      2. 파일 복사.
      3-1. 파일을 서버에 업데이트.
-     3-2. 파일을 DB에 저장.
+     3-2. 파일정보를 DB에 저장.
 
      DB에 저장해야할거????
-     URL 만 저장해주면 되지 않나?
+     URL 만 저장해주면 되지 않나? 또는 이름만.
 
 
 
@@ -24,11 +26,18 @@ public interface ImageService {
      */
 
 
-    public List<Image> getList(Long boardId);
+    public List<Image> getImageList(Long boardId);
 
     public Image getImage(Long board_id);
 
-    public int uploadImage(Image image);
+    public Long uploadImage(Image image);
 
     public int deleteImage(Long id);
+
+    public void uploadImageToAzure(MultipartFile file, File sourceFile,String datePath,String path);
+
+
+
+
+
 }

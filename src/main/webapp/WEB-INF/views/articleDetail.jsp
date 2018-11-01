@@ -64,9 +64,14 @@
     <div class="form-group">
         <label>Images</label>
         <br>
-        <img width="100" height="100"
-             src="https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}"
-             style="cursor: pointer;" onclick="doImgPop('https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}')" />
+
+        <c:forEach items="${images}" var="image">
+            <img width="100" height="100"
+                 src="https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}"
+                 style="cursor: pointer;" onclick="doImgPop('https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}')" />
+        </c:forEach>
+
+
     </div>
 
 
