@@ -57,18 +57,16 @@ public class MemberController {
         System.out.println(member.toString());
 
         Member loginMember = memberService.loginMember(member);
-        System.out.println("alalkasdlksadasdasd");
         // TODO: 2018-10-31 (yjs) : 세션에 권한정보 넣어줘야함, 권한 정보 조회(member_authority)
         if (loginMember != null) {
             Session session = new MapSession();
-            session.setAttribute("id", member.getId());
-            session.setAttribute("nickname", member.getNickname());
-            session.setAttribute("email", member.getEmail());
+            session.setAttribute("session", loginMember);
 
             // 권한 추가햐야함
             return "redirect:/";
         } else {
             model.addAttribute("result", "아이디 혹은 비밀번호가 일치하지 않습니다.");
+
         }
 
         return "user/signin";
