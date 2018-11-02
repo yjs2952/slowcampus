@@ -43,7 +43,7 @@ public class ImageDaoImpl implements ImageDao {
 
             return jdbc.query(sql, map, rowMapper);
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
         }
 
     }
@@ -57,7 +57,7 @@ public class ImageDaoImpl implements ImageDao {
             Map<String, ?> map = Collections.singletonMap("board_id", board_id);
             return jdbc.queryForObject(sql, map, rowMapper);
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

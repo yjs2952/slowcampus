@@ -1,8 +1,10 @@
 package com.slowcampus.controller;
 
 import com.slowcampus.dto.Board;
+import com.slowcampus.dto.Comment;
 import com.slowcampus.dto.Image;
 import com.slowcampus.service.BoardService;
+import com.slowcampus.service.CommentService;
 import com.slowcampus.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,11 +23,13 @@ import java.util.List;
 public class BoardController {
     private BoardService boardService;
     private ImageService imageService;
+    private CommentService commentService;
 
     @Autowired
-    public BoardController(BoardService boardService, ImageService imageService) {
+    public BoardController(BoardService boardService, ImageService imageService,CommentService commentService) {
         this.boardService = boardService;
         this.imageService = imageService;
+        this.commentService = commentService;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -45,6 +49,7 @@ public class BoardController {
 
     // 게시글 상세보기.
     // /list/article/detail?id=<숫자>   게시글 보기 GET(댓글 보기 포함)
+    // ModelAttribute 는 jsp에서 값을 가져올때.
 
     @GetMapping("/list/article/detail")
     public String articleDetail(@RequestParam(name="id") Long id, ModelMap modelMap) {
@@ -71,6 +76,9 @@ public class BoardController {
         System.out.println(imageList.size());
         modelMap.addAttribute("images" , imageList);
 
+        // 댓글 출력하기
+        List<Comment> commentList = commentService.getCommentList(id,0);
+        modelMap.addAttribute("comments" , commentList);
 
         return "articleDetail";
     }

@@ -27,17 +27,10 @@ import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.*;
 import lombok.extern.java.Log;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
 import java.text.DecimalFormat;
 import java.util.Calendar;
-import java.util.Scanner;
-import java.util.UUID;
 
 /* *************************************************************************************************************************
  * Summary: This application demonstrates how to use the Blob Storage service.
@@ -70,14 +63,14 @@ public class AzureApp
         File sourceFile = null, downloadedFile = null;
         String path = null;
         File deleteDir=null;
-        System.out.println("Azure Blob storage quick start sample");
+        System.out.println("Azure Blob Storage quick start sample");
 
         CloudStorageAccount storageAccount;
         CloudBlobClient blobClient = null;
         CloudBlobContainer container=null;
 
         try {
-            // Parse the connection string and create a blob client to interact with Blob storage
+            // Parse the connection string and create a blob client to interact with Blob Storage
             storageAccount = CloudStorageAccount.parse(storageConnectionString);
             blobClient = storageAccount.createCloudBlobClient();
             container = blobClient.getContainerReference("quickstartcontainer");
