@@ -15,10 +15,10 @@ public class BoardDaoTest {
     @Autowired
     BoardDaoImpl boardDao;
 
-    @Test
-    public void init() {
-        System.out.println("init");
-    }
+//    @Test
+//    public void init() {
+//        System.out.println("init");
+//    }
 
     /*@Test
     public void getBoardListTest() throws Exception{
@@ -29,9 +29,10 @@ public class BoardDaoTest {
         }
     }*/
 
-    /*@Test
+  /*
+    @Test
     public void getBoard() throws Exception {
-        Board board = boardDao.getBoard(1L);
+        Board board = boardDao.getBoard(3L);
         System.out.println(board.toString());
     }*/
 
@@ -51,6 +52,18 @@ public class BoardDaoTest {
         //board.setContent("aaaaaaaaaqqqqqqqqqqqq");
         //boardService.writeBoard(board);
     }
+
+//    @Test
+//    public void addBoard() {
+//
+//
+//
+//        //System.out.println(board.toString());
+//
+//        /*board.setId(id);
+//        board.setContent("aaaaaaaaaqqqqqqqqqqqq");
+//        boardDao.writeBoardContent(board);*/
+//    }
 
     /*@Test
     public void updateTest(){

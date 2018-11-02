@@ -65,9 +65,11 @@ public class AzureApp
                     "AccountKey=5n66oS54rvE8IG8A+WT8xtSUgMCfrnEu5mDZ1frJxAIyF7MkFSkhalgLwIZEEoV+Bfw381DpvDWasA79gM6xQA==;EndpointSuffix=core.windows.net";
 
 
-    public void execAzure(String originalName, byte[] fileData)
+    public void execAzure(String url,String sourceFilePath)
     {
         File sourceFile = null, downloadedFile = null;
+        String path = null;
+        File deleteDir=null;
         System.out.println("Azure Blob storage quick start sample");
 
         CloudStorageAccount storageAccount;
@@ -97,9 +99,14 @@ public class AzureApp
 
 
 
-            // 임시 저장할 폴더를 생성.(여기에선 프로젝트 내 경로)
-            File dir = new File("/Users/choijaeyong/fastcampus/slowcampus");
-            String path = dir.toString();
+            // 임시 저장할 폴더를 생성.(여기에선 프로젝트 내 경로. 경로 마지막에 / 빼기.)
+            //File dir = new File(".");
+            //File dir = new File("/Users/choijaeyong/fastcampus/slowcampus");
+
+            // 옮기기 작업 ========================================
+//            File dir = new File("/tmp");
+//            System.out.println("최초 File('.') 했을때! : " + dir.getAbsolutePath());
+//            path = dir.getAbsolutePath();
 
             /*
             <img src="https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_10_30/dahyun.jpg"/>
@@ -113,31 +120,52 @@ public class AzureApp
 //                    new DecimalFormat("00").format(cal2.get(Calendar.DATE));
 
             // datePath=/2018_10_30
-            String datePath = calcPath(path);
+            // 옮기기 작업 ========================================
+            //String datePath = calcPath(path);
 
 
             // datePath : /2018_10_30
             // path : /Users/choijaeyong/fastcampus/slowcampus
             // path 는 임시로 파일이 생성되어야 할 장소.
-            path = path + datePath;
+            // 옮기기 작업 ========================================
+            //path = path + datePath;
             // path : /Users/choijaeyong/fastcampus/slowcampus/2018_10_30
 
+//           File.createTempFile() 써보려 했는데 안되네!.
+//            String[] strArr = originalName.split(".");
+//            String fileName = strArr[0];
+//            String fileExt = strArr[1];
 
-            UUID uid = UUID.randomUUID();
-            String savedName = uid.toString() + "_" + originalName;
+            // 옮기기 작업 ========================================
+//            UUID uid = UUID.randomUUID();
+//            String savedName = uid.toString() + "_" + originalName;
 
-            sourceFile = new File(path , savedName);
+//           File.createTempFile() 써보려 했는데 안되네!.
+//            File dirPath = new File(path);
+//            fileName = uid+"_"+fileName;
+//            fileExt = "."+fileExt;
+//            System.out.println(fileName);
+//            System.out.println(fileExt);
+//            System.out.println(dirPath.getAbsolutePath());
+
+            // 파일 생성!.
+            //sourceFile = new File(path , savedName);
+//            sourceFile = File.createTempFile(uid+"_"+fileName , fileExt, dirPath);
+//            System.out.println("createTempFile : " + sourceFile.getName()  + "    path : " + sourceFile.getAbsolutePath());
+
             // 올리려는 이미지를 새 파일에 복사.
-            FileCopyUtils.copy(fileData,sourceFile);
+            //FileCopyUtils.copy(fileData,sourceFile);
 
-            System.out.println("Creating a sample file at: " + sourceFile.toString());
+            //System.out.println("path ===============    " + path);
+
+            //System.out.println("Creating a sample file at: " + sourceFile.toString());
 
             //Getting a blob reference
             // url 경로에 나타날 부분?
             // File() 로 만들면 폴더 뒤에 / 가 붙는데. 그냥 더하니까 안붙길래
             // '/' 하나 추가해준다
             // url : 2018_10_30/chaeyoung.jpg
-            String url = datePath.substring(1) + File.separator +sourceFile.getName();
+            //String url = datePath.substring(1) + File.separator +sourceFile.getName();
 
             // http://~~~~~~/2018_10_30/dddd.jpg 이런식으로 붙는다.
             // 파라미터로 넣어줘야 하는 값에서 맨 앞에 '/'가 없어야 한다.
@@ -149,8 +177,14 @@ public class AzureApp
 
             // temp 파일 경로를 지정해줘야한다.??
             // sourceFile.getAbsolutePath() : /Users/choijaeyong/fastcampus/slowcampus/2018_10_30/chaeyoung.jpg
-            blob.uploadFromFile(sourceFile.getAbsolutePath());
+            blob.uploadFromFile(sourceFilePath);
 
+
+            // 폴더 지우기용 코드.
+//            path = path + File.separator;
+//            System.out.println("path : " + path);
+//            deleteDir = new File(path);
+//            System.out.println("deleteDir.getAbsolutePath() : "+deleteDir.getAbsolutePath());
 
 
 
@@ -177,13 +211,37 @@ public class AzureApp
             if(downloadedFile != null)
                 downloadedFile.deleteOnExit();
 
-            if(sourceFile != null)
-                sourceFile.deleteOnExit();
+//            if(sourceFile != null){
+//                // 이게 없으면 파일이 안지워진다.
+//                System.out.println("파일 삭제전");
+//                System.out.println("파일삭제 if 문 안에 있는 코드 : "+sourceFile.getAbsolutePath());
+//                sourceFile.deleteOnExit();
+//                sourceFile.deleteOnExit();
+//                System.out.println("파일 삭제후");
+//            }
+
+
+            // 임시로 만들어진 폴더 지우기용
+            // 여기서 이 path는 빈폴더야!. 안에 있는 jpg 파일. 위에 if문에서
+            // 지웠어!. 근데 왜 안돼!?
+            // 위에 파일 삭제 하는 코드 보다
+            // 아래 폴더 삭제 명령어가 먼저 읽힌다. (deleteDir.delete())로 했을 시에.
+            // 삭제 명령어는 폴더 안에 파일이 있을시엔 삭제가 안된다.
+            // 근데 파일 삭제는 톰캣을 stop 했을 시에!  진행이 된다... 아... ?
+            if(path != null){
+//                System.out.println("폴더 삭제 될까??");
+//                System.out.println(deleteDir.delete());   // false 나옴... ㅡㅡ;
+//                deleteDir.deleteOnExit();
+//                System.out.println("폴더 삭제 코드 후");
+            }
+
+
+
         }
     }
 
 
-    private String calcPath(String uploadPath) {
+    public static String calcPath(String uploadPath) {
         Calendar cal = Calendar.getInstance();
         String yearPath = File.separator+cal.get(Calendar.YEAR);
         String monthPath = yearPath + "_" +
