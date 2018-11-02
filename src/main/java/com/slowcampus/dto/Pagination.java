@@ -91,13 +91,11 @@ public class Pagination {
      * firstPageNoOnPageList : 페이지 리스트의 첫 페이지 번호
      * lastPageNoOnPageList : 페이지 리스트의 마지막 페이지 번호
      * firstRecordIndex : 페이징 SQL의 조건절에 사용되는 시작 rownum.
-     * lastRecordIndex : 페이징 SQL의 조건절에 사용되는 마지막 rownum.
      */
     private int totalPageCount;
     private int firstPageNoOnPageList;
     private int lastPageNoOnPageList;
     private int firstRecordIndex;
-    private int lastRecordIndex;
 
     public int getTotalPageCount() {
         totalPageCount = ((getTotalRecordCount()-1)/getRecordCountPerPage()) + 1;
@@ -126,13 +124,8 @@ public class Pagination {
     }
 
     public int getFirstRecordIndex() {
-        firstRecordIndex = (getCurrentPageNo() - 1) * getRecordCountPerPage() +1;
+        firstRecordIndex = (getCurrentPageNo() - 1) * getRecordCountPerPage();
         return firstRecordIndex;
-    }
-
-    public int getLastRecordIndex() {
-        lastRecordIndex = getCurrentPageNo() * getRecordCountPerPage();
-        return lastRecordIndex;
     }
 
     @Override
@@ -141,6 +134,6 @@ public class Pagination {
                 + ", pageSize=" + pageSize + ", totalRecordCount=" + totalRecordCount + ", searchOption=" + searchOption
                 + ", keyword=" + keyword + ", totalPageCount=" + totalPageCount + ", firstPageNoOnPageList="
                 + firstPageNoOnPageList + ", lastPageNoOnPageList=" + lastPageNoOnPageList + ", firstRecordIndex="
-                + firstRecordIndex + ", lastRecordIndex=" + lastRecordIndex + "]";
+                + firstRecordIndex + "]";
     }
 }
