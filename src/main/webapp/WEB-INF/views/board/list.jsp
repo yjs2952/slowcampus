@@ -36,7 +36,7 @@
                                 <c:choose>
                                     <c:when test="${article.depth gt 0}">
                                         <c:forEach begin="1" end="${article.depth}" step="1">&nbsp;</c:forEach>
-                                        <c:out value="RE : ${article.title}"/>
+                                        <c:out value="ㄴRE : ${article.title}"/>
                                     </c:when>
                                     <c:otherwise>
                                         <c:out value="${article.title}"/>
