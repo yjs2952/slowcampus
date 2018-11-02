@@ -53,6 +53,6 @@ public class WebMvcContextConfiguration extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/write/**")
                                             .addPathPatterns("/modify/**")
                                             .addPathPatterns("/delete/**");
-        registry.addInterceptor(new SignupInterceptor()).addPathPatterns("/signupPost");
+        registry.addInterceptor(new SigninInterceptor()).addPathPatterns("/signinPost");
     }
 }

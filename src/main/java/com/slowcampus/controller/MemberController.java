@@ -54,7 +54,7 @@ public class MemberController {
         return "user/signin";
     }
 
-    @PostMapping("/signupPost")
+    @PostMapping("/signinPost")
     public String signinMember(@ModelAttribute Member member, RedirectAttributes rda, HttpSession session) {
 
         Member loginMember = memberService.loginMember(member);
