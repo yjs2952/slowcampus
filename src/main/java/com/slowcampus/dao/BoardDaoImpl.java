@@ -58,7 +58,8 @@ public class BoardDaoImpl implements BoardDao {
 
     @Override
     public Board getBoard(Long id) {
-        String sql = "SELECT a.id, a.read_count, a.title, a.nickname, a.category, a.root_board_id, a.parent_board_id, a.ip_addr, b.board_content as content, a.regdate, a.moddate "+
+        String sql = "SELECT a.id, a.read_count, a.title, a.nickname, a.category, a.root_board_id, a.parent_board_id, a.ip_addr, b.board_content AS content, a.regdate, a.moddate "+
+
                      "FROM board a "+
                      "INNER JOIN board_content b "+
                      "WHERE a.id = b.board_id "+
@@ -75,8 +76,8 @@ public class BoardDaoImpl implements BoardDao {
 
     @Override
     public Long writeBoard(Board board) {
-        String sql = "insert into board (title, read_count, nickname, category, root_board_id, parent_board_id, user_id, depth, depth_order, ip_addr, regdate)" +
-                     " values (:title, :readCount, :nickname, :category, (select last_insert_id() + 1), :parentBoardId, :userId, :depth, :depthOrder, :ipAddr, now())";
+        String sql = "insert into board (id, title, read_count, nickname, category, root_board_id, parent_board_id, user_id, depth, depth_order, ip_addr, regdate)" +
+                     " values (null, :title, :readCount, :nickname, :category, (select last_insert_id() + 1), :parentBoardId, :userId, :depth, :depthOrder, :ipAddr, now())";
 
         SqlParameterSource params = new BeanPropertySqlParameterSource(board);
         KeyHolder keyHolder = new GeneratedKeyHolder();
