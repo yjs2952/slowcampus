@@ -39,7 +39,7 @@ public class BoardDaoImpl implements BoardDao {
 
     @Override
     public List<Board> getList(int category) {
-        String sql = "SELECT id, title, read_count, nickname, category, root_board_id, parent_board_id, depth, depth_order, ip_addr, regdate, moddate " +
+        String sql = "SELECT id, title, read_count, nickname, category, root_board_id, parent_board_id, depth, depth_order, ip_addr, regdate, moddate, is_deleted " +
                      "FROM board " +
                      "WHERE category = :category "+
                      "ORDER BY root_board_id, depth, depth_order";
@@ -59,6 +59,7 @@ public class BoardDaoImpl implements BoardDao {
     @Override
     public Board getBoard(Long id) {
         String sql = "SELECT a.id, a.read_count, a.title, a.nickname, a.category, a.root_board_id, a.parent_board_id, a.ip_addr, b.board_content AS content, a.regdate, a.moddate "+
+
                      "FROM board a "+
                      "INNER JOIN board_content b "+
                      "WHERE a.id = b.board_id "+

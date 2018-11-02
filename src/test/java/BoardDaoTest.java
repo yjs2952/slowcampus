@@ -33,9 +33,10 @@ public class BoardDaoTest {
         }
     }*/
 
-    /*@Test
+  /*
+    @Test
     public void getBoard() throws Exception {
-        Board board = boardDao.getBoard(1L);
+        Board board = boardDao.getBoard(3L);
         System.out.println(board.toString());
     }*/
 
@@ -53,6 +54,18 @@ public class BoardDaoTest {
         System.out.println(board.toString());
         boardService.writeBoard(board);*/
     }
+
+//    @Test
+//    public void addBoard() {
+//
+//
+//
+//        //System.out.println(board.toString());
+//
+//        /*board.setId(id);
+//        board.setContent("aaaaaaaaaqqqqqqqqqqqq");
+//        boardDao.writeBoardContent(board);*/
+//    }
 
     /*@Test
     public void updateTest(){
