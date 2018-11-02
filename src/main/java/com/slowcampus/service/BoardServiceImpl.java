@@ -1,7 +1,6 @@
 package com.slowcampus.service;
 
 import com.slowcampus.dao.BoardDao;
-import com.slowcampus.dao.BoardDaoImpl;
 import com.slowcampus.dto.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,29 +20,30 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Board> getList(int category) {
-        return boardDao.getList(category);
+    public List<Board> getArticleList(int category) {
+        return boardDao.getArticleList(category);
     }
 
     @Override
-    public Board getBoardCotent(Long id) {
-        return boardDao.getBoard(id);
+    @Transactional
+    public Board getArticleCotent(Long id) {
+        return boardDao.getArticle(id);
     }
 
     @Override
-    public int writeBoard(Board board) {
-        board.setId(boardDao.writeBoard(board));
-        boardDao.writeBoardContent(board);
+    public int writeArticle(Board board) {
+        board.setId(boardDao.writeArticle(board));
+        boardDao.writeArticleContent(board);
         return 0;
     }
 
     @Override
-    public int modifyBoard(Board board) {
+    public int modifyArticle(Board board) {
         return 0;
     }
 
     @Override
-    public int deleteBoard(Long id) {
+    public int deleteArticle(Long id) {
         return 0;
     }
 }

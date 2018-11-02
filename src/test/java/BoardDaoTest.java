@@ -2,7 +2,6 @@ import com.slowcampus.config.ApplicationConfig;
 import com.slowcampus.dao.BoardDaoImpl;
 import com.slowcampus.dto.Board;
 import com.slowcampus.service.BoardService;
-import com.slowcampus.service.BoardServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class BoardDaoTest {
 
     /*@Test
     public void getBoardListTest() throws Exception{
-        List<Board> list = boardDao.getList(2);
+        List<Board> list = boardDao.getArticleList(2);
 
         for (Board board : list) {
             System.out.println(board.toString());
@@ -35,8 +34,8 @@ public class BoardDaoTest {
 
   /*
     @Test
-    public void getBoard() throws Exception {
-        Board board = boardDao.getBoard(3L);
+    public void getArticle() throws Exception {
+        Board board = boardDao.getArticle(3L);
         System.out.println(board.toString());
     }*/
 
@@ -48,11 +47,11 @@ public class BoardDaoTest {
         board.setUserId("super");
         board.setNickname("blackpink");
         board.setIpAddr("000.000.000.000");
-        boardDao.writeBoard(board);
+        boardDao.writeArticle(board);
 
         /*board.setContent("aaaaaaaaaqqqqqqqqqqqq");
         System.out.println(board.toString());
-        boardService.writeBoard(board);*/
+        boardService.writeArticle(board);*/
     }
 
 //    @Test
@@ -64,7 +63,7 @@ public class BoardDaoTest {
 //
 //        /*board.setId(id);
 //        board.setContent("aaaaaaaaaqqqqqqqqqqqq");
-//        boardDao.writeBoardContent(board);*/
+//        boardDao.writeArticleContent(board);*/
 //    }
 
     /*@Test
@@ -73,7 +72,7 @@ public class BoardDaoTest {
         board.setId(33L);
         board.setTitle("왜 안되 ㅠㅠㅠㅠ");
         board.setIpAddr("000.000.000.000");
-        boardDao.modifyBoard(board);
+        boardDao.modifyArticle(board);
 
         board.setContent("어? 된다??????????????");
         boardDao.modifyBoardContent(board);
@@ -81,6 +80,6 @@ public class BoardDaoTest {
 
     /*@Test
     public void deleteTest(){
-        boardDao.deleteBoard(33L);
+        boardDao.deleteArticle(33L);
     }*/
 }

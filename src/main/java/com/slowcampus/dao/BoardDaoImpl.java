@@ -30,15 +30,13 @@ public class BoardDaoImpl implements BoardDao {
     private SimpleJdbcInsert insertAction;
 
     BoardDaoImpl(DataSource dataSource) {
-        log.info("BoardDao()");
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
         this.insertAction = new SimpleJdbcInsert(dataSource)
                 .withTableName("board_content");
-                //.usingGeneratedKeyColumns("id");
     }
 
     @Override
-    public List<Board> getList(int category) {
+    public List<Board> getArticleList(int category) {
         String sql = "SELECT id, title, read_count, nickname, category, root_board_id, parent_board_id, depth, depth_order, ip_addr, regdate, moddate, is_deleted " +
                      "FROM board " +
                      "WHERE category = :category "+
@@ -52,12 +50,12 @@ public class BoardDaoImpl implements BoardDao {
 
             return jdbc.query(sql, map, rowMapper);
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Board getBoard(Long id) {
+    public Board getArticle(Long id) {
         String sql = "SELECT a.id, a.read_count, a.title, a.nickname, a.category, a.root_board_id, a.parent_board_id, a.ip_addr, b.board_content AS content, a.regdate, a.moddate "+
 
                      "FROM board a "+
@@ -70,12 +68,12 @@ public class BoardDaoImpl implements BoardDao {
             Map<String, ?> map = Collections.singletonMap("id", id);
             return jdbc.queryForObject(sql, map, rowMapper);
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Long writeBoard(Board board) {
+    public Long writeArticle(Board board) {
         String sql = "insert into board (id, title, read_count, nickname, category, root_board_id, parent_board_id, user_id, depth, depth_order, ip_addr, regdate)" +
                      " values (null, :title, :readCount, :nickname, :category, (select last_insert_id() + 1), :parentBoardId, :userId, :depth, :depthOrder, :ipAddr, now())";
 
@@ -86,7 +84,7 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
-    public int writeBoardContent(Board board) {
+    public int writeArticleContent(Board board) {
         Map<String, Object> map = new HashMap<>();
         map.put("board_id", board.getId());
         map.put("board_content", board.getContent());
@@ -94,7 +92,7 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
-    public int modifyBoard(Board board) {
+    public int modifyArticle(Board board) {
         String sql = "UPDATE board " +
                      "SET   title = :title, " +
                      "      ip_Addr = :ipAddr, " +
@@ -105,7 +103,8 @@ public class BoardDaoImpl implements BoardDao {
         return jdbc.update(sql, params);
     }
 
-    public int modifyBoardContent(Board board) {
+    @Override
+    public int modifyArticleContent(Board board) {
         String sql = "UPDATE board_content SET board_content = :content " +
                      "WHERE board_id = :id";
 
@@ -114,7 +113,7 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
-    public int deleteBoard(Long id) {
+    public int deleteArticle(Long id) {
         String sql = "UPDATE board SET is_deleted = 1 WHERE id = :id";
         Map<String, ?> map = Collections.singletonMap("id", id);
         return jdbc.update(sql, map);

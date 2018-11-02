@@ -8,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import lombok.extern.java.Log;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -28,31 +25,30 @@ public class BoardController {
         this.imageService = imageService;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    
     /**
      * @RequestParam으로 구현 된 현재 메소드는 아래와 같이 사용해도 동일한 결과를 얻을 수 있다.
      * public String getArticleList(@ModelAttribute Board board,
      *                                  ModelMap modelMap) {
      *         List<Board> boardList = boardService.getList(board.getCategory());
+     *         List<Board> boardList = boardService.getArticleList(board.getCategory());
      * 그러나, Query Parameter의 기본 값 지정을 위하여 여기에서는 RequestParam을 사용하였다.
      */
+    @RequestMapping(value = "/articles/list", method = RequestMethod.GET)
     public String getArticleList(@RequestParam(name = "category", required = false, defaultValue = "1") int category,
                                  ModelMap modelMap) {
-        List<Board> boardList = boardService.getList(category);
+        List<Board> boardList = boardService.getArticleList(category);
         modelMap.addAttribute("boardList", boardList);
-      return "board/list";
+        return "board/list";
     }
 
     // 게시글 상세보기.
     // /list/article/detail?id=<숫자>   게시글 보기 GET(댓글 보기 포함)
+    @GetMapping("/boards/{category}/articles/detail")
+    public String articleDetail(@RequestParam(name = "id") Long id, ModelMap modelMap) {
+        Board board = boardService.getBoardCotent(id);
+        modelMap.addAttribute("board", board);
 
-    @GetMapping("/list/article/detail")
-    public String articleDetail(@RequestParam(name="id") Long id, ModelMap modelMap) {
-        Board board =boardService.getBoardCotent(id);
-        System.out.println(board.getTitle());
-        modelMap.addAttribute("board" , board);
-
-        System.out.println("id : " + id);
         /*
             사진이 한개만 있어도 리스트로 출력이 가능.
             select를 이용해 해당 게시물에 있는 사진이 몇개인지 값을 가져오고
@@ -68,8 +64,7 @@ public class BoardController {
 
         // 이미지 여러개
         List<Image> imageList = imageService.getImageList(id);
-        System.out.println(imageList.size());
-        modelMap.addAttribute("images" , imageList);
+        modelMap.addAttribute("images", imageList);
 
 
         return "articleDetail";

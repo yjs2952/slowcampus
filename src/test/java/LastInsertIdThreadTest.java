@@ -22,7 +22,7 @@ public class LastInsertIdThreadTest extends Thread {
             board.setReadCount(0);
             board.setParentBoardId(1L);
             board.setRootBoardId(1L);
-            Long id = boardDao.writeBoard(board);
+            Long id = boardDao.writeArticle(board);
         }
     }
 }

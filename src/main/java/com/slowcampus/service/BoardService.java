@@ -5,14 +5,14 @@ import com.slowcampus.dto.Board;
 import java.util.List;
 
 public interface BoardService {
-    public List<Board> getList(int category);
+    public List<Board> getArticleList(int category);
 
-    public Board getBoardCotent(Long id);
+    public Board getArticleCotent(Long id);
 
-    public int writeBoard(Board board);
+    public int writeArticle(Board board);
 
-    public int modifyBoard(Board board);
+    public int modifyArticle(Board board);
 
-    public int deleteBoard(Long id);
+    public int deleteArticle(Long id);
 
 }

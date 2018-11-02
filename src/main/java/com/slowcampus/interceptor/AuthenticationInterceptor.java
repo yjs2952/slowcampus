@@ -1,4 +1,4 @@
-package com.slowcampus.config;
+package com.slowcampus.interceptor;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
