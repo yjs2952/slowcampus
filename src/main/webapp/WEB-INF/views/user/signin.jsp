@@ -41,10 +41,10 @@
 
         <form id="signinForm" role="form" data-toggle="validator" method="post">
             <div class="form-group has-feedback">
-                <input id="id" type="text" name="id" class="form-control" placeholder="ID">
+                <input id="id" type="text" name="id" class="form-control" onkeyup="enter();" placeholder="ID">
             </div>
             <div class="form-group has-feedback">
-                <input id="password" type="password" name="password" class="form-control" placeholder="Password">
+                <input id="password" type="password" name="password" class="form-control" onkeyup="enter();" placeholder="Password">
             </div>
             <div class="row">
                 <div class="col-xs-8">
@@ -57,7 +57,7 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
-                    <button id="submitForm" type="button" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                    <button id="submitForm" type="button" onclick="login()" class="btn btn-primary btn-block btn-flat">Sign In</button>
                 </div>
                 <!-- /.col -->
             </div>
@@ -84,27 +84,6 @@
             increaseArea: '20%' /* optional */
         });
 
-        $('#submitForm').click(function(){
-
-            var id = $('#id').val();
-            var pw = $('#password').val();
-
-            if (id == null || id === ""){
-                alert("아이디를 입력해 주세요.");
-                return false;
-            }
-
-            if (pw == null || pw === ""){
-                alert("비밀번호를 입력해 주세요.");
-                return false;
-            }
-
-            var form = $('#signinForm');
-
-            form.attr("action", "/signin");
-            form.submit();
-        });
-
         var result = "${result}";
 
         if (result != null && result != "") {
@@ -112,6 +91,34 @@
             result = null;
         }
     });
+    
+    function login() {
+        var id = $('#id').val();
+        var pw = $('#password').val();
+
+        if (id == null || id === ""){
+            alert("아이디를 입력해 주세요.");
+            return false;
+        }
+
+        if (pw == null || pw === ""){
+            alert("비밀번호를 입력해 주세요.");
+            return false;
+        }
+
+        var form = $('#signinForm');
+
+        form.attr("action", "/signin");
+        form.submit();
+    }
+
+    function enter() {
+        if (window.event.keyCode == 13) {
+
+            // 엔터키가 눌렸을 때 실행할 내용
+            login();
+        }
+    }
 
 </script>
 </body></html>

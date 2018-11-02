@@ -42,15 +42,15 @@ public class BoardDaoImpl implements BoardDao {
                      "FROM board " +
                      "WHERE category = :category "+
                      "ORDER BY root_board_id, depth, depth_order " +
-                     "LIMIT :pageNo, :pageSize";
+                     "LIMIT :firstRecordIndex, :recordCountPerPage";
 
         // TODO: 2018-10-29 (yjs) :  추후 페이징 처리 해야됨 (start, limit)
         try {
             RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
             Map<String, Integer> map = new HashMap<>();
             map.put("category", category);
-            map.put("pageNo", pagination.getFirstRecordIndex());
-            map.put("pageSize", pagination.getPageSize());
+            map.put("firstRecordIndex", pagination.getFirstRecordIndex());
+            map.put("recordCountPerPage", pagination.getRecordCountPerPage());
 
             return jdbc.query(sql, map, rowMapper);
         } catch (Exception e) {

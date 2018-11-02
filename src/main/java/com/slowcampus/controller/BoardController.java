@@ -46,7 +46,8 @@ public class BoardController {
     // 게시글 상세보기.
     // /list/article/detail?id=<숫자>   게시글 보기 GET(댓글 보기 포함)
     @GetMapping("/boards/{category}/articles/detail")
-    public String articleDetail(@RequestParam(name = "id") Long id, ModelMap modelMap) {
+    public String articleDetail(@PathVariable(value = "category") int category,
+                                @RequestParam(name = "id") Long id, ModelMap modelMap) {
         Board board = boardService.getArticleCotent(id);
         modelMap.addAttribute("board", board);
 

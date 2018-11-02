@@ -1,6 +1,7 @@
 import com.slowcampus.config.ApplicationConfig;
 import com.slowcampus.dao.BoardDaoImpl;
 import com.slowcampus.dto.Board;
+import com.slowcampus.dto.Category;
 import com.slowcampus.dto.Pagination;
 import com.slowcampus.service.BoardService;
 import org.junit.Test;
@@ -33,6 +34,15 @@ public class BoardDaoTest {
 
         for (Board board : list) {
             System.out.println(board.toString());
+        }
+    }
+
+    @Test
+    public void categoryTest(){
+        List<Category> list = boardService.getCategoryList();
+
+        for (Category category : list) {
+            System.out.println(category.toString());
         }
     }
 
