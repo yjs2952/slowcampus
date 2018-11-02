@@ -46,7 +46,7 @@ public class BoardController {
     // /list/article/detail?id=<숫자>   게시글 보기 GET(댓글 보기 포함)
     @GetMapping("/boards/{category}/articles/detail")
     public String articleDetail(@RequestParam(name = "id") Long id, ModelMap modelMap) {
-        Board board = boardService.getBoardCotent(id);
+        Board board = boardService.getArticleCotent(id);
         modelMap.addAttribute("board", board);
 
         /*
