@@ -1,7 +1,9 @@
 package com.slowcampus.service;
 
 import com.slowcampus.dao.BoardDao;
+import com.slowcampus.dao.CategoryDao;
 import com.slowcampus.dto.Board;
+import com.slowcampus.dto.Category;
 import com.slowcampus.dto.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,12 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
 
     private BoardDao boardDao;
+    private CategoryDao categoryDao;
 
     @Autowired
-    public BoardServiceImpl(BoardDao boardDao){
+    public BoardServiceImpl(BoardDao boardDao, CategoryDao categoryDao){
         this.boardDao = boardDao;
+        this.categoryDao = categoryDao;
     }
 
     @Override
@@ -29,6 +33,11 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public Board getArticleCotent(Long id) {
         return boardDao.getArticle(id);
+    }
+
+    @Override
+    public List<Category> getCategoryList() {
+        return categoryDao.getCategoryList();
     }
 
     @Override
