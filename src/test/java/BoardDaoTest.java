@@ -1,12 +1,15 @@
 import com.slowcampus.config.ApplicationConfig;
 import com.slowcampus.dao.BoardDaoImpl;
 import com.slowcampus.dto.Board;
+import com.slowcampus.dto.Pagination;
 import com.slowcampus.service.BoardService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
@@ -23,14 +26,15 @@ public class BoardDaoTest {
         System.out.println("init");
     }
 
-    /*@Test
+    @Test
     public void getBoardListTest() throws Exception{
-        List<Board> list = boardDao.getArticleList(2);
+        Pagination pagination = new Pagination();
+        List<Board> list = boardDao.getArticleList(2, pagination);
 
         for (Board board : list) {
             System.out.println(board.toString());
         }
-    }*/
+    }
 
   /*
     @Test
@@ -39,7 +43,7 @@ public class BoardDaoTest {
         System.out.println(board.toString());
     }*/
 
-    @Test
+    /*@Test
     public void addBoard() {
 
         Board board = new Board();
@@ -49,10 +53,10 @@ public class BoardDaoTest {
         board.setIpAddr("000.000.000.000");
         boardDao.writeArticle(board);
 
-        /*board.setContent("aaaaaaaaaqqqqqqqqqqqq");
+        *//*board.setContent("aaaaaaaaaqqqqqqqqqqqq");
         System.out.println(board.toString());
-        boardService.writeArticle(board);*/
-    }
+        boardService.writeArticle(board);*//*
+    }*/
 
 //    @Test
 //    public void addBoard() {

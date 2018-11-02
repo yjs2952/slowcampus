@@ -2,6 +2,7 @@ package com.slowcampus.service;
 
 import com.slowcampus.dao.BoardDao;
 import com.slowcampus.dto.Board;
+import com.slowcampus.dto.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +21,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Board> getArticleList(int category) {
-        return boardDao.getArticleList(category);
+    public List<Board> getArticleList(int category, Pagination pagination) {
+        return boardDao.getArticleList(category, pagination);
     }
 
     @Override

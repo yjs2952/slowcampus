@@ -1,11 +1,12 @@
 package com.slowcampus.dao;
 
 import com.slowcampus.dto.Board;
+import com.slowcampus.dto.Pagination;
 
 import java.util.List;
 
 public interface BoardDao {
-    public List<Board> getArticleList(int category);
+    public List<Board> getArticleList(int category, Pagination pagination);
 
     public Board getArticle(Long id);
 
