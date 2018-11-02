@@ -2,6 +2,7 @@ package com.slowcampus.controller;
 
 import com.slowcampus.dto.Board;
 import com.slowcampus.dto.Image;
+import com.slowcampus.dto.Pagination;
 import com.slowcampus.service.BoardService;
 import com.slowcampus.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class BoardController {
      */
     @RequestMapping(value = "/articles/list", method = RequestMethod.GET)
     public String getArticleList(@RequestParam(name = "category", required = false, defaultValue = "1") int category,
-                                 ModelMap modelMap) {
-        List<Board> boardList = boardService.getArticleList(category);
+                                 ModelMap modelMap, Pagination pagination) {
+        List<Board> boardList = boardService.getArticleList(category, pagination);
         modelMap.addAttribute("boardList", boardList);
         return "board/list";
     }
