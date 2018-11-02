@@ -30,7 +30,6 @@ public class BoardDaoImpl implements BoardDao {
     private SimpleJdbcInsert insertAction;
 
     BoardDaoImpl(DataSource dataSource) {
-        log.info("BoardDao()");
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
         this.insertAction = new SimpleJdbcInsert(dataSource)
                 .withTableName("board_content");
@@ -52,7 +51,8 @@ public class BoardDaoImpl implements BoardDao {
 
             return jdbc.query(sql, map, rowMapper);
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
+            //e.printStackTrace();
         }
     }
 
@@ -70,7 +70,7 @@ public class BoardDaoImpl implements BoardDao {
             Map<String, ?> map = Collections.singletonMap("id", id);
             return jdbc.queryForObject(sql, map, rowMapper);
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

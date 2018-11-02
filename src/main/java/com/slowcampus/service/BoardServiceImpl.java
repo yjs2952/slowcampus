@@ -26,6 +26,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public Board getBoardCotent(Long id) {
         return boardDao.getBoard(id);
     }

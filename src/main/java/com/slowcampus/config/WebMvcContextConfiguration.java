@@ -1,6 +1,7 @@
 package com.slowcampus.config;
 
 
+import com.slowcampus.interceptor.AuthenticationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -53,6 +54,5 @@ public class WebMvcContextConfiguration extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/write/**")
                                             .addPathPatterns("/modify/**")
                                             .addPathPatterns("/delete/**");
-        registry.addInterceptor(new SigninInterceptor()).addPathPatterns("/signinPost");
     }
 }

@@ -101,7 +101,7 @@
 
             var form = $('#signinForm');
 
-            form.attr("action", "/signinPost");
+            form.attr("action", "/signin");
             form.submit();
         });
 

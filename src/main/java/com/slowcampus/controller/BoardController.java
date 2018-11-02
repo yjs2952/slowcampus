@@ -8,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import lombok.extern.java.Log;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -28,7 +25,7 @@ public class BoardController {
         this.imageService = imageService;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/articles/list", method = RequestMethod.GET)
     /**
      * @RequestParam으로 구현 된 현재 메소드는 아래와 같이 사용해도 동일한 결과를 얻을 수 있다.
      * public String getArticleList(@ModelAttribute Board board,
@@ -40,17 +37,17 @@ public class BoardController {
                                  ModelMap modelMap) {
         List<Board> boardList = boardService.getList(category);
         modelMap.addAttribute("boardList", boardList);
-      return "board/list";
+        return "board/list";
     }
 
     // 게시글 상세보기.
     // /list/article/detail?id=<숫자>   게시글 보기 GET(댓글 보기 포함)
 
-    @GetMapping("/list/article/detail")
-    public String articleDetail(@RequestParam(name="id") Long id, ModelMap modelMap) {
-        Board board =boardService.getBoardCotent(id);
+    @GetMapping("/boards/{category}/articles/detail")
+    public String articleDetail(@RequestParam(name = "id") Long id, ModelMap modelMap) {
+        Board board = boardService.getBoardCotent(id);
         System.out.println(board.getTitle());
-        modelMap.addAttribute("board" , board);
+        modelMap.addAttribute("board", board);
 
         System.out.println("id : " + id);
         /*
@@ -69,7 +66,7 @@ public class BoardController {
         // 이미지 여러개
         List<Image> imageList = imageService.getImageList(id);
         System.out.println(imageList.size());
-        modelMap.addAttribute("images" , imageList);
+        modelMap.addAttribute("images", imageList);
 
 
         return "articleDetail";
