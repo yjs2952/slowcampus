@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
 @Service
 public class BoardServiceImpl implements BoardService {
 
@@ -33,7 +32,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int writeBoard(Board board) {
-        Long id = boardDao.writeBoard(board);
+        board.setId(boardDao.writeBoard(board));
         boardDao.writeBoardContent(board);
         return 0;
     }

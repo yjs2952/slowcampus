@@ -1,6 +1,7 @@
 import com.slowcampus.config.ApplicationConfig;
 import com.slowcampus.dao.BoardDaoImpl;
 import com.slowcampus.dto.Board;
+import com.slowcampus.service.BoardServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,28 @@ public class BoardDaoTest {
         }
     }*/
 
+  /*
     @Test
     public void getBoard() throws Exception {
         Board board = boardDao.getBoard(3L);
         System.out.println(board.toString());
+    }*/
+
+    @Test
+    public void addBoard() {
+
+        Board board = new Board();
+        board.setTitle("왜 안되 ㅠㅠㅠㅠ");
+        board.setUserId("super");
+        board.setNickname("blackpink");
+        board.setIpAddr("000.000.000.000");
+        boardDao.writeBoard(board);
+
+
+        //System.out.println(board.toString());
+
+        //board.setContent("aaaaaaaaaqqqqqqqqqqqq");
+        //boardService.writeBoard(board);
     }
 
 //    @Test

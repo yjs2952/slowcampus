@@ -13,6 +13,6 @@ public class Member {
     private String password;
     private String nickname;
     private String email;
-    private Date regDate;
-    private Date modDate;
+    private Date regdate;
+    private Date moddate;
 }
