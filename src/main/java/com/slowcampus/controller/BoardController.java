@@ -2,6 +2,7 @@ package com.slowcampus.controller;
 
 import com.slowcampus.dto.Board;
 import com.slowcampus.dto.Image;
+import com.slowcampus.dto.Pagination;
 import com.slowcampus.service.BoardService;
 import com.slowcampus.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,8 @@ public class BoardController {
      */
     @RequestMapping(value = "/articles/list", method = RequestMethod.GET)
     public String getArticleList(@RequestParam(name = "category", required = false, defaultValue = "1") int category,
-                                 ModelMap modelMap) {
-        List<Board> boardList = boardService.getArticleList(category);
+                                 ModelMap modelMap, Pagination pagination) {
+        List<Board> boardList = boardService.getArticleList(category, pagination);
         modelMap.addAttribute("boardList", boardList);
         return "board/list";
     }
@@ -45,7 +46,8 @@ public class BoardController {
     // 게시글 상세보기.
     // /list/article/detail?id=<숫자>   게시글 보기 GET(댓글 보기 포함)
     @GetMapping("/boards/{category}/articles/detail")
-    public String articleDetail(@RequestParam(name = "id") Long id, ModelMap modelMap) {
+    public String articleDetail(@PathVariable(value = "category") int category,
+                                @RequestParam(name = "id") Long id, ModelMap modelMap) {
         Board board = boardService.getArticleCotent(id);
         modelMap.addAttribute("board", board);
 

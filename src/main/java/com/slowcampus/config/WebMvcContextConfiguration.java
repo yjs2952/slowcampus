@@ -1,7 +1,6 @@
 package com.slowcampus.config;
 
 
-import com.slowcampus.interceptor.AuthenticationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

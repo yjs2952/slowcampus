@@ -1,6 +1,7 @@
 package com.slowcampus.dao;
 
 import com.slowcampus.dto.Board;
+import com.slowcampus.dto.Pagination;
 import lombok.extern.java.Log;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -36,17 +37,20 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
-    public List<Board> getArticleList(int category) {
+    public List<Board> getArticleList(int category, Pagination pagination) {
         String sql = "SELECT id, title, read_count, nickname, category, root_board_id, parent_board_id, depth, depth_order, ip_addr, regdate, moddate, is_deleted " +
                      "FROM board " +
                      "WHERE category = :category "+
-                     "ORDER BY root_board_id, depth, depth_order";
+                     "ORDER BY root_board_id, depth, depth_order " +
+                     "LIMIT :firstRecordIndex, :recordCountPerPage";
 
         // TODO: 2018-10-29 (yjs) :  추후 페이징 처리 해야됨 (start, limit)
         try {
             RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
             Map<String, Integer> map = new HashMap<>();
             map.put("category", category);
+            map.put("firstRecordIndex", pagination.getFirstRecordIndex());
+            map.put("recordCountPerPage", pagination.getRecordCountPerPage());
 
             return jdbc.query(sql, map, rowMapper);
         } catch (Exception e) {
