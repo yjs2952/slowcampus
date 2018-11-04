@@ -63,7 +63,7 @@ public class AzureApp
         File sourceFile = null, downloadedFile = null;
         String path = null;
         File deleteDir=null;
-        System.out.println("Azure Blob Storage quick start sample");
+        //System.out.println("Azure Blob Storage quick start sample");
 
         CloudStorageAccount storageAccount;
         CloudBlobClient blobClient = null;
@@ -76,7 +76,7 @@ public class AzureApp
             container = blobClient.getContainerReference("quickstartcontainer");
 
             // Create the container if it does not exist with public access.
-            System.out.println("Creating container: " + container.getName());
+            //System.out.println("Creating container: " + container.getName());
             container.createIfNotExists(BlobContainerPublicAccessType.CONTAINER, new BlobRequestOptions(), new OperationContext());
             //Creating a sample file
 
@@ -166,7 +166,7 @@ public class AzureApp
             CloudBlockBlob blob = container.getBlockBlobReference(url);
 
             //Creating blob and uploading file to it
-            System.out.println("Uploading the sample file ");
+            //System.out.println("Uploading the sample file ");
 
             // temp 파일 경로를 지정해줘야한다.??
             // sourceFile.getAbsolutePath() : /Users/choijaeyong/fastcampus/slowcampus/2018_10_30/chaeyoung.jpg
@@ -184,9 +184,9 @@ public class AzureApp
 
 
             //Listing contents of container
-            for (ListBlobItem blobItem : container.listBlobs()) {
-                System.out.println("URI of blob is: " + blobItem.getUri());
-            }
+//            for (ListBlobItem blobItem : container.listBlobs()) {
+//                System.out.println("URI of blob is: " + blobItem.getUri());
+//            }
 
         }
         catch (StorageException ex)

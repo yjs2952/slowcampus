@@ -114,9 +114,6 @@ public class UploadController {
     @RequestMapping(value="/uploadForm" , method = RequestMethod.POST)
     public void uploadForm(MultipartFile[] files, Model model) {
         // lombok 플로그인 이용.
-        System.out.println(files.length);
-        System.out.println(files.getClass());
-
 
 
         /*
@@ -150,7 +147,6 @@ public class UploadController {
 
             /* 기본 폴더 설정, 날짜 경로 더해주기는 파일들의 공통적인 부분. for 위로?*/
             File dir = new File("/tmp");
-            System.out.println("최초 File('.') 했을때! : " + dir.getAbsolutePath());
             String path = dir.getAbsolutePath();
 
             String datePath = AzureApp.calcPath(path);
@@ -176,7 +172,7 @@ public class UploadController {
             image.setBoardId(3L);// 임시번호. 원래는 파라미터로 받아야함.
 
             imageService.uploadImage(image);
-            System.out.println(" 이미지 업로드 완료.");
+            // 이미지 db업로드 완료.
 
             imageService.uploadImageToAzure(file,sourceFile,datePath,path);
 
