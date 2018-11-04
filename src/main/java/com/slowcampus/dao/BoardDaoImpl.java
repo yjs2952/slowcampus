@@ -41,7 +41,7 @@ public class BoardDaoImpl implements BoardDao {
         String sql = "SELECT id, title, read_count, nickname, category, root_board_id, parent_board_id, depth, depth_order, ip_addr, regdate, moddate, is_deleted " +
                      "FROM board " +
                      "WHERE category = :category "+
-                     "ORDER BY root_board_id, depth, depth_order " +
+                     "ORDER BY root_board_id "+
                      "LIMIT :firstRecordIndex, :recordCountPerPage";
 
         // TODO: 2018-10-29 (yjs) :  추후 페이징 처리 해야됨 (start, limit)

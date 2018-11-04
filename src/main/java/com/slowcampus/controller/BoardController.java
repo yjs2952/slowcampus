@@ -5,12 +5,11 @@ import com.slowcampus.dto.Image;
 import com.slowcampus.dto.Pagination;
 import com.slowcampus.service.BoardService;
 import com.slowcampus.service.ImageService;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import lombok.extern.java.Log;
 
 import java.util.List;
 
