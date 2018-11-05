@@ -1,26 +1,21 @@
 package com.slowcampus.controller;
 
-import com.slowcampus.Storage.AzureApp;
+import com.slowcampus.util.AzureApp;
 import com.slowcampus.dao.ImageDao;
 import com.slowcampus.dto.Image;
 import com.slowcampus.service.ImageService;
 import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -119,9 +114,6 @@ public class UploadController {
     @RequestMapping(value="/uploadForm" , method = RequestMethod.POST)
     public void uploadForm(MultipartFile[] files, Model model) {
         // lombok 플로그인 이용.
-        System.out.println(files.length);
-        System.out.println(files.getClass());
-
 
 
         /*
@@ -155,7 +147,6 @@ public class UploadController {
 
             /* 기본 폴더 설정, 날짜 경로 더해주기는 파일들의 공통적인 부분. for 위로?*/
             File dir = new File("/tmp");
-            System.out.println("최초 File('.') 했을때! : " + dir.getAbsolutePath());
             String path = dir.getAbsolutePath();
 
             String datePath = AzureApp.calcPath(path);
@@ -181,7 +172,7 @@ public class UploadController {
             image.setBoardId(3L);// 임시번호. 원래는 파라미터로 받아야함.
 
             imageService.uploadImage(image);
-            System.out.println(" 이미지 업로드 완료.");
+            // 이미지 db업로드 완료.
 
             imageService.uploadImageToAzure(file,sourceFile,datePath,path);
 
