@@ -1,6 +1,6 @@
 package com.slowcampus.service;
 
-import com.slowcampus.Storage.AzureApp;
+import com.slowcampus.util.AzureApp;
 import com.slowcampus.dao.ImageDao;
 import com.slowcampus.dto.Image;
 import org.springframework.beans.factory.annotation.Autowired;
