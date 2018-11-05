@@ -26,7 +26,7 @@
         SECOND = 5,
         MILLISECOND = 6,
 
-        // internal storage for locale config files
+        // internal Storage for locale config files
         locales = {},
 
         // extra moment internal properties (plugins register props here)

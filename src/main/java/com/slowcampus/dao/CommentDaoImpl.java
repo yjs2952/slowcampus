@@ -25,8 +25,8 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public List<Comment> getCommentList(Long boardId, int page) {
-        String sql = "SELECT id, board_id, content, user_nickname, parent_nickname, group_id, depth, is_deleted, regdate, moddate " +
-                "FROM comment WHERE board_id = :board_id ORDER BY id DESC";
+        String sql = "SELECT id, board_id, content, user_nickname, parent_nickname, group_id, depth, ip_addr,is_deleted, regdate, moddate " +
+                "FROM comment WHERE board_id = :board_id and depth=0 ORDER BY id DESC";
         try {
             Map<String, Long> params = Collections.singletonMap("board_id", boardId);
             RowMapper rowMapper = BeanPropertyRowMapper.newInstance(Comment.class);
@@ -35,6 +35,16 @@ public class CommentDaoImpl implements CommentDao {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    /*
+        대댓글 출력하는 sql 문
+        select * from comment where board_id=게시판번호 and group_id=부모댓글번호 and depth=1 order by id desc;
+     */
+    @Override
+    public List<Comment> getCommentOfCommentList(Long boardId, Long parentCommentId) {
+
+        return null;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.slowcampus.service;
 
-import com.slowcampus.Storage.AzureApp;
+import com.slowcampus.util.AzureApp;
 import com.slowcampus.dao.ImageDao;
 import com.slowcampus.dto.Image;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class ImageServiceImpl implements ImageService {
             sourceFile.delete();
             // 폴더 삭제용.
             path = path + File.separator;
-            System.out.println("path+File.separator : " + path);
+//            System.out.println("path+File.separator : " + path);
             File deleteDir = new File(path);
             deleteDir.delete();
 

@@ -53,7 +53,7 @@
     }
 
     .box-comments {
-        background: #f7f7f7;
+        background: #ff77ff;
 
     }
     .box-footer {
@@ -63,7 +63,7 @@
         border-bottom-left-radius: 3px;
         border-top: 1px solid #f4f4f4;
         padding: 10px;
-        background-color: #fff;
+        background-color: #f7f7f7;
     }
 
     .box-comments .username {
@@ -73,6 +73,7 @@
     }
     .box-comments .comment-text {
         margin-left : 40px;
+        display: block;
     }
 
     .box-comments .box-comment:first-of-type {
@@ -92,6 +93,15 @@
     .text-muted {
         color: #777;
     }
+
+    form {
+        display: block;
+        margin-top: 0em;
+    }
+    .img-sm+.img-push {
+        margin-left: 40px;
+    }
+
 </style>
 
 
@@ -124,6 +134,44 @@
         imgWin.document.write("<img src="+img+" onclick='self.close()' style='cursor:pointer;' title ='클릭하시면 창이 닫힙니다.'>");
         imgWin.document.close();
     }
+
+
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#modifyComment").on("click", function () {
+            var comment = $(this).parents();
+
+            var commentId = comment.attr("data-commentNo");
+            var commentContent = comment.find("#commentContent").text();
+            var commentUser = comment.find("#commentUser").text().trim();
+
+            $("#modalCommentId").val(commentId);
+            $("#modalCommentUser").val(commentUser);
+            $("#modalCommentContent").val(commentContent);
+        });
+    });
+
+
+
+
+
+    <%--$(document).ready( function() {--%>
+
+        <%--$("#writeComment").click( function(){--%>
+            <%--var form = $("#writeCommentForm");--%>
+
+            <%--form.attr("method", "POST");--%>
+            <%--form.attr("action", "<c:url value="/comment/write" />");--%>
+
+            <%--form.submit();--%>
+
+        <%--});--%>
+
+    <%--})--%>
+
 
 
 </script>
@@ -203,55 +251,64 @@
                 <!-- /.attachment-block -->
 
                 <!-- Social sharing buttons -->
-                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
-                <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
-                <span class="pull-right text-muted">45 likes - 2 comments</span>
+                <%--<button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>--%>
+                <%--<button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>--%>
+                <%--<span class="pull-right text-muted">45 likes - 2 comments</span>--%>
             </div>
 
             <h3> Comments </h3>
-
+            <!-- 사진이랑 코멘트랑 일렬로 안되던거... 사진 옆에 float: left 해주니까 됐다.-->
 
             <!-- /.box-body -->
             <div class="box-footer box-comments">
-                <div class="box-comment">
-                    <!-- User image -->
-                    <img class="img-circle img-sm" width="30" height="30" src="https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg" alt="User Image">
-                    <div class="comment-text">
-                          <span class="username">
-                            Maria Gonzales
-                            <span class="text-muted pull-right">8:03 PM Today</span>
-                          </span><!-- /.username -->
-                        It is a long established fact that a reader will be distracted
-                        by the readable content of a page when looking at its layout.
-                    </div>
-                    <!-- /.comment-text -->
-                </div>
-                <!-- /.box-comment -->
+                <c:forEach items="${comments}" var="comment">
+                    <div class="box-comment" >
+                        <!-- User image -->
+                        <img style="float:left;" class="img-circle img-sm" width="30" height="30" src="https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg">
+                        <div class="comment-text">
+                            <span data-commentNo="${comment.id}" id="commentUser"class="username">
+                                ${comment.userNickname}
+                                <button id="modifyComment" type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#modifyModal" title data-widget="chat-pane-toggle" data-original-title="update"><i class="fa fa-edit"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title data-widget="chat-pane-toggle" data-original-title="remove"><i class="fa fa-times"></i></button>
+                                <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title data-widget="chat-pane-toggle" data-original-title="Re"><i class="fa fa-align-left"></i></button>
+                            </span><!-- /.username -->
+                            <span class="text-muted pull-right">${comment.moddate}</span>
 
-                <div class="box-comment">
-                    <%--<!-- User image -->--%>
-                    <img class="img-circle img-sm" width="30" height="30"  src="https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg" alt="User Image">
-                    <div class="comment-text">
-                          <span class="username">
-                            Nora Havisham
-                            <span class="text-muted pull-right">8:03 PM Today</span>
-                          </span><!-- /.username -->
-                        The point of using Lorem Ipsum is that it has a more-or-less
-                        normal distribution of letters, as opposed to using
-                        'Content here, content here', making it look like readable English.
+                            <span id="commentContent">${comment.content}</span>
+                        </div>
+                        <!-- /.comment-text -->
                     </div>
-                    <!-- /.comment-text -->
-                </div>
-                <!-- /.box-comment -->
+                    <!-- /.box-comment -->
+
+                </c:forEach>
+
+
+
+
+
+
             </div>
             <!-- /.box-footer -->
+
+            <!-- Write -->
+            <!-- 이것도 왜 된건지 모르겠는데 위에 push와 form 써있는 부분 추가해주고 float:left 설정해주니 됐네...???-->
+            <!-- 로그인 안되어 있으면 로그인 하시오 메시지가 보이게 작성해야함!-->
             <div class="box-footer">
-                <form action="#" method="post">
-                    <img class="img-responsive img-circle img-sm" width="30" height="30" src="https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg" alt="Alt Text">
+                <form action="/comment/write" method="post" accept-charset="UTF-8">
+                <%--<form id="writeCommentForm">--%>
+                    <input type="hidden" name="boardId" value="${board.id}"/>
+                    <img style="float: left;"class="img-circle img-sm" width="30" height="30" src="https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg">
                     <!-- .img-push is used to add margin to elements next to floating images -->
                     <div class="img-push">
-                        <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+                        <input type="text" name="commentWriteContent" class="form-control input-sm" placeholder="Press enter to post comment">
+
                     </div>
+                    <button style="float: right;" type="submit" class="btn btn-primary btn-flat">Input</button>
+                    <%--<button id="writeComment" style="float: right;" type="submit" class="btn btn-primary btn-flat">Input</button>--%>
+                    <%--<div class="input-group">--%>
+                        <%--<input type="text" name="commentContent" class="form-control input-sm" placeholder="Press enter to post comment">--%>
+                        <%--<button type="submit" class="btn btn-primary btn-flat">Input</button>--%>
+                    <%--</div>--%>
                 </form>
             </div> <!-- /.box-footer -->
 
@@ -262,8 +319,46 @@
 
 </div>  <!-- /.row -->
 
+<div class="modal fade" id="modifyModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">댓글 수정창</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modalCommentId">댓글 번호</label>
+                    <input class="form-control" id="modalCommentId" name="modalCommentId" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="modalCommentContent">댓글 내용</label>
+                    <input class="form-control" id="modalCommentContent" name="modalCommentContent" placeholder="댓글 내용을 입력해주세요">
+                </div>
+                <div class="form-group">
+                    <label for="modalCommentUser">댓글 작성자</label>
+                    <input class="form-control" id="modalCommentUser" name="modalCommentUser" readonly>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-success modalModBtn">수정</button>
+                <button type="button" class="btn btn-danger modalDelBtn">삭제</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
+
+
+
+
+<script>
+
+
+
+</script>
 
 
 
