@@ -259,9 +259,11 @@
             <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <c:forEach items="${requestScope.categoryList}" var="category">
-            <li><a href="/articles/list?category=${var.index + 1}"><i class="fa fa-circle-o"></i> ${category.name} 게시판</a></li>
-            </c:forEach>
+            <%--<c:forEach items="${requestScope.categoryList}" var="category">--%>
+            <li><a href="/articles/list?category=1"><i class="fa fa-circle-o"></i> 자유 게시판</a></li>
+            <li><a href="/articles/list?category=2"><i class="fa fa-circle-o"></i> QnA 게시판</a></li>
+            <li><a href="/articles/list?category=3"><i class="fa fa-circle-o"></i> 공지사항 게시판</a></li>
+            <%--</c:forEach>--%>
           </ul>
         </li>
         <%--<li class="treeview">
