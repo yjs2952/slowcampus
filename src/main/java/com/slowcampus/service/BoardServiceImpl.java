@@ -30,8 +30,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Long getTotalArticleCount() {
-        return boardDao.getTotalArticleCount();
+    public Long getTotalArticleCount(int category) {
+        return boardDao.getTotalArticleCount(category);
     }
 
     @Override
