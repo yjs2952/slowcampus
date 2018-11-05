@@ -56,6 +56,7 @@
         </c:forEach>
         </tbody>
     </table>
+    ${pageList}
 </div>
 </body>
 </html>

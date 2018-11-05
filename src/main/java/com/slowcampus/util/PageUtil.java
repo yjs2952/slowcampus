@@ -45,14 +45,14 @@ public class PageUtil {
 
             //처음
             if(1 < page) {
-                result.append("\n <li><a href=\"" + url + linkString + "currentPageNo=1\" alt=\"처음페이지\"><span aria-hidden=\"true\">&lt;&lt;</span></a></li>\n");
+                result.append("\n <li><a href=\"" + url+ "currentPageNo=1&category=\""+linkString + " alt=\"처음페이지\"><span aria-hidden=\"true\">&lt;&lt;</span></a></li>\n");
             } else {
                 result.append("\n <li><a href=\"#\" onclick=\"return false;\" alt=\"처음페이지\"><span aria-hidden=\"true\">&lt;&lt;</span></a></li>\n");
             }
 
             //이전페이지 그룹
             if(0 < prevPage) {
-                result.append("\n <li><a href=\"" + url + linkString + "currentPageNo=" + prevPage + "\" alt=\"이전\">&lt;</a></li>\n");
+                result.append("\n <li><a href=\"" + url + "currentPageNo=" + prevPage + " &category=\""+linkString + " alt=\"이전\">&lt;</a></li>\n");
             } else {
                 result.append("\n <li><a href=\"#\" onclick=\"return false;\" alt=\"이전\">&lt;</a></li>\n");
             }
@@ -61,20 +61,20 @@ public class PageUtil {
                 if(i == page) { // 현재페이지
                     result.append("\n <li class=\"active\"><a href=\"#\" >"+i+"<span class=\"sr-only\">(current)</span></a></li>\n");
                 } else {
-                    result.append("\n <li><a href=\""+url+linkString+"currentPageNo="+i+"\">"+i+"</a></li>\n");
+                    result.append("\n <li><a href=\""+url+"currentPageNo="+i+ " &category= + \""+linkString +">"+i+"</a></li>\n");
                 }
             }
 
             //다음페이지 그룹
             if(nextPage <= totalCount) {
-                result.append("\n <li><a href=\"" + url + linkString + "currentPageNo=" + nextPage + "\" alt=\"다음\">&gt;</a></li>\n");
+                result.append("\n <li><a href=\"" + url + "currentPageNo=" + nextPage + "&category= + \""+linkString +" alt=\"다음\">&gt;</a></li>\n");
             } else {
                 result.append("\n <li><a href=\"#\" onclick=\"return false;\" alt=\"다음\">&gt;</a></li>\n");
             }
 
             //마지막 페이지
             if(page < totalCount) {
-                result.append("\n <li><a href=\"" + url + linkString + "currentPageNo=" + totalPageSize + "\" alt=\"마지막페이지\"><span aria-hidden=\"true\">&gt;&gt;</span></a></li>\n");
+                result.append("\n <li><a href=\"" + url + "currentPageNo=" + totalPageSize + "&category= + \""+linkString +" alt=\"마지막페이지\"><span aria-hidden=\"true\">&gt;&gt;</span></a></li>\n");
             } else {
                 result.append("\n <li><a href=\"#\" onclick=\"return false;\" alt=\"마지막페이지\"><span aria-hidden=\"true\">&gt;&gt;</span></a></li>\n");
             }

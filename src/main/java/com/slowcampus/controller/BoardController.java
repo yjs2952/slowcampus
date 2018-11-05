@@ -5,12 +5,12 @@ import com.slowcampus.dto.Image;
 import com.slowcampus.dto.Pagination;
 import com.slowcampus.service.BoardService;
 import com.slowcampus.service.ImageService;
+import com.slowcampus.util.PageUtil;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import lombok.extern.java.Log;
 
 import java.util.List;
 
@@ -37,9 +37,22 @@ public class BoardController {
      */
     @RequestMapping(value = "/articles/list", method = RequestMethod.GET)
     public String getArticleList(@RequestParam(name = "category", required = false, defaultValue = "1") int category,
+//                                 @RequestParam(name = "currentPageNo", required = false, defaultValue = "1") int currentPageNo,
+//                                 @RequestParam(name = "records", required = false, defaultValue = "10") int recordCountPerPage,
                                  ModelMap modelMap, Pagination pagination) {
+
+//        pagination.setPageSize(currentPageNo);
+//        pagination.setRecordCountPerPage(recordCountPerPage);
+
         List<Board> boardList = boardService.getArticleList(category, pagination);
+
+        pagination.setTotalRecordCount(boardService.getTotalArticleCount().intValue());
+        System.out.println("페이지 정보 : " + pagination.toString());
+
         modelMap.addAttribute("boardList", boardList);
+        modelMap.addAttribute("pageList",
+                PageUtil.getPageNavigation(pagination, "/articles/list", String.valueOf(category)));
+
         return "board/list";
     }
 
