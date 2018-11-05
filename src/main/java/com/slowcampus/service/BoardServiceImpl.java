@@ -30,6 +30,11 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public Long getTotalArticleCount() {
+        return boardDao.getTotalArticleCount();
+    }
+
+    @Override
     @Transactional
     public Board getArticleCotent(Long id) {
         return boardDao.getArticle(id);
