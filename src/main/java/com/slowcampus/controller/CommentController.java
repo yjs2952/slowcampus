@@ -58,7 +58,7 @@ public class CommentController {
         return entity;
     }
 
-    @RequestMapping("/comment/write")
+    @RequestMapping(value="/comment/write" , method=RequestMethod.POST)
     public ResponseEntity<String> writeComment(@RequestBody Comment comment) {
 
         // 부모 댓글 입력 테스트.

@@ -12,6 +12,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Repository
@@ -97,7 +99,7 @@ public class CommentDaoImpl implements CommentDao {
         try {
             params.put("content", comment.getContent());
             params.put("ip_addr", comment.getIpAddr());
-            params.put("moddate", comment.getModdate());
+            params.put("moddate", Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
             params.put("id", comment.getId());
 
