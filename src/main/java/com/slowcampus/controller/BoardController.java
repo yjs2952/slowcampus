@@ -68,7 +68,6 @@ public class BoardController {
 
     @PostMapping("/boards/{category}/articles/delete")
     public String articleDelete(@ModelAttribute Board board) {
-        System.out.println("board id : " + board.getId());
         try {
             boardService.deleteArticle(board.getId());
             log.info("게시물이 삭제되었습니다.");
