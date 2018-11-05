@@ -13,6 +13,8 @@ public interface BoardService {
 
     public Long getTotalArticleCount(int category);
 
+    public String getArticleUserId(Long id);
+
     public List<Category> getCategoryList();
 
     public int writeArticle(Board board);

@@ -212,7 +212,7 @@
 
     <div class="form-group pull-right">
         <button type="submit" class="btn btn-primary">수정</button>
-        <button type="submit" class="btn btn-primary">삭제</button>
+        <button type="submit" class="btn btn-primary" onclick="location.href='/boards/${board.category}/articles/delete?id=${board.id}'">삭제</button>
     </div>
 
 </div> <!-- /.box-body-->
