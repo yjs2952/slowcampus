@@ -21,10 +21,10 @@ public class CommentDaoImplTest {
     CommentDaoImpl commentDao;
 
     @Test
-    public void commentDaoTest() throws Exception {
+    public void commentDaoTest(){
         List<Comment> commentList;
 
-        commentList = commentDao.getCommentList(20L, 0);
+        commentList = commentDao.getCommentList(3L, 0);
         for (Comment comment : commentList) {
             System.out.println(comment.getId() + " " + comment.getBoardId() + " "
                     + comment.getContent() + " " + comment.getIpAddr());
@@ -36,11 +36,12 @@ public class CommentDaoImplTest {
         Comment comment = new Comment();
         int count = 0;
 
-        comment.setBoardId(27L);
-        comment.setContent("Reply 객체 Comment로 수정");
-        comment.setUserNickname("집에가자2");
-        comment.setParentNickname("집에가자2");
-        comment.setIpAddr("192.168.0.100");
+        comment.setBoardId(3L);
+        comment.setContent("Reply 출력하기 테스트!7");
+        comment.setUserNickname("아이러브김치");
+        comment.setParentNickname("아이러브김치");
+        comment.setIpAddr("192.168.0.136");
+        comment.setGroupId(42L);
         comment.setRegdate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
 
         count = commentDao.writeComment(comment);
@@ -52,10 +53,10 @@ public class CommentDaoImplTest {
         Comment comment = new Comment();
         int count = 0;
 
-        comment.setBoardId(27L);
-        comment.setContent("Comment 자식 댓글 테스트");
-        comment.setUserNickname("테스트27");
-        comment.setParentNickname("집에가자2");
+        comment.setBoardId(3L);
+        comment.setContent("Comment 자식 댓글 테스트1");
+        comment.setUserNickname("이명박");
+        comment.setParentNickname("박근혜");
         comment.setGroupId(27L);
         comment.setDepth(1);
         comment.setIpAddr("192.168.0.11");

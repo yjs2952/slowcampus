@@ -5195,7 +5195,7 @@
 	 * Register a callback function. Easily allows a callback function to be added to
 	 * an array store of callback functions that can then all be called together.
 	 *  @param {object} oSettings dataTables settings object
-	 *  @param {string} sStore Name of the array storage for the callbacks in oSettings
+	 *  @param {string} sStore Name of the array Storage for the callbacks in oSettings
 	 *  @param {function} fn Function to be called back
 	 *  @param {string} sName Identifying name for the callback (i.e. a label)
 	 *  @memberof DataTable#oApi
@@ -5218,7 +5218,7 @@
 	 * fire off triggers in time sensitive applications (for example cell creation)
 	 * as its slow.
 	 *  @param {object} settings dataTables settings object
-	 *  @param {string} callbackArr Name of the array storage for the callbacks in
+	 *  @param {string} callbackArr Name of the array Storage for the callbacks in
 	 *      oSettings
 	 *  @param {string} eventName Name of the jQuery custom event to trigger. If
 	 *      null no trigger is fired
@@ -9728,7 +9728,7 @@
 		 *
 		 * As a function, making the Ajax call is left up to yourself allowing
 		 * complete control of the Ajax request. Indeed, if desired, a method other
-		 * than Ajax could be used to obtain the required data, such as Web storage
+		 * than Ajax could be used to obtain the required data, such as Web Storage
 		 * or an AIR database.
 		 *
 		 * The function is given four parameters and no return is required. The
@@ -10304,7 +10304,7 @@
 		 *
 		 * Due to the use of `localStorage` the default state saving is not supported
 		 * in IE6 or 7. If state saving is required in those browsers, use
-		 * `stateSaveCallback` to provide a storage solution such as cookies.
+		 * `stateSaveCallback` to provide a Storage solution such as cookies.
 		 *  @type boolean
 		 *  @default false
 		 *
