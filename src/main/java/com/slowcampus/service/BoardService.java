@@ -1,18 +1,24 @@
 package com.slowcampus.service;
 
 import com.slowcampus.dto.Board;
+import com.slowcampus.dto.Category;
+import com.slowcampus.dto.Pagination;
 
 import java.util.List;
 
 public interface BoardService {
-    public List<Board> getList(int category);
+    public List<Board> getArticleList(int category, Pagination pagination);
 
-    public Board getBoardCotent(Long id);
+    public Board getArticleCotent(Long id);
 
-    public int writeBoard(Board board);
+    public Long getTotalArticleCount();
 
-    public int modifyBoard(Board board);
+    public List<Category> getCategoryList();
 
-    public int deleteBoard(Long id);
+    public int writeArticle(Board board);
+
+    public int modifyArticle(Board board);
+
+    public int deleteArticle(Long id);
 
 }

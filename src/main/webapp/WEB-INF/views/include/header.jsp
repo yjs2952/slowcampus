@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -65,7 +65,7 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
+          <%--<li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>
               <span class="label label-success">4</span>
@@ -139,9 +139,9 @@
               </li>
               <li class="footer"><a href="#">See All Messages</a></li>
             </ul>
-          </li>
+          </li>--%>
           <!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu">
+          <%--<li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
               <span class="label label-warning">10</span>
@@ -182,14 +182,23 @@
               </li>
               <li class="footer"><a href="#">View all</a></li>
             </ul>
-          </li>
+          </li>--%>
           <!-- Tasks: style can be found in dropdown.less -->
-          <li>
-            <a class="" href="/signin">Sign In</a>
-          </li>
-          <li>
-            <a class="" href="/signup">Sign Up</a>
-          </li>
+          <c:choose>
+              <c:when test="${sessionScope.login == null}">
+              <li>
+                <a class="" href="/signin">Sign In</a>
+              </li>
+              <li>
+                <a class="" href="/signup">Sign Up</a>
+              </li>
+              </c:when>
+              <c:otherwise>
+              <li>
+                <a class="" href="/signout">Sign Out</a>
+              </li>
+              </c:otherwise>
+          </c:choose>
 
           <%--<li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -250,11 +259,12 @@
             <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/resources/index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="/resources/index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+            <c:forEach items="${requestScope.categoryList}" var="category">
+            <li><a href="/articles/list?category=${var.index + 1}"><i class="fa fa-circle-o"></i> ${category.name} 게시판</a></li>
+            </c:forEach>
           </ul>
         </li>
-        <li class="treeview">
+        <%--<li class="treeview">
           <a href="#">
             <i class="fa fa-files-o"></i>
             <span>Layout Options</span>
@@ -266,8 +276,8 @@
             <li><a href="../layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
             <li><a href="../layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
           </ul>
-        </li>
-        <li class="treeview">
+        </li>--%>
+        <%--<li class="treeview">
           <a href="#">
             <i class="fa fa-share"></i> <span>Multilevel</span>
             <i class="fa fa-angle-left pull-right"></i>
@@ -289,12 +299,12 @@
             </li>
             <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
           </ul>
-        </li>
-        <li><a href="#"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
-        <li class="header">LABELS</li>
+        </li>--%>
+        <%--<li><a href="#"><i class="fa fa-book"></i> <span>Documentation</span></a></li>--%>
+        <%--<li class="header">LABELS</li>
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>--%>
       </ul>
     </section>
     <!-- /.sidebar -->

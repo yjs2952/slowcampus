@@ -44,5 +44,15 @@ public class CommentController {
         return "redirect:/list/article/detail?id="+boardId;
     }
 
+    // 댓글 수정
+    @PostMapping("/comments/modify")
+    public void modifyComment(Comment comment) {
 
+    }
+
+    // 댓글 삭제
+    @GetMapping("/comments/delete")
+    public void deleteComment(Long id){
+        
+    }
 }

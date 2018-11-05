@@ -1,12 +1,16 @@
 import com.slowcampus.config.ApplicationConfig;
 import com.slowcampus.dao.BoardDaoImpl;
 import com.slowcampus.dto.Board;
-import com.slowcampus.service.BoardServiceImpl;
+import com.slowcampus.dto.Category;
+import com.slowcampus.dto.Pagination;
+import com.slowcampus.service.BoardService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
@@ -15,28 +19,47 @@ public class BoardDaoTest {
     @Autowired
     BoardDaoImpl boardDao;
 
-//    @Test
-//    public void init() {
-//        System.out.println("init");
-//    }
+    @Autowired
+    BoardService boardService;
 
-    /*@Test
+    @Test
+    public void init() {
+        System.out.println("init");
+    }
+
+    @Test
     public void getBoardListTest() throws Exception{
-        List<Board> list = boardDao.getList(2);
+        Pagination pagination = new Pagination();
+        List<Board> list = boardDao.getArticleList(2, pagination);
 
         for (Board board : list) {
             System.out.println(board.toString());
         }
-    }*/
+    }
+
+    @Test
+    public void categoryTest(){
+        List<Category> list = boardService.getCategoryList();
+
+        for (Category category : list) {
+            System.out.println(category.toString());
+        }
+    }
+
+    @Test
+    public void articleMaxTest() {
+        Long count = boardService.getTotalArticleCount();
+        System.out.println(count);
+    }
 
   /*
     @Test
-    public void getBoard() throws Exception {
-        Board board = boardDao.getBoard(3L);
+    public void getArticle() throws Exception {
+        Board board = boardDao.getArticle(3L);
         System.out.println(board.toString());
     }*/
 
-    @Test
+    /*@Test
     public void addBoard() {
 
         Board board = new Board();
@@ -44,14 +67,12 @@ public class BoardDaoTest {
         board.setUserId("super");
         board.setNickname("blackpink");
         board.setIpAddr("000.000.000.000");
-        boardDao.writeBoard(board);
+        boardDao.writeArticle(board);
 
-
-        //System.out.println(board.toString());
-
-        //board.setContent("aaaaaaaaaqqqqqqqqqqqq");
-        //boardService.writeBoard(board);
-    }
+        *//*board.setContent("aaaaaaaaaqqqqqqqqqqqq");
+        System.out.println(board.toString());
+        boardService.writeArticle(board);*//*
+    }*/
 
 //    @Test
 //    public void addBoard() {
@@ -62,7 +83,7 @@ public class BoardDaoTest {
 //
 //        /*board.setId(id);
 //        board.setContent("aaaaaaaaaqqqqqqqqqqqq");
-//        boardDao.writeBoardContent(board);*/
+//        boardDao.writeArticleContent(board);*/
 //    }
 
     /*@Test
@@ -71,7 +92,7 @@ public class BoardDaoTest {
         board.setId(33L);
         board.setTitle("왜 안되 ㅠㅠㅠㅠ");
         board.setIpAddr("000.000.000.000");
-        boardDao.modifyBoard(board);
+        boardDao.modifyArticle(board);
 
         board.setContent("어? 된다??????????????");
         boardDao.modifyBoardContent(board);
@@ -79,6 +100,6 @@ public class BoardDaoTest {
 
     /*@Test
     public void deleteTest(){
-        boardDao.deleteBoard(33L);
+        boardDao.deleteArticle(33L);
     }*/
 }
