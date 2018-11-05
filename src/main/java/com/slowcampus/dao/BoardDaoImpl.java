@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -71,6 +72,16 @@ public class BoardDaoImpl implements BoardDao {
             RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
             Map<String, ?> map = Collections.singletonMap("id", id);
             return jdbc.queryForObject(sql, map, rowMapper);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Long getTotalArticleCount() {
+        String sql = "SELECT MAX(id) FROM board";
+        try {
+            return jdbc.queryForObject(sql, new HashMap<>(), Long.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

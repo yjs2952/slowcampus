@@ -11,6 +11,8 @@ public interface BoardService {
 
     public Board getArticleCotent(Long id);
 
+    public Long getTotalArticleCount();
+
     public List<Category> getCategoryList();
 
     public int writeArticle(Board board);
