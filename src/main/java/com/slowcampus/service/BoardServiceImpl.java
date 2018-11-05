@@ -56,8 +56,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int writeArticle(Board board) {
         board.setId(boardDao.writeArticle(board));
-        boardDao.writeArticleContent(board);
-        return 0;
+        return boardDao.writeArticleContent(board);
     }
 
     @Override

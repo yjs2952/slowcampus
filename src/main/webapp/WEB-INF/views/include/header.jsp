@@ -27,6 +27,13 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 
+  <%--<script src="/resources/plugins/validator/jquery-1.11.1.js"></script>--%>
+  <script src="/webjars/jquery/3.2.1/dist/jquery.min.js"></script>
+
+  <script src="/resources/plugins/validator/jquery.validate.min.js"></script>
+  <script src="/resources/plugins/validator/messages_ko.min.js"></script>
+  <script src="/resources/plugins/validator/additional-methods.min.js"></script>
+
   <style type="text/css">
     .table {
       table-layout:fixed;
@@ -41,7 +48,7 @@
 
 </head>
 <!-- jQuery 2.1.4 -->
-<script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<%--<script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>--%>
 <body class="skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -259,9 +266,11 @@
             <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
-            <c:forEach items="${requestScope.categoryList}" var="category">
-            <li><a href="/articles/list?category=${var.index + 1}"><i class="fa fa-circle-o"></i> ${category.name} 게시판</a></li>
-            </c:forEach>
+            <%--<c:forEach items="${requestScope.categoryList}" var="category">--%>
+            <li><a href="/articles/list?category=1"><i class="fa fa-circle-o"></i> 자유 게시판</a></li>
+            <li><a href="/articles/list?category=2"><i class="fa fa-circle-o"></i> QnA 게시판</a></li>
+            <li><a href="/articles/list?category=3"><i class="fa fa-circle-o"></i> 공지사항 게시판</a></li>
+            <%--</c:forEach>--%>
           </ul>
         </li>
         <%--<li class="treeview">
