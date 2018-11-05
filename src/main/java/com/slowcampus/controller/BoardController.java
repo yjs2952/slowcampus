@@ -49,8 +49,7 @@ public class BoardController {
 //        pagination.setRecordCountPerPage(recordCountPerPage);
 
         List<Board> boardList = boardService.getArticleList(category, pagination);
-
-        pagination.setTotalRecordCount(boardService.getTotalArticleCount().intValue());
+        pagination.setTotalRecordCount(boardService.getTotalArticleCount(category).intValue());
 
         modelMap.addAttribute("boardList", boardList);
         modelMap.addAttribute("pageList",

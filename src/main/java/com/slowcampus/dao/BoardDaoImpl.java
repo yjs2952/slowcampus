@@ -78,10 +78,11 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
-    public Long getTotalArticleCount() {
-        String sql = "SELECT MAX(id) FROM board";
+    public Long getTotalArticleCount(int category) {
+        String sql = "SELECT MAX(id) FROM board WHERE category = :category";
         try {
-            return jdbc.queryForObject(sql, new HashMap<>(), Long.class);
+            Map<String, ?> map = Collections.singletonMap("category", category);
+            return jdbc.queryForObject(sql, map, Long.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
