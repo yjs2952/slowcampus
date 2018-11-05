@@ -2,11 +2,12 @@ package com.slowcampus.config;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
 
-public class WebDispatchServlet  extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -31,7 +32,11 @@ public class WebDispatchServlet  extends AbstractAnnotationConfigDispatcherServl
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
         encodingFilter.setEncoding("UTF-8");
 
-        return new Filter[]{encodingFilter};
+        HiddenHttpMethodFilter hiddenHttpMethodFilter = new HiddenHttpMethodFilter();
+
+
+
+        return new Filter[]{encodingFilter,hiddenHttpMethodFilter};
     }
 
 

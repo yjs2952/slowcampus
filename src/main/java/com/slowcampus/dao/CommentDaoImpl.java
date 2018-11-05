@@ -47,12 +47,13 @@ public class CommentDaoImpl implements CommentDao {
         return null;
     }
 
+    // regdate 는 어차피 디폴트 값으로 들어가니. insert 문에서 빼줌!
     @Override
     public int writeComment(Comment comment) {
-        String sqlParentComment = "INSERT INTO comment(id, board_id, content, user_nickname, parent_nickname, group_id, ip_addr, regdate) " +
-                "VALUES(null, :boardId, :content, :userNickname, :parentNickname, (SELECT LAST_INSERT_ID() + 1), :ipAddr, :regdate)";
-        String sqlChildComment = "INSERT INTO comment(id, board_id, content, user_nickname, parent_nickname, group_id, depth, ip_addr, regdate) " +
-                "VALUES(null, :boardId, :content, :userNickname, :parentNickname, :groupId, :depth, :ipAddr, :regdate)";
+        String sqlParentComment = "INSERT INTO comment(id, board_id, content, user_nickname, parent_nickname, group_id, ip_addr) " +
+                "VALUES(null, :boardId, :content, :userNickname, :parentNickname, (SELECT LAST_INSERT_ID() + 1), :ipAddr)";
+        String sqlChildComment = "INSERT INTO comment(id, board_id, content, user_nickname, parent_nickname, group_id, depth, ip_addr) " +
+                "VALUES(null, :boardId, :content, :userNickname, :parentNickname, :groupId, :depth, :ipAddr)";
         SqlParameterSource params = new BeanPropertySqlParameterSource(comment);
 
         try {

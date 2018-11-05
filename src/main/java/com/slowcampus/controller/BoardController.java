@@ -84,8 +84,8 @@ public class BoardController {
 
 
         // 댓글 출력하기
-        List<Comment> commentList = commentService.getCommentList(id,0);
-        modelMap.addAttribute("comments" , commentList);
+//        List<Comment> commentList = commentService.getCommentList(id,0);
+//        modelMap.addAttribute("comments" , commentList);
 
         return "articleDetail";
     }
