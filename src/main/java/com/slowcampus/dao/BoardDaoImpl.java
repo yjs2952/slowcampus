@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +42,7 @@ public class BoardDaoImpl implements BoardDao {
         String sql = "SELECT id, title, read_count, nickname, category, root_board_id, parent_board_id, depth, depth_order, ip_addr, regdate, moddate, is_deleted " +
                      "FROM board " +
                      "WHERE category = :category "+
-                     "ORDER BY root_board_id, depth, depth_order " +
+                     "ORDER BY root_board_id "+
                      "LIMIT :firstRecordIndex, :recordCountPerPage";
 
         // TODO: 2018-10-29 (yjs) :  추후 페이징 처리 해야됨 (start, limit)
@@ -71,6 +72,17 @@ public class BoardDaoImpl implements BoardDao {
             RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
             Map<String, ?> map = Collections.singletonMap("id", id);
             return jdbc.queryForObject(sql, map, rowMapper);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Long getTotalArticleCount(int category) {
+        String sql = "SELECT MAX(id) FROM board WHERE category = :category";
+        try {
+            Map<String, ?> map = Collections.singletonMap("category", category);
+            return jdbc.queryForObject(sql, map, Long.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

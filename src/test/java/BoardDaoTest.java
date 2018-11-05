@@ -46,6 +46,13 @@ public class BoardDaoTest {
         }
     }
 
+    @Test
+    public void articleMaxTest() {
+        int category = 2;
+        Long count = boardService.getTotalArticleCount(category);
+        System.out.println(count);
+    }
+
   /*
     @Test
     public void getArticle() throws Exception {

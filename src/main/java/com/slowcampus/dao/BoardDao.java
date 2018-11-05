@@ -10,6 +10,8 @@ public interface BoardDao {
 
     public Board getArticle(Long id);
 
+    public Long getTotalArticleCount(int category);
+
     public Long writeArticle(Board board);
 
     public int writeArticleContent(Board board);

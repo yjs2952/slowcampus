@@ -1,16 +1,18 @@
 package com.slowcampus.controller;
 
 import com.slowcampus.dto.Board;
+import com.slowcampus.dto.Comment;
 import com.slowcampus.dto.Image;
 import com.slowcampus.dto.Pagination;
 import com.slowcampus.service.BoardService;
+import com.slowcampus.service.CommentService;
 import com.slowcampus.service.ImageService;
+import com.slowcampus.util.PageUtil;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import lombok.extern.java.Log;
 
 import java.util.List;
 
@@ -19,11 +21,13 @@ import java.util.List;
 public class BoardController {
     private BoardService boardService;
     private ImageService imageService;
+    private CommentService commentService;
 
     @Autowired
-    public BoardController(BoardService boardService, ImageService imageService) {
+    public BoardController(BoardService boardService, ImageService imageService,CommentService commentService) {
         this.boardService = boardService;
         this.imageService = imageService;
+        this.commentService = commentService;
     }
 
     
@@ -37,9 +41,20 @@ public class BoardController {
      */
     @RequestMapping(value = "/articles/list", method = RequestMethod.GET)
     public String getArticleList(@RequestParam(name = "category", required = false, defaultValue = "1") int category,
+//                                 @RequestParam(name = "currentPageNo", required = false, defaultValue = "1") int currentPageNo,
+//                                 @RequestParam(name = "records", required = false, defaultValue = "10") int recordCountPerPage,
                                  ModelMap modelMap, Pagination pagination) {
+
+//        pagination.setPageSize(currentPageNo);
+//        pagination.setRecordCountPerPage(recordCountPerPage);
+
         List<Board> boardList = boardService.getArticleList(category, pagination);
+        pagination.setTotalRecordCount(boardService.getTotalArticleCount(category).intValue());
+
         modelMap.addAttribute("boardList", boardList);
+        modelMap.addAttribute("pageList",
+                PageUtil.getPageNavigation(pagination, "/articles/list", String.valueOf(category)));
+
         return "board/list";
     }
 
@@ -50,7 +65,6 @@ public class BoardController {
                                 @RequestParam(name = "id") Long id, ModelMap modelMap) {
         Board board = boardService.getArticleCotent(id);
         modelMap.addAttribute("board", board);
-
         /*
             사진이 한개만 있어도 리스트로 출력이 가능.
             select를 이용해 해당 게시물에 있는 사진이 몇개인지 값을 가져오고
@@ -68,6 +82,10 @@ public class BoardController {
         List<Image> imageList = imageService.getImageList(id);
         modelMap.addAttribute("images", imageList);
 
+
+        // 댓글 출력하기
+        List<Comment> commentList = commentService.getCommentList(id,0);
+        modelMap.addAttribute("comments" , commentList);
 
         return "articleDetail";
     }
