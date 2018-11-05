@@ -39,7 +39,7 @@ public class BoardDaoImpl implements BoardDao {
 
     @Override
     public List<Board> getArticleList(int category, Pagination pagination) {
-        String sql = "SELECT id, title, read_count, nickname, category, root_board_id, parent_board_id, depth, depth_order, ip_addr, regdate, moddate, is_deleted " +
+        String sql = "SELECT id, user_id, title, read_count, nickname, category, root_board_id, parent_board_id, depth, depth_order, ip_addr, regdate, moddate, is_deleted " +
                      "FROM board " +
                      "WHERE category = :category "+
                      "ORDER BY root_board_id, id "+
@@ -85,6 +85,19 @@ public class BoardDaoImpl implements BoardDao {
             return jdbc.queryForObject(sql, map, Long.class);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Board getArticleUserId(Long id) {
+        String sql = "SELECT id, user_id FROM board WHERE id = :id";
+        RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
+        Map<String, ?> map = Collections.singletonMap("id", id);
+
+        try {
+            return jdbc.queryForObject(sql, map, rowMapper);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 

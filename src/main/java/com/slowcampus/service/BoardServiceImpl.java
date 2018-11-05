@@ -35,6 +35,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public String getArticleUserId(Long id) {
+        String articleUserId;
+        Board board = boardDao.getArticleUserId(id);
+        articleUserId = board.getUserId();
+        return articleUserId;
+    }
+
+    @Override
     @Transactional
     public Board getArticleCotent(Long id) {
         return boardDao.getArticle(id);
@@ -59,6 +67,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public int deleteArticle(Long id) {
-        return 0;
+        return boardDao.deleteArticle(id);
     }
 }
