@@ -1,9 +1,6 @@
 package com.slowcampus.controller;
 
-import com.slowcampus.dto.Board;
-import com.slowcampus.dto.Comment;
-import com.slowcampus.dto.Image;
-import com.slowcampus.dto.Pagination;
+import com.slowcampus.dto.*;
 import com.slowcampus.service.BoardService;
 import com.slowcampus.service.CommentService;
 import com.slowcampus.service.ImageService;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -88,5 +86,21 @@ public class BoardController {
         modelMap.addAttribute("comments" , commentList);
 
         return "articleDetail";
+    }
+
+    @GetMapping("/boards/{category}/articles/write")
+    public String articleWriteForm(@PathVariable(value = "category") int categoy){
+
+        return "board/writeForm";
+    }
+
+    @PostMapping("/boards/{category}/articles/write")
+    public String articleWrite(@PathVariable(value = "category") int categoy, Board board, HttpSession session) {
+        Member member = (Member) session.getAttribute("login");
+        board.setUserId(member.getId());
+        board.setNickname(member.getNickname());
+        boardService.writeArticle(board);
+
+        return "redirect:/articles/list?category="+categoy;
     }
 }
