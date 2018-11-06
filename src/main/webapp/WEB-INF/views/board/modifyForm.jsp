@@ -5,11 +5,11 @@
 <section class="content">
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">글 쓰기</h3>
+            <h3 class="box-title">글 수정</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form id="articleWriteForm" role="form" class="form-horizontal" method="post">
+        <form id="articleModifyForm" role="form" class="form-horizontal" method="post">
             <div class="box-body">
                 <div class="form-group">
                     <label for="title" class="col-lg-2 col-md-2">제목</label>
@@ -49,7 +49,7 @@
 
     $(function(){
 
-        $("#articleWriteForm").validate({
+        $("#articleModifyForm").validate({
             onclick: false,
             onfocusout: false,
             onkeyup: false,

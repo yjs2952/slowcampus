@@ -135,4 +135,10 @@ public class BoardController {
 
         return "redirect:/boards/{category}/articles/detail?id="+id;
     }
+
+    @GetMapping("/boards/{category}/articles/modify")
+    public String articleModifyForm(){
+        return "board/modifyForm";
+    }
+
 }

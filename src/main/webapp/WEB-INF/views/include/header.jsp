@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -324,7 +324,20 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        General Form Elements
+        <c:choose>
+          <c:when test='${path.contains("boards/1")}'>
+            자유 게시판
+          </c:when>
+          <c:when test='${path.contains("boards/2")}'>
+            QnA 게시판
+          </c:when>
+          <c:when test='${path.contains("boards/3")}'>
+            공지사항 게시판
+          </c:when>
+          <c:when test='${path.equals("/")}'>
+            전체 게시판
+          </c:when>
+        </c:choose>
         <small>Preview</small>
       </h1>
       <ol class="breadcrumb">
