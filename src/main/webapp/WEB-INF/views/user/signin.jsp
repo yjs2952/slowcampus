@@ -32,7 +32,7 @@
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
     <!-- jQuery 3 -->
-    <script src="/resources/plugins/validator/jquery-1.11.1.js"></script>
+    <script src="/webjars/jquery/3.2.1/dist/jquery.min.js"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 
@@ -92,14 +92,15 @@
                 },
                 unhighlight: function (element, errorClass, validClass) {
                     $(element).parents(".has-feedback").addClass("has-success").removeClass("has-error");
-                },
+                }/*,
                 submitHandler: function () {
-                    var form = $('#signinForm');
+                    /!*var form = $('#signinForm');*!/
 
-                    form.attr("action", "/signin");
-                    form.attr("method", "post");
-                    form.submit();
-                }
+                    /!*form.attr("action", "/signin");
+                    form.attr("method", "post");*!/
+                    /!*this.submit();*!/
+                    /!*form.submit();*!/
+                }*/
             });
         });
     </script>
@@ -114,7 +115,7 @@
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <form id="signinForm" role="form" data-toggle="validator">
+        <form id="signinForm" role="form" method="post" action="/signin">
             <div class="form-group has-feedback">
                 <input id="id" type="text" name="id" class="form-control" placeholder="ID" aria-describedby="id-error" aria-invalid="true">
             </div>

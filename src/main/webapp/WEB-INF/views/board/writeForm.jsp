@@ -9,7 +9,7 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form id="articleWriteForm" role="form" class="form-horizontal">
+        <form id="articleWriteForm" role="form" class="form-horizontal" method="post">
             <div class="box-body">
                 <div class="form-group">
                     <label for="title" class="col-lg-2 col-md-2">제목</label>
@@ -97,17 +97,17 @@
             },
             unhighlight: function (element, errorClass, validClass) {
                 $(element).parents(".has-feedback").addClass("has-success").removeClass("has-error");
-            },
+            }/*,
             submitHandler: function () {
                 var form = $('#articleWriteForm');
-                /*form.attr("action", "/write");*/
+                /!*form.attr("action", "/write");*!/
                 form.attr("method", "post");
                 form.submit();
             }, invalidHandler: function (event, validator) {
                 console.log(event);
                 console.log(validator);
                 console.log(validator.numberOfInvalids());
-            }
+            }*/
         });
     });
 </script>
