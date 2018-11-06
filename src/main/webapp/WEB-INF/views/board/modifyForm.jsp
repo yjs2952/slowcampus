@@ -9,18 +9,19 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form id="articleModifyForm" role="form" class="form-horizontal" method="post">
+        <form id="articleModifyForm" role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="userId" value="${requestScope.board.userId}">
             <div class="box-body">
                 <div class="form-group">
                     <label for="title" class="col-lg-2 col-md-2">제목</label>
                     <div class="col-lg-10 col-md-10 has-feedback">
-                    <input type="text" class="form-control" name="title" id="title" placeholder="제목">
+                    <input type="text" class="form-control" name="title" id="title" value="${requestScope.board.title}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="content" class="col-lg-2 col-md-2">내용</label>
                     <div class="col-lg-10 col-md-10 has-feedback">
-                        <textarea class="form-control" name="content" id="content" placeholder="내용" rows="10"></textarea>
+                        <textarea class="form-control" name="content" id="content" placeholder="내용" rows="10">${requestScope.board.content}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -48,6 +49,13 @@
     });*/
 
     $(function(){
+
+        var message = "${error}";
+
+        if (message != null && message != "") {
+            alert(message);
+            return;
+        }
 
         $("#articleModifyForm").validate({
             onclick: false,

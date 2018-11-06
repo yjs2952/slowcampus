@@ -30,11 +30,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Long getTotalArticleCount(int category) {
         return boardDao.getTotalArticleCount(category);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String getArticleUserId(Long id) {
         String articleUserId;
         Board board = boardDao.getArticleUserId(id);
@@ -43,32 +45,37 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Board getArticleCotent(Long id) {
         return boardDao.getArticle(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Category> getCategoryList() {
         return categoryDao.getCategoryList();
     }
 
     @Override
+    @Transactional
     public Long writeArticle(Board board) {
         Long id = boardDao.writeArticle(board);
-        boardDao.setRootBoardId(id);
-        System.out.println(board.toString());
         board.setId(id);
+        boardDao.setRootBoardId(id);
         boardDao.writeArticleContent(board);
         return id;
     }
 
     @Override
+    @Transactional
     public int modifyArticle(Board board) {
+        boardDao.modifyArticle(board);
+        boardDao.modifyArticleContent(board);
         return 0;
     }
 
     @Override
+    @Transactional
     public int deleteArticle(Long id) {
         return boardDao.deleteArticle(id);
     }

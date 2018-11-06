@@ -61,7 +61,7 @@ public class BoardDaoImpl implements BoardDao {
 
     @Override
     public Board getArticle(Long id) {
-        String sql = "SELECT a.id, a.read_count, a.title, a.nickname, a.category, a.root_board_id, a.parent_board_id, a.ip_addr, b.board_content AS content, a.regdate, a.moddate "+
+        String sql = "SELECT a.id, a.read_count, a.title, a.nickname, a.category, a.user_id, a.root_board_id, a.parent_board_id, a.ip_addr, b.board_content AS content, a.regdate, a.moddate "+
 
                      "FROM board a "+
                      "INNER JOIN board_content b "+
