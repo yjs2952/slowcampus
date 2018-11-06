@@ -48,7 +48,7 @@ public class BoardDaoTest {
 
     @Test
     public void articleMaxTest() {
-        int category = 2;
+        int category = 1;
         Long count = boardService.getTotalArticleCount(category);
         System.out.println(count);
     }
