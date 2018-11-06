@@ -146,7 +146,7 @@ public class UploadController {
         for(MultipartFile file : files) {
 
             /* 기본 폴더 설정, 날짜 경로 더해주기는 파일들의 공통적인 부분. for 위로?*/
-            File dir = new File("/tmp");
+            File dir = new File(".");
             String path = dir.getAbsolutePath();
 
             String datePath = AzureApp.calcPath(path);
