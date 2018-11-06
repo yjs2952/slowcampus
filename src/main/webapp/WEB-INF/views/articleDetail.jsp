@@ -108,6 +108,9 @@
 
 <script>
 
+    var isOpend=false;
+
+
 // 이미지 팝업창으로 원본 보기!!!!
     function doImgPop(img){
         img1= new Image();
@@ -157,7 +160,14 @@
     console.log(boardid);
 
     getComments(boardid);
+
+
+
+    var loginMember = "${sessionScope.login.nickname}";
+    console.log("ddfdafdaf : "+loginMember);
+
     console.log("getComments() 끝.");
+
 
 
     // 댓글 리스트 불러오는 메소드.
@@ -176,19 +186,30 @@
                     str += "<div class='box-comment' >" +
                         "<img style='float:left;' class='img-circle img-sm' width='30' height='30' src='https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg'>" +
                         "<div class='comment-text'>\n" +
-                        " <span data-commentNo='" + this.id +"' id='commentUser' class='username'>\n" +
-                        this.userNickname +
-                        " <button id='modifyComment' type='button' class='btn btn-box-tool' data-toggle='modal' data-target='#modifyModal' title data-widget='chat-pane-toggle' data-original-title='update'><i class='fa fa-edit'></i></button>\n" +
-                        " <button type='button' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title='remove'><i class='fa fa-times'></i></button>\n" +
-                        "                                <button type='button' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title='Re'><i class='fa fa-align-left'></i></button>\n" +
-                        "                            </span><!-- /.username -->\n" +
+                        " <span data-commentNo='" + this.id +"' id='commentUser' class='username'>\n" + this.id + "-" +this.userNickname + "\n";
+
+                    // 글쓴이랑 로그인 한 멤버의 닉네임이 같을 경우에만 버튼이 나오게!.
+                    if(this.userNickname == loginMember) {
+                        str += " <button id='modifyComment' type='button' class='btn btn-box-tool' data-toggle='modal' data-target='#modifyModal' title data-widget='chat-pane-toggle' data-original-title='update'><i class='fa fa-edit'></i></button>\n" +
+                            " <button id='deleteComment' type='button' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title='remove'><i class='fa fa-times'></i></button>\n";
+                    }
+
+                    // 로그인이 안됐을땐 대댓글 다는 버튼을 비활성화 해야한다.
+                    if(loginMember != ""){
+                        str += " <button id='reComment' type='button' onclick='reCommentClick("+this.id+",isOpend);' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title='Re'><i class='fa fa-align-left'></i></button>\n";
+                    }
+
+
+                    str += "                            </span><!-- /.username -->\n" +
                         "                            <span class='text-muted pull-right'>" + outputDate + "</span>\n" +
                         "\n" +
                         "                            <span class='commentContent' id='commentContent'>" + this.content + "</span>\n" +
                         "                        </div>\n" +
                         "                        <!-- /.comment-text -->\n" +
                         "                    </div>\n" +
-                        "                    <!-- /.box-comment -->";
+                        "                    <!-- /.box-comment -->" +
+                        " <div data-recommentNo='"+ this.id + "'  id='reCommentGroup'>\n " +
+                        " </div> ";
                 }
             );
             $("#comments").html(str);
@@ -298,31 +319,27 @@
             <!-- Write -->
             <!-- 이것도 왜 된건지 모르겠는데 위에 push와 form 써있는 부분 추가해주고 float:left 설정해주니 됐네...???-->
             <!-- 로그인 안되어 있으면 로그인 하시오 메시지가 보이게 작성해야함!-->
-            <div class="box-footer">
-                <%--<form action="/comment/write" method="post" accept-charset="UTF-8">--%>
-                <%--<form id="writeCommentForm">--%>
-                    <%--<input type="hidden" name="boardId" value="${board.id}"/>--%>
+
+            <!-- member 가 있을때만 입력폼을 보여줘라. -->
+            <c:if test="${not empty member}">
+                <div class="box-footer">
                     <img style="float: left;"class="img-circle img-sm" width="30" height="30" src="https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg">
                     <!-- .img-push is used to add margin to elements next to floating images -->
-
                     <div class="input-group margin">
                         <input type="text" name="commentWriteContent" id="commentWriteContent" class="form-control" placeholder="Press enter to post comment">
                         <span class="input-group-btn">
-                      <button type="button" id="commentWriteBtn"class="btn btn-info btn-flat">Input!</button>
-                    </span>
+                                <button type="button" id="commentWriteBtn"class="btn btn-info btn-flat">Input!</button>
+                            </span>
                     </div>
+                </div> <!-- /.box-footer -->
 
-                    <%--<div class="img-push">--%>
-                        <%--<input type="text" name="commentWriteContent" class="form-control input-sm" placeholder="Press enter to post comment">--%>
-                    <%--</div>--%>
-                    <%--<button style="float: right;" type="submit" class="btn btn-primary btn-flat">Input</button>--%>
-                    <%--<button id="writeComment" style="float: right;" type="submit" class="btn btn-primary btn-flat">Input</button>--%>
-                    <%--<div class="input-group">--%>
-                        <%--<input type="text" name="commentContent" class="form-control input-sm" placeholder="Press enter to post comment">--%>
-                        <%--<button type="submit" class="btn btn-primary btn-flat">Input</button>--%>
-                    <%--</div>--%>
-                <%--</form>--%>
-            </div> <!-- /.box-footer -->
+            </c:if>
+
+            <c:if test="${empty member}">
+                <div class="box-body">
+                    <div><a href="/signin">Login Please...</a></div>
+                </div>
+            </c:if>
 
         </div>
 
@@ -354,8 +371,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-success modalModBtn">수정</button>
-                <button type="button" class="btn btn-danger modalDelBtn">삭제</button>
+                <button type="button" id="modalCommentModify" class="btn btn-success modalModBtn">수정</button>
+                <button type="button" id="modalCommentDelete"class="btn btn-danger modalDelBtn">삭제</button>
             </div>
         </div>
     </div>
@@ -372,7 +389,9 @@
     $("#commentWriteBtn").on("click", function() {
 
         var commentContent = $("#commentWriteContent").val();
-        console.log("0000000" + commentContent);
+        var commentUser= "${member.nickname}";
+        console.log("write content : " + commentContent);
+        console.log("write user : " + commentUser);
 
         $.ajax({
             type : 'post',
@@ -385,8 +404,8 @@
             data : JSON.stringify({
                 boardId : boardid,
                 content : commentContent,
-                userNickname : "ajaxTester01",
-                parentNickname : "ajaxTester01",
+                userNickname : commentUser,
+                parentNickname : commentUser,
                 ipAddr : "192.168.0.123"
 
             }),
@@ -401,18 +420,19 @@
     });
 
 
+    // modal 창에 값 넣기.
     $("#comments").on("click", ".box-comment", function() {
         var reply = $(this);
-        var commentUser = reply.find(".username").text();
+        var commentUser = reply.find(".username").text().trim();
         var commentContent = reply.find(".commentContent").text();
         var commentId = reply.find(".username").attr("data-commentNo");
 
 
 
-        console.log("this : " + reply);
-        console.log(commentUser);
-        console.log(commentContent);
-        console.log(commentId);
+        // console.log("this : " + reply);
+        // console.log(commentUser);
+        // console.log(commentContent);
+        // console.log(commentId);
 
 
         $("#modalCommentId").val(commentId);
@@ -422,10 +442,158 @@
 
     });
 
+    // 댓글 아이디 옆에 나타나는 삭제 아이콘 누르면 실행되는 메소드.
+    $("#comments").on("click", "#deleteComment", function() {
+
+        var boardid4 = getParameterByName('id');
+        var commentId = $("#modalCommentId").val();
+
+        console.log("commentId :   " + commentId );
+
+        if(confirm("정말로 삭제할꺼야!?") == true) {
+            $.ajax({
+                type: 'post',
+                url: '/comment/delete/'+commentId,
+                headers: {
+                    "Content-Type" : "application/json",
+                    "X-HTTP-Method-Override" : "DELETE"
+                },
+                dataType: 'text',
+                success: function(result) {
+                    console.log("result: " + result);
+                    if(result=='SUCCESS') {
+                        alert("삭제했삼!");
+                        $("#modifyModal").modal("hide");
+                        getComments(boardid4);
+                    }
+                }
+            });
+        } else {
+            return;
+        }
+    });
+
+    $("#modalCommentModify").on("click",function() {
+        var commentContent = $("#modalCommentContent").val();
+        var commentId = $("#modalCommentId").val();
+        var boardid2 = getParameterByName('id');
+
+        console.log("commentmodify click : " + commentContent);
+
+        $.ajax({
+            type:'put',
+            url:'/comment/update/'+commentId,
+            headers: {
+                "Content-Type": "application/json",
+                "X-HTTP-Method-Override": "PUT" },
+            data:JSON.stringify({
+                content: commentContent,
+                ipAddr: "192.168.0.132"
+            }),
+            dataType: 'text',
+            success:function(result) {
+                console.log("result: " + result);
+                if(result=='SUCCESS') {
+                    alert("수정 했어용~");
+                    $("#modifyModal").modal("hide");
+                    getComments(boardid2);
+                }
+            }
+        });
+
+    });
+
+
+    $("#modalCommentDelete").on("click", function() {
+        var boardid3 = getParameterByName('id');
+        var commentId = $("#modalCommentId").val();
+
+        console.log("commentId :   " + commentId );
+
+        if(confirm("정말로 지우실겁니까?? ") == true) {
+            $.ajax({
+                type: 'post',
+                url: '/comment/delete/'+commentId,
+                headers: {
+                    "Content-Type" : "application/json",
+                    "X-HTTP-Method-Override" : "DELETE"
+                },
+                dataType: 'text',
+                success: function(result) {
+                    console.log("result: " + result);
+                    if(result=='SUCCESS') {
+                        alert("삭제했삼!");
+                        $("#modifyModal").modal("hide");
+                        getComments(boardid3);
+                    }
+                }
+            });
+        } else {
+            return;
+        }
+
+    });
 
 
 
+    // 댓글 목록에서 대댓글 달기 버튼 누르면 보이는 것!
+    function reCommentClick(idid) {
+        if(isOpend == false) {
+            console.log("commentid : " + idid + "   check 0 -> 1");
+            var str = "<div id='reCommentDiv' class=\"box-footer\">\n" +
+                "       <img style=\"float: left;\"class=\"img-circle img-sm\" width=\"30\" height=\"30\" src=\"https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg\">\n" +
+                "       <!-- .img-push is used to add margin to elements next to floating images -->\n" +
+                "       <div class=\"input-group margin\">\n" +
+                "           <input type=\"text\" name=\"commentWriteReContent\" id=\"commentWriteReContent\" class=\"form-control\" placeholder=\"Press enter to post comment\">\n" +
+                "           <span class=\"input-group-btn\">\n" +
+                "               <button type=\"button\" id=\"recommentWriteBtn\"class=\"btn btn-info btn-flat\">Input!</button>\n" +
+                "           </span>\n" +
+                "       </div>\n" +
+                " </div> <!-- /.box-footer -->";
 
+
+            console.log("recommentgroup  : "+ $("#reCommentGroup").attr("data-recommentNo"));
+            $("#comments").find("[data-recommentNo='" + idid + "']").html(str);
+        } else {
+            console.log("대댓글 입력창 지워보리기~");
+            $("#comments").find("[data-recommentNo='" + idid + "']").html("");
+        }
+
+        isOpend = !isOpend;
+
+
+
+    }
+
+
+    // $("#comments").on("click", "#reComment", function() {
+    //
+    //     var commentId = $("#reCommentGroup").attr("data-recommentNo");
+    //     var commentId2 = $(".box-comment").find(".username").attr("data-commentNo");
+    //     var commentid3 = $(this).find(".username").attr("data-commentNo");
+    //
+    //     console.log("commentid1 ; " + commentId);
+    //     console.log("commentid2 ; " + commentId2);
+    //     console.log("commentid3 ; " + commentid3);
+    //
+    //     var str = "<div class=\"box-footer\">\n" +
+    //         "       <img style=\"float: left;\"class=\"img-circle img-sm\" width=\"30\" height=\"30\" src=\"https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg\">\n" +
+    //         "       <!-- .img-push is used to add margin to elements next to floating images -->\n" +
+    //         "       <div class=\"input-group margin\">\n" +
+    //         "           <input type=\"text\" name=\"commentWriteReContent\" id=\"commentWriteReContent\" class=\"form-control\" placeholder=\"Press enter to post comment\">\n" +
+    //         "           <span class=\"input-group-btn\">\n" +
+    //         "               <button type=\"button\" id=\"recommentWriteBtn\"class=\"btn btn-info btn-flat\">Input!</button>\n" +
+    //         "           </span>\n" +
+    //         "       </div>\n" +
+    //         " </div> <!-- /.box-footer -->";
+    //
+    //
+    //     console.log("recommentgroup  : "+ $("#reCommentGroup").attr("data-recommentNo"));
+    //     $("#comments").find("[data-recommentNo='" + commentId + "']").html(str);
+    //
+    //
+    //
+    // });
 
 
 </script>

@@ -1,11 +1,13 @@
 package com.slowcampus.controller;
 
+import com.google.gson.Gson;
 import com.slowcampus.dto.*;
 import com.slowcampus.service.BoardService;
 import com.slowcampus.service.CommentService;
 import com.slowcampus.service.ImageService;
 import com.slowcampus.util.PageUtil;
 import lombok.extern.java.Log;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -83,7 +85,10 @@ public class BoardController {
     // /list/article/detail?id=<숫자>   게시글 보기 GET(댓글 보기 포함)
     @GetMapping("/boards/{category}/articles/detail")
     public String articleDetail(@PathVariable(value = "category") int category,
-                                @RequestParam(name = "id") Long id, ModelMap modelMap) {
+                                @RequestParam(name = "id") Long id, ModelMap modelMap,HttpSession session) {
+        Member member = (Member) session.getAttribute("login");
+        modelMap.addAttribute("member", member);
+
         Board board = boardService.getArticleCotent(id);
         modelMap.addAttribute("board", board);
         /*
@@ -102,6 +107,7 @@ public class BoardController {
         // 이미지 여러개
         List<Image> imageList = imageService.getImageList(id);
         modelMap.addAttribute("images", imageList);
+
 
 
         // 댓글 출력하기

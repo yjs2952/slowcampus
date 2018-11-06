@@ -25,10 +25,12 @@ public class CommentDaoImpl implements CommentDao {
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
     }
 
+
+    // is_deleted=0 추가.  값이 1이면 삭제된 코멘트임.
     @Override
     public List<Comment> getCommentList(Long boardId, int page) {
         String sql = "SELECT id, board_id, content, user_nickname, parent_nickname, group_id, depth, ip_addr,is_deleted, regdate, moddate " +
-                "FROM comment WHERE board_id = :board_id and depth=0 ORDER BY id DESC";
+                "FROM comment WHERE board_id = :board_id and is_deleted=0 and depth=0 ORDER BY id DESC";
         try {
             Map<String, Long> params = Collections.singletonMap("board_id", boardId);
             RowMapper rowMapper = BeanPropertyRowMapper.newInstance(Comment.class);
