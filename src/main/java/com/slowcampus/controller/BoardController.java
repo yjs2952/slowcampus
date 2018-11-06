@@ -10,7 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -112,18 +116,23 @@ public class BoardController {
     }
 
     @GetMapping("/boards/{category}/articles/write")
-    public String articleWriteForm(@PathVariable(value = "category") int categoy){
-
+    public String articleWriteForm(){
         return "board/writeForm";
     }
 
     @PostMapping("/boards/{category}/articles/write")
-    public String articleWrite(@PathVariable(value = "category") int categoy, Board board, HttpSession session) {
-        Member member = (Member) session.getAttribute("login");
+    public String articleWrite(Board board, HttpServletRequest req) {
+        Member member = (Member) req.getSession().getAttribute("login");
+        /*HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+
+        String ip = req.getHeader("X-FORWARDED-FOR");
+        if (ip == null)
+            ip = req.getRemoteAddr();*/
         board.setUserId(member.getId());
         board.setNickname(member.getNickname());
-        boardService.writeArticle(board);
+        board.setIpAddr(req.getRemoteAddr());
+        Long id = boardService.writeArticle(board);
 
-        return "redirect:/articles/list?category="+categoy;
+        return "redirect:/boards/{category}/articles/detail?id="+id;
     }
 }

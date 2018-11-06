@@ -17,7 +17,7 @@ public interface BoardService {
 
     public List<Category> getCategoryList();
 
-    public int writeArticle(Board board);
+    public Long writeArticle(Board board);
 
     public int modifyArticle(Board board);
 

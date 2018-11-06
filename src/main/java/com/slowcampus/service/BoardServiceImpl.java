@@ -54,9 +54,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public int writeArticle(Board board) {
-        board.setId(boardDao.writeArticle(board));
-        return boardDao.writeArticleContent(board);
+    public Long writeArticle(Board board) {
+        Long id = boardDao.writeArticle(board);
+        boardDao.setRootBoardId(id);
+        System.out.println(board.toString());
+        board.setId(id);
+        boardDao.writeArticleContent(board);
+        return id;
     }
 
     @Override

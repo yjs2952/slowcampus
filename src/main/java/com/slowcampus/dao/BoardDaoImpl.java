@@ -42,7 +42,7 @@ public class BoardDaoImpl implements BoardDao {
         String sql = "SELECT id, user_id, title, read_count, nickname, category, root_board_id, parent_board_id, depth, depth_order, ip_addr, regdate, moddate, is_deleted " +
                      "FROM board " +
                      "WHERE category = :category "+
-                     "ORDER BY root_board_id, id "+
+                     "ORDER BY root_board_id DESC, id "+
                      "LIMIT :firstRecordIndex, :recordCountPerPage";
 
         // TODO: 2018-10-29 (yjs) :  추후 페이징 처리 해야됨 (start, limit)
@@ -103,8 +103,8 @@ public class BoardDaoImpl implements BoardDao {
 
     @Override
     public Long writeArticle(Board board) {
-        String sql = "insert into board (id, title, read_count, nickname, category, root_board_id, parent_board_id, user_id, depth, depth_order, ip_addr, regdate)" +
-                     " values (null, :title, :readCount, :nickname, :category, (select last_insert_id() + 1), :parentBoardId, :userId, :depth, :depthOrder, :ipAddr, now())";
+        String sql = "insert into board (title, read_count, nickname, category, parent_board_id, user_id, depth, depth_order, ip_addr, regdate)" +
+                     " values (:title, :readCount, :nickname, :category, :parentBoardId, :userId, :depth, :depthOrder, :ipAddr, now())";
 
         SqlParameterSource params = new BeanPropertySqlParameterSource(board);
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -118,6 +118,15 @@ public class BoardDaoImpl implements BoardDao {
         map.put("board_id", board.getId());
         map.put("board_content", board.getContent());
         return insertAction.execute(map);
+    }
+
+    @Override
+    public int setRootBoardId(Long id) {
+        String sql="UPDATE board " +
+                   "SET root_board_id = :id " +
+                   "WHERE id = :id";
+        Map<String, ?> map = Collections.singletonMap("id", id);
+        return jdbc.update(sql, map);
     }
 
     @Override

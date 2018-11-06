@@ -44,15 +44,9 @@
     <script src="/resources/plugins/iCheck/icheck.min.js"></script>
 
     <script type="text/javascript">
-        $.validator.setDefaults({
-            submitHandler: function () {
-                var form = $('#signinForm');
+        /*$.validator.setDefaults({
 
-                form.attr("action", "/signin");
-                form.attr("method", "post");
-                form.submit();
-            }
-        });
+        });*/
 
         $(document).ready(function () {
 
@@ -98,6 +92,13 @@
                 },
                 unhighlight: function (element, errorClass, validClass) {
                     $(element).parents(".has-feedback").addClass("has-success").removeClass("has-error");
+                },
+                submitHandler: function () {
+                    var form = $('#signinForm');
+
+                    form.attr("action", "/signin");
+                    form.attr("method", "post");
+                    form.submit();
                 }
             });
         });

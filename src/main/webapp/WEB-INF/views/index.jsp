@@ -34,7 +34,14 @@
                             <c:forEach items="${boards}" var="article">
                                 <tr>
                                     <td>${article.id}</td>
-                                    <td><a href="/boards/${article.category}/articles/detail?id=${article.id}">${article.title}</a></td>
+                                    <c:choose>
+                                        <c:when test="${article.isDeleted == 0}">
+                                            <td><a href="/boards/${article.category}/articles/detail?id=${article.id}">${article.title}</a></td>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <td>삭제된 게시글 입니다.</td>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <td>
                                         ${article.nickname}
                                     </td>
