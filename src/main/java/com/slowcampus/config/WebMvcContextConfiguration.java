@@ -8,6 +8,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+
+// 이게 DispatchServlet
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "com.slowcampus.controller", "com.slowcampus.config"})
@@ -50,8 +52,8 @@ public class WebMvcContextConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/write/**")
-                                            .addPathPatterns("/modify/**")
-                                            .addPathPatterns("/delete/**");
+        registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/**/write/**")
+                                            .addPathPatterns("/**/modify/**")
+                                            .addPathPatterns("/**/delete/**");
     }
 }

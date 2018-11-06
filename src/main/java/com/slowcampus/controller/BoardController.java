@@ -105,9 +105,25 @@ public class BoardController {
 
 
         // 댓글 출력하기
-        List<Comment> commentList = commentService.getCommentList(id,0);
-        modelMap.addAttribute("comments" , commentList);
+//        List<Comment> commentList = commentService.getCommentList(id,0);
+//        modelMap.addAttribute("comments" , commentList);
 
         return "articleDetail";
+    }
+
+    @GetMapping("/boards/{category}/articles/write")
+    public String articleWriteForm(@PathVariable(value = "category") int categoy){
+
+        return "board/writeForm";
+    }
+
+    @PostMapping("/boards/{category}/articles/write")
+    public String articleWrite(@PathVariable(value = "category") int categoy, Board board, HttpSession session) {
+        Member member = (Member) session.getAttribute("login");
+        board.setUserId(member.getId());
+        board.setNickname(member.getNickname());
+        boardService.writeArticle(board);
+
+        return "redirect:/articles/list?category="+categoy;
     }
 }

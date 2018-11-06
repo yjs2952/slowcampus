@@ -7,7 +7,7 @@
         </div>
         <strong>Copyright &copy; 2018-2019 <a href="#">Slow Campus</a>.</strong> All rights reserved.
       </footer>
-      
+
     <!-- Bootstrap 3.3.2 JS -->
     <script src="/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <!-- AdminLTE App -->

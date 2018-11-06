@@ -49,6 +49,7 @@
                 var form = $('#signinForm');
 
                 form.attr("action", "/signin");
+                form.attr("method", "post");
                 form.submit();
             }
         });
@@ -71,17 +72,7 @@
                     },
                     password: {
                         required: true
-                    }/*,
-                    confirm_password: {
-                        required: true,
-                        minlength: 5,
-                        equalTo: "#password"
-                    },
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    agree: "required"*/
+                    }
                 },
                 messages: {
                     id: {
@@ -122,7 +113,7 @@
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
 
-        <form id="signinForm" role="form" data-toggle="validator" method="post">
+        <form id="signinForm" role="form" data-toggle="validator">
             <div class="form-group has-feedback">
                 <input id="id" type="text" name="id" class="form-control" placeholder="ID" aria-describedby="id-error" aria-invalid="true">
             </div>
