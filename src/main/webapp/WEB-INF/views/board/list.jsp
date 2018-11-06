@@ -19,7 +19,7 @@
                 <td><c:out value="${article.id}"/></td> &nbsp;
                 <td><c:choose>
                         <c:when test="${article.isDeleted eq 0}">
-                            <a href="/list/article/detail?id=${article.id}">
+                            <a href="/boards/${article.category}/articles/detail?id=${article.id}">
                                 <c:choose>
                                     <c:when test="${article.depth gt 0}">
                                         <c:forEach begin="1" end="${article.depth}" step="1">&nbsp;</c:forEach>
