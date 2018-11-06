@@ -52,8 +52,8 @@ public class WebMvcContextConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/write/**")
-                                            .addPathPatterns("/modify/**")
-                                            .addPathPatterns("/delete/**");
+        registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns("/**/write/**")
+                                            .addPathPatterns("/**/modify/**")
+                                            .addPathPatterns("/**/delete/**");
     }
 }

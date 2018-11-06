@@ -1,9 +1,6 @@
 package com.slowcampus.controller;
 
-import com.slowcampus.dto.Board;
-import com.slowcampus.dto.Comment;
-import com.slowcampus.dto.Image;
-import com.slowcampus.dto.Pagination;
+import com.slowcampus.dto.*;
 import com.slowcampus.service.BoardService;
 import com.slowcampus.service.CommentService;
 import com.slowcampus.service.ImageService;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -41,12 +39,7 @@ public class BoardController {
      */
     @RequestMapping(value = "/articles/list", method = RequestMethod.GET)
     public String getArticleList(@RequestParam(name = "category", required = false, defaultValue = "1") int category,
-//                                 @RequestParam(name = "currentPageNo", required = false, defaultValue = "1") int currentPageNo,
-//                                 @RequestParam(name = "records", required = false, defaultValue = "10") int recordCountPerPage,
                                  ModelMap modelMap, Pagination pagination) {
-
-//        pagination.setPageSize(currentPageNo);
-//        pagination.setRecordCountPerPage(recordCountPerPage);
 
         List<Board> boardList = boardService.getArticleList(category, pagination);
         pagination.setTotalRecordCount(boardService.getTotalArticleCount(category).intValue());
@@ -56,6 +49,34 @@ public class BoardController {
                 PageUtil.getPageNavigation(pagination, "/articles/list", String.valueOf(category)));
 
         return "board/list";
+    }
+
+    @GetMapping("/boards/{category}/articles/delete")
+    public String showArticleDelete(@ModelAttribute Board board,
+                                    HttpSession httpSession, ModelMap map) {
+
+        Member member = (Member)httpSession.getAttribute("login");
+        map.addAttribute("board", board);
+
+        if ((member != null) && (member.getId().equals(boardService.getArticleUserId(board.getId())))) {
+            return "board/delete";
+        } else {
+            return "redirect:/boards/" + board.getCategory()
+                    + "/articles/detail?id=" + board.getId();
+        }
+    }
+
+    @PostMapping("/boards/{category}/articles/delete")
+    public String articleDelete(@ModelAttribute Board board) {
+        try {
+            boardService.deleteArticle(board.getId());
+            log.info("게시물이 삭제되었습니다.");
+        } catch (Exception ex) {
+            log.info("게시물 삭제 도중 오류가 발생하였습니다.");
+            throw new RuntimeException(ex);
+        }
+
+        return "redirect:/articles/list?category=" + board.getCategory();
     }
 
     // 게시글 상세보기.
@@ -88,5 +109,21 @@ public class BoardController {
 //        modelMap.addAttribute("comments" , commentList);
 
         return "articleDetail";
+    }
+
+    @GetMapping("/boards/{category}/articles/write")
+    public String articleWriteForm(@PathVariable(value = "category") int categoy){
+
+        return "board/writeForm";
+    }
+
+    @PostMapping("/boards/{category}/articles/write")
+    public String articleWrite(@PathVariable(value = "category") int categoy, Board board, HttpSession session) {
+        Member member = (Member) session.getAttribute("login");
+        board.setUserId(member.getId());
+        board.setNickname(member.getNickname());
+        boardService.writeArticle(board);
+
+        return "redirect:/articles/list?category="+categoy;
     }
 }

@@ -53,6 +53,13 @@ public class BoardDaoTest {
         System.out.println(count);
     }
 
+    @Test
+    public void deleteArticleTest() {
+        Long id = 2L;
+        int count = boardDao.deleteArticle(id);
+        System.out.println(count);
+    }
+
   /*
     @Test
     public void getArticle() throws Exception {
