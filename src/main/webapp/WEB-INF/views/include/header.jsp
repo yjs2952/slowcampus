@@ -325,20 +325,20 @@
     <section class="content-header">
       <h1>
         <c:choose>
-          <c:when test='${path.contains("boards/1")}'>
+          <c:when test='${path.contains("boards/1") or param.category == 1}'>
             자유 게시판
           </c:when>
-          <c:when test='${path.contains("boards/2")}'>
+          <c:when test='${path.contains("boards/2") or param.category == 2}'>
             QnA 게시판
           </c:when>
-          <c:when test='${path.contains("boards/3")}'>
+          <c:when test='${path.contains("boards/3") or param.category == 3}'>
             공지사항 게시판
           </c:when>
           <c:when test='${path.equals("/")}'>
             전체 게시판
           </c:when>
         </c:choose>
-        <small>Preview</small>
+
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>

@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ include file="include/header.jsp" %>
@@ -10,13 +11,13 @@
         <!-- general form element -->
         <c:forEach items="${list}" var="boards" varStatus="var">
             <div class="col-md-6 col-sm-12">
-                <div class="box">
+                <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">${categoryList.get(var.index).name} 게시판</h3>
                         <a class="btn btn-default btn-xs pull-right" href="/articles/list?category=${var.index + 1}">더 보기</a>
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body no-padding">
+                    <div class="box-body">
                         <table class="table table-responsive table-hover">
                             <colgroup>
                                 <col width="10%">
@@ -29,7 +30,7 @@
                                 <th>#</th>
                                 <th>제목</th>
                                 <th>닉네임</th>
-                                <th>시간</th>
+                                <th>날짜</th>
                             </tr>
                             <c:forEach items="${boards}" var="article">
                                 <tr>
@@ -45,7 +46,7 @@
                                     <td>
                                         ${article.nickname}
                                     </td>
-                                    <td>${article.regDate}</td>
+                                    <td><fmt:formatDate value="${article.regDate}" pattern="yyyy-MM-dd" />
                                 </tr>
                             </c:forEach>
                             </tbody>

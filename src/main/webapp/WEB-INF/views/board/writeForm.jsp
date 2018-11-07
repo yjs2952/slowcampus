@@ -34,9 +34,8 @@
 
             <div class="box-footer text-center">
                 <button type="submit" class="btn btn-primary">확인</button>
-                <a href="/">
-                    <button type="button" class="btn btn-warning">취소</button>
-                </a>
+                <button type="button" onclick="history.back();" class="btn btn-warning">취소</button>
+
             </div>
         </form>
     </div>

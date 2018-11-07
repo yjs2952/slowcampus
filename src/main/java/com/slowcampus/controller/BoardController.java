@@ -87,8 +87,7 @@ public class BoardController {
     // 게시글 상세보기.
     // /list/article/detail?id=<숫자>   게시글 보기 GET(댓글 보기 포함)
     @GetMapping("/boards/{category}/articles/detail")
-    public String articleDetail(@PathVariable(value = "category") int category,
-                                @RequestParam(name = "id") Long id, ModelMap modelMap) {
+    public String articleDetail(@RequestParam(name = "id") Long id, ModelMap modelMap) {
         Board board = boardService.getArticleCotent(id);
         modelMap.addAttribute("board", board);
         /*
@@ -138,7 +137,7 @@ public class BoardController {
     }
 
     @GetMapping("/boards/{category}/articles/modify")
-    public String articleModifyForm(Long id, ModelMap modelMap, HttpSession session) {
+    public String articleModifyForm(Long id, HttpSession session, ModelMap modelMap) {
         Member member = (Member) session.getAttribute("login");
         Board board = boardService.getArticleCotent(id);
         if (!member.getId().equals(board.getUserId())) {
