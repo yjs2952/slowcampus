@@ -44,7 +44,7 @@ public class BoardDaoImpl implements BoardDao {
         String sql = "SELECT id, user_id, title, read_count, nickname, category, root_board_id, parent_board_id, depth, depth_order, ip_addr, regdate, moddate, is_deleted " +
                 "FROM board " +
                 "WHERE category = :category " +
-                "ORDER BY root_board_id DESC, regdate DESC, id " +
+                "ORDER BY root_board_id DESC, id " +
                 "LIMIT :firstRecordIndex, :recordCountPerPage";
         try {
             RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
