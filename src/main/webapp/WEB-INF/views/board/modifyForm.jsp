@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" />
 
 <%@ include file="../include/header.jsp" %>
 <section class="content">
@@ -35,7 +36,7 @@
 
             <div class="box-footer text-center">
                 <button type="submit" class="btn btn-primary">확인</button>
-                <a href="/">
+                <a href="${path.replace("modify", "detail")}?id=${param.id}">
                     <button type="button" class="btn btn-warning">취소</button>
                 </a>
             </div>
@@ -65,7 +66,7 @@
                 title: {
                     required: true,
                     minlength: 2,
-                    maxlength: 25
+                    maxlength: 50
                 },
                 content: {
                     required: true,

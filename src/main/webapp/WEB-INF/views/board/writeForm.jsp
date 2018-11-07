@@ -56,7 +56,7 @@
                 title: {
                     required: true,
                     minlength: 2,
-                    maxlength: 25
+                    maxlength: 50
                 },
                 content: {
                     required: true,
