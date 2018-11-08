@@ -561,39 +561,8 @@
 
         isOpend = !isOpend;
 
-
-
     }
 
-
-    // $("#comments").on("click", "#reComment", function() {
-    //
-    //     var commentId = $("#reCommentGroup").attr("data-recommentNo");
-    //     var commentId2 = $(".box-comment").find(".username").attr("data-commentNo");
-    //     var commentid3 = $(this).find(".username").attr("data-commentNo");
-    //
-    //     console.log("commentid1 ; " + commentId);
-    //     console.log("commentid2 ; " + commentId2);
-    //     console.log("commentid3 ; " + commentid3);
-    //
-    //     var str = "<div class=\"box-footer\">\n" +
-    //         "       <img style=\"float: left;\"class=\"img-circle img-sm\" width=\"30\" height=\"30\" src=\"https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg\">\n" +
-    //         "       <!-- .img-push is used to add margin to elements next to floating images -->\n" +
-    //         "       <div class=\"input-group margin\">\n" +
-    //         "           <input type=\"text\" name=\"commentWriteReContent\" id=\"commentWriteReContent\" class=\"form-control\" placeholder=\"Press enter to post comment\">\n" +
-    //         "           <span class=\"input-group-btn\">\n" +
-    //         "               <button type=\"button\" id=\"recommentWriteBtn\"class=\"btn btn-info btn-flat\">Input!</button>\n" +
-    //         "           </span>\n" +
-    //         "       </div>\n" +
-    //         " </div> <!-- /.box-footer -->";
-    //
-    //
-    //     console.log("recommentgroup  : "+ $("#reCommentGroup").attr("data-recommentNo"));
-    //     $("#comments").find("[data-recommentNo='" + commentId + "']").html(str);
-    //
-    //
-    //
-    // });
 
 
 </script>
