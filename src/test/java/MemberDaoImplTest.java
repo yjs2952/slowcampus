@@ -1,5 +1,6 @@
 import com.slowcampus.config.ApplicationConfig;
 import com.slowcampus.dao.MemberDao;
+import com.slowcampus.dto.Authority;
 import com.slowcampus.dto.Member;
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,7 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
@@ -41,5 +44,17 @@ public class MemberDaoImplTest {
         member.setId("asdasd");
         member.setPassword("sana123");
         memberDao.loginMember(member);
+    }
+
+    @Test
+    public void getAuthorityTest() {
+        List<Authority> authorityList = new ArrayList<>();
+        Member member = new Member();
+        member.setId("abcde");
+        authorityList = memberDao.getMemberAuthority(member);
+        for (int i = 0; i < authorityList.size(); i++) {
+            System.out.println(authorityList.get(i));
+        }
+
     }
 }
