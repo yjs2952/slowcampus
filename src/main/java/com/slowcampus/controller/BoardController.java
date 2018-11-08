@@ -12,7 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -88,7 +93,6 @@ public class BoardController {
                                 @RequestParam(name = "id") Long id, ModelMap modelMap,HttpSession session) {
         Member member = (Member) session.getAttribute("login");
         modelMap.addAttribute("member", member);
-
         Board board = boardService.getArticleCotent(id);
         modelMap.addAttribute("board", board);
         /*
@@ -118,18 +122,50 @@ public class BoardController {
     }
 
     @GetMapping("/boards/{category}/articles/write")
-    public String articleWriteForm(@PathVariable(value = "category") int categoy){
-
+    public String articleWriteForm(){
         return "board/writeForm";
     }
 
     @PostMapping("/boards/{category}/articles/write")
-    public String articleWrite(@PathVariable(value = "category") int categoy, Board board, HttpSession session) {
-        Member member = (Member) session.getAttribute("login");
+    public String articleWrite(Board board, HttpServletRequest req) {
+        Member member = (Member) req.getSession().getAttribute("login");
+        /*HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+
+        String ip = req.getHeader("X-FORWARDED-FOR");
+        if (ip == null)
+            ip = req.getRemoteAddr();*/
         board.setUserId(member.getId());
         board.setNickname(member.getNickname());
-        boardService.writeArticle(board);
+        board.setIpAddr(req.getRemoteAddr());
+        Long id = boardService.writeArticle(board);
 
-        return "redirect:/articles/list?category="+categoy;
+        return "redirect:/boards/{category}/articles/detail?id="+id;
     }
+
+    @GetMapping("/boards/{category}/articles/modify")
+    public String articleModifyForm(Long id, HttpSession session, ModelMap modelMap) {
+        Member member = (Member) session.getAttribute("login");
+        Board board = boardService.getArticleCotent(id);
+        if (!member.getId().equals(board.getUserId())) {
+            return "redirect:/boards/{category}/articles/detail?id="+id;
+        }
+        modelMap.addAttribute("board", board);
+        return "board/modifyForm";
+    }
+
+    @PostMapping("/boards/{category}/articles/modify")
+    public String articleModify(Board board, HttpServletRequest req, RedirectAttributes rda) {
+        Member member = (Member) req.getSession().getAttribute("login");
+
+        if (!member.getId().equals(board.getUserId())) {
+            log.info("잘못된 접근");
+        } else {
+            board.setNickname(member.getNickname());
+            board.setIpAddr(req.getRemoteAddr());
+            boardService.modifyArticle(board);
+        }
+
+        return "redirect:/boards/{category}/articles/detail?id="+board.getId();
+    }
+
 }

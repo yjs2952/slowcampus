@@ -1,26 +1,28 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" />
 
 <%@ include file="../include/header.jsp" %>
 <section class="content">
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">글 쓰기</h3>
+            <h3 class="box-title">글 수정</h3>
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form id="articleWriteForm" role="form" class="form-horizontal" method="post">
+        <form id="articleModifyForm" role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="userId" value="${requestScope.board.userId}">
             <div class="box-body">
                 <div class="form-group">
                     <label for="title" class="col-lg-2 col-md-2">제목</label>
                     <div class="col-lg-10 col-md-10 has-feedback">
-                    <input type="text" class="form-control" name="title" id="title" placeholder="제목">
+                    <input type="text" class="form-control" name="title" id="title" value="${requestScope.board.title}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="content" class="col-lg-2 col-md-2">내용</label>
                     <div class="col-lg-10 col-md-10 has-feedback">
-                        <textarea class="form-control" name="content" id="content" placeholder="내용" rows="10"></textarea>
+                        <textarea class="form-control" name="content" id="content" placeholder="내용" rows="10">${requestScope.board.content}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -34,8 +36,9 @@
 
             <div class="box-footer text-center">
                 <button type="submit" class="btn btn-primary">확인</button>
-                <button type="button" onclick="history.back();" class="btn btn-warning">취소</button>
-
+                <a href="${path.replace("modify", "detail")}?id=${param.id}">
+                    <button type="button" class="btn btn-warning">취소</button>
+                </a>
             </div>
         </form>
     </div>
@@ -48,7 +51,14 @@
 
     $(function(){
 
-        $("#articleWriteForm").validate({
+        var message = "${error}";
+
+        if (message != null && message != "") {
+            alert(message);
+            return;
+        }
+
+        $("#articleModifyForm").validate({
             onclick: false,
             onfocusout: false,
             onkeyup: false,

@@ -1,7 +1,5 @@
 package com.slowcampus.config;
 
-import com.slowcampus.dto.Board;
-import com.slowcampus.dto.Member;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -18,7 +16,6 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
         HttpSession session = httpServletRequest.getSession();
 
         if (session.getAttribute("login") == null) {
-
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/signin");
             return false;
         }

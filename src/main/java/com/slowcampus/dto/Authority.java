@@ -7,6 +7,6 @@ import lombok.Data;
  */
 @Data
 public class Authority {
-    private int id;
-    private String name;
+    private int authorityId;
+    private String authorityName;
 }
