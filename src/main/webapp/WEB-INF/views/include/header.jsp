@@ -202,6 +202,9 @@
               </c:when>
               <c:otherwise>
               <li>
+                <a class="" href="/mypage">My Page</a>
+              </li>
+              <li>
                 <a class="" href="/signout">Sign Out</a>
               </li>
               </c:otherwise>
