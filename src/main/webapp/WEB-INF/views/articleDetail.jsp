@@ -12,22 +12,16 @@
 
 <style>
     div { display: block; }
-
-
     col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
         position: relative;
         min-height: 1px;
         padding-right: 15px;
         padding-left: 15px;
     }
-
-
-
     .user-block .username {
         font-size: 16px;
         font-weight: 600;
     }
-
     .user-block .description {
         color: #999;
         font-size: 13px;
@@ -109,6 +103,9 @@
 <script>
 
     var isOpend=false;
+    var loginMember = "${sessionScope.login.nickname}";
+    var parentUser="";
+
 
 
 // 이미지 팝업창으로 원본 보기!!!!
@@ -163,7 +160,7 @@
 
 
 
-    var loginMember = "${sessionScope.login.nickname}";
+
     console.log("ddfdafdaf : "+loginMember);
 
     console.log("getComments() 끝.");
@@ -186,7 +183,7 @@
                     str += "<div class='box-comment' >" +
                         "<img style='float:left;' class='img-circle img-sm' width='30' height='30' src='https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg'>" +
                         "<div class='comment-text'>\n" +
-                        " <span data-commentNo='" + this.id +"' id='commentUser' class='username'>\n" + this.id + "-" +this.userNickname + "\n";
+                        " <span data-commentNo='" + this.id +"' id='commentUser' class='username'>\n"+ this.userNickname;
 
                     // 글쓴이랑 로그인 한 멤버의 닉네임이 같을 경우에만 버튼이 나오게!.
                     if(this.userNickname == loginMember) {
@@ -196,7 +193,7 @@
 
                     // 로그인이 안됐을땐 대댓글 다는 버튼을 비활성화 해야한다.
                     if(loginMember != ""){
-                        str += " <button id='reComment' type='button' onclick='reCommentClick("+this.id+",isOpend);' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title='Re'><i class='fa fa-align-left'></i></button>\n";
+                        str += " <button id='reComment' type='button' onclick='reCommentClick("+ this.id+",isOpend);' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title=''><i class='fa fa-align-left'></i></button>\n";
                     }
 
 
@@ -209,6 +206,7 @@
                         "                    </div>\n" +
                         "                    <!-- /.box-comment -->" +
                         " <div data-recommentNo='"+ this.id + "'  id='reCommentGroup'>\n " +
+
                         " </div> ";
                 }
             );
@@ -385,6 +383,7 @@
 
 <script type="text/javascript">
 
+
     // 위에 있을땐 실행 안되더니... 맨 아래로 옮기니까 된다?
     $("#commentWriteBtn").on("click", function() {
 
@@ -428,6 +427,11 @@
         var commentId = reply.find(".username").attr("data-commentNo");
 
 
+        // 댓글 옆에 버튼들 누르기 전에.
+        // 버튼위에 커서 올리면 나타나는 글자??  remove는 commentUser 에 포함이 안되는데.
+        // 계속 Re 뜨는것만 포함길래... 지움...
+        // 이유 모르겠다...
+        parentUser = commentUser;
 
         // console.log("this : " + reply);
         // console.log(commentUser);
@@ -535,31 +539,80 @@
     });
 
 
+    var commentId;
 
     // 댓글 목록에서 대댓글 달기 버튼 누르면 보이는 것!
     function reCommentClick(idid) {
+        commentId= idid;
         if(isOpend == false) {
-            console.log("commentid : " + idid + "   check 0 -> 1");
+            console.log("commentid : " + idid + "   check false -> true");
             var str = "<div id='reCommentDiv' class=\"box-footer\">\n" +
                 "       <img style=\"float: left;\"class=\"img-circle img-sm\" width=\"30\" height=\"30\" src=\"https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg\">\n" +
                 "       <!-- .img-push is used to add margin to elements next to floating images -->\n" +
                 "       <div class=\"input-group margin\">\n" +
                 "           <input type=\"text\" name=\"commentWriteReContent\" id=\"commentWriteReContent\" class=\"form-control\" placeholder=\"Press enter to post comment\">\n" +
                 "           <span class=\"input-group-btn\">\n" +
-                "               <button type=\"button\" id=\"recommentWriteBtn\"class=\"btn btn-info btn-flat\">Input!</button>\n" +
+                "               <button type='button' onclick='reCommentWrite();'  id=\"recommentWriteBtn\"class=\"btn btn-info btn-flat\">Input!</button>\n" +
                 "           </span>\n" +
                 "       </div>\n" +
-                " </div> <!-- /.box-footer -->";
+                " </div> <!-- /.box-footer -->"
 
-
-            console.log("recommentgroup  : "+ $("#reCommentGroup").attr("data-recommentNo"));
             $("#comments").find("[data-recommentNo='" + idid + "']").html(str);
         } else {
             console.log("대댓글 입력창 지워보리기~");
             $("#comments").find("[data-recommentNo='" + idid + "']").html("");
         }
 
+        // isOpend 가 전역변수라서... 문제가 발생함.
+        // 1번 댓글의 대댓글창 열고 2번 댓글의 대댓글창 열려고 하면
+        // 안열림. 한번 더 눌러야 열림.
         isOpend = !isOpend;
+
+    }
+
+
+
+
+
+    // 대댓글 입력하기.
+    function reCommentWrite() {
+
+        var recommentContent = $("#commentWriteReContent").val();
+        var recommentUser= loginMember;  // 맨위에.
+        var parentCommentNickname = parentUser;
+        console.log("recomment write content : " + recommentContent);
+        console.log("recomment write user : " + recommentUser);
+        console.log("recomment write parent id : " + commentId);
+        console.log("recomment write parent nick : " + parentCommentNickname);
+
+
+        // $.ajax({
+        //     type : 'post',
+        //     url : '/comment/write/recomment',
+        //     headers : {
+        //         "Content-Type" : "application/json",
+        //         "X-HTTP-Method-Override" : "POST"
+        //     },
+        //     dataType : 'text',
+        //     data : JSON.stringify({
+        //         boardId : boardid,
+        //         content : recommentContent,
+        //         userNickname : recommentUser,
+        //         parentNickname : recommentUser,
+        //         depth : 1,
+        //         ipAddr : "192.168.0.123"
+        //
+        //     }),
+        //     success : function(result) {
+        //         if (result == 'SUCCESS') {
+        //             alert("등록완료!");
+        //             getComments(boardid);
+        //             $("#commentWriteContent").val("");
+        //         }
+        //     }
+        // });
+
+
 
     }
 

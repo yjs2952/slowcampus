@@ -61,7 +61,6 @@ public class CommentController {
     @RequestMapping(value="/comment/write" , method=RequestMethod.POST)
     public ResponseEntity<String> writeComment(@RequestBody Comment comment) {
 
-        // 부모 댓글 입력 테스트.
         ResponseEntity<String> entity=null;
         try {
             commentService.writeComment(comment);
@@ -72,6 +71,22 @@ public class CommentController {
         }
         return entity;
     }
+
+    // 대댓글 쓰기.
+
+    @RequestMapping(value="/comment/write/recomment")
+    public ResponseEntity<String> writeReComment(@RequestBody Comment comment) {
+        ResponseEntity<String> entity=null;
+        try {
+            commentService.writeComment(comment);
+            entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+        } catch(Exception e) {
+            e.printStackTrace();
+            entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return entity;
+    }
+
 
 
     @RequestMapping(value="/comment/update/{commentid}", method = { RequestMethod.PUT, RequestMethod.PATCH })
@@ -113,31 +128,6 @@ public class CommentController {
     }
 
 
-
-//    @RequestMapping("/comment/list")
-//    public List<Comment> listComment(@RequestParam(name = "id") Long id) {
-//        List<Comment> commentList = commentService.getCommentList(id,0);
-//        return commentList;
-//    }
-
-
-//    @PostMapping("/comment/write")
-//    public String writeComment(@RequestParam(name="commentWriteContent") String commentWriteContent,
-//                               @RequestParam(name="boardId") Long boardId) {
-//
-//        // 부모 댓글 입력 테스트.
-//        Comment comment = new Comment();
-//        comment.setBoardId(boardId);
-//        comment.setContent(commentWriteContent);
-//        comment.setUserNickname("입력테스터1");
-//        comment.setParentNickname("입력테스터1");
-//        comment.setIpAddr("192.168.0.136");
-//        comment.setRegdate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-//
-//        commentService.writeComment(comment);
-//
-//        return "redirect:/list/article/detail?id="+boardId;
-//    }
 
 
 }

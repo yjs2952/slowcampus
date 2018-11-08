@@ -1,6 +1,7 @@
 package com.slowcampus.dao;
 
 import com.slowcampus.dto.Comment;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+@Log
 @Repository
 public class CommentDaoImpl implements CommentDao {
     private NamedParameterJdbcTemplate jdbc;
@@ -82,6 +84,7 @@ public class CommentDaoImpl implements CommentDao {
                 return keyHolder.getKey().intValue();
 
             } else {
+                log.info("대댓글 입력 쿼리 시작.");
                 // 자식 댓글(대댓글) Query 시작
                 KeyHolder keyHolder = new GeneratedKeyHolder();
                 jdbc.update(sqlChildComment, params, keyHolder);
