@@ -18,7 +18,9 @@ public interface BoardDao {
 
     public Long writeArticle(Board board);
 
-    public Long writeReply(Board board);
+    public int updateDepthOrder(Board board);
+
+    /*public Long writeReply(Board board);*/
 
     public int setRootBoardId(Long id);
 

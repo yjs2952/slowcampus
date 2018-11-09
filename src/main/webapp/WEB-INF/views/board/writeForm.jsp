@@ -14,6 +14,7 @@
                 <input type="hidden" name="rootBoardId" value="${board.rootBoardId}">
                 <input type="hidden" name="parentBoardId" value="${board.id}">
                 <input type="hidden" name="depth" value="${board.depth}">
+                <input type="hidden" name="depthOrder" value="${board.depthOrder}">
             </c:if>
             <div class="box-body">
                 <div class="form-group">

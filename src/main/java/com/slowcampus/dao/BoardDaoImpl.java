@@ -36,7 +36,6 @@ public class BoardDaoImpl implements BoardDao {
                 .usingGeneratedKeyColumns("id");
         this.insertBoardContentAction = new SimpleJdbcInsert(dataSource)
                 .withTableName("board_content");
-
     }
 
     @Override
@@ -44,7 +43,7 @@ public class BoardDaoImpl implements BoardDao {
         String sql = "SELECT id, user_id, title, read_count, nickname, category, root_board_id, parent_board_id, depth, depth_order, ip_addr, regdate, moddate, is_deleted " +
                 "FROM board " +
                 "WHERE category = :category " +
-                "ORDER BY root_board_id DESC, id " +
+                "ORDER BY root_board_id DESC, depth_order " +
                 "LIMIT :firstRecordIndex, :recordCountPerPage";
         try {
             RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
@@ -132,21 +131,35 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
+    public int updateDepthOrder(Board board) {
+        String sql = "UPDATE board SET depth_order = depth_order + 1 WHERE root_board_id = :rootBoardId AND depth_order > :depthOrder";
+
+        SqlParameterSource params = new BeanPropertySqlParameterSource(board);
+        try {
+            return jdbc.update(sql, params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*@Override
     public Long writeReply(Board board) {
         String sql = "insert into board (title, read_count, nickname, category, root_board_id, parent_board_id, user_id, depth, depth_order, ip_addr, regdate) " +
-                "SELECT :title, :readCount, :nickname, :category, :rootBoardId, :parentBoardId, :userId, :depth, MAX(depth_order) + 1, :ipAddr, now() " +
-                "FROM board " +
-                "WHERE depth = :depth";
+                     "SELECT :title, :readCount, :nickname, :category, :rootBoardId, :parentBoardId, :userId, :depth, depth_order + 1, :ipAddr, now() " +
+                     "FROM board " +
+                     "WHERE root_board_id = :rootBoardId " +
+                     "AND depth_order > :depthOrder";
+                //"WHERE depth = :depth";
         SqlParameterSource params = new BeanPropertySqlParameterSource(board);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
-            /*return insertBoardAction.executeAndReturnKey(params).longValue();*/
+            *//*return insertBoardAction.executeAndReturnKey(params).longValue();*//*
             jdbc.update(sql, params, keyHolder);
             return keyHolder.getKey().longValue();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     @Override
     public int writeArticleContent(Board board) {
