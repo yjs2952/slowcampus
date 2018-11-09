@@ -29,19 +29,19 @@ public class BoardController {
     private CommentService commentService;
 
     @Autowired
-    public BoardController(BoardService boardService, ImageService imageService,CommentService commentService) {
+    public BoardController(BoardService boardService, ImageService imageService, CommentService commentService) {
         this.boardService = boardService;
         this.imageService = imageService;
         this.commentService = commentService;
     }
 
-    
+
     /**
      * @RequestParam으로 구현 된 현재 메소드는 아래와 같이 사용해도 동일한 결과를 얻을 수 있다.
      * public String getArticleList(@ModelAttribute Board board,
-     *                                  ModelMap modelMap) {
-     *         List<Board> boardList = boardService.getList(board.getCategory());
-     *         List<Board> boardList = boardService.getArticleList(board.getCategory());
+     * ModelMap modelMap) {
+     * List<Board> boardList = boardService.getList(board.getCategory());
+     * List<Board> boardList = boardService.getArticleList(board.getCategory());
      * 그러나, Query Parameter의 기본 값 지정을 위하여 여기에서는 RequestParam을 사용하였다.
      */
     @RequestMapping(value = "/articles/list", method = RequestMethod.GET)
@@ -62,7 +62,7 @@ public class BoardController {
     public String showArticleDelete(@ModelAttribute Board board,
                                     HttpSession httpSession, ModelMap map) {
 
-        Member member = (Member)httpSession.getAttribute("login");
+        Member member = (Member) httpSession.getAttribute("login");
         map.addAttribute("board", board);
 
         if ((member != null) && (member.getId().equals(boardService.getArticleUserId(board.getId())))) {
@@ -123,7 +123,7 @@ public class BoardController {
 
     @GetMapping("/boards/{category}/articles/write")
     public String articleWriteForm(@RequestParam(value = "pid", required = false) Long parentBoardId,
-                                                                ModelMap modelMap){
+                                   ModelMap modelMap) {
         if (parentBoardId != null) {
             Board board = boardService.getParentArticle(parentBoardId);
             modelMap.addAttribute("board", board);
@@ -142,9 +142,16 @@ public class BoardController {
         board.setUserId(member.getId());
         board.setNickname(member.getNickname());
         board.setIpAddr(req.getRemoteAddr());
-        Long id = boardService.writeArticle(board);
 
-        return "redirect:/boards/{category}/articles/detail?id="+id;
+        Long id = 0L;
+        if (board.getParentBoardId() != null) {
+            id = boardService.writeReply(board);
+        } else {
+            id = boardService.writeArticle(board);
+        }
+
+
+        return "redirect:/boards/{category}/articles/detail?id=" + id;
     }
 
     @GetMapping("/boards/{category}/articles/modify")
@@ -152,7 +159,7 @@ public class BoardController {
         Member member = (Member) session.getAttribute("login");
         Board board = boardService.getArticleCotent(id);
         if (!member.getId().equals(board.getUserId())) {
-            return "redirect:/boards/{category}/articles/detail?id="+id;
+            return "redirect:/boards/{category}/articles/detail?id=" + id;
         }
         modelMap.addAttribute("board", board);
         return "board/modifyForm";
@@ -170,7 +177,7 @@ public class BoardController {
             boardService.modifyArticle(board);
         }
 
-        return "redirect:/boards/{category}/articles/detail?id="+board.getId();
+        return "redirect:/boards/{category}/articles/detail?id=" + board.getId();
     }
 
 }

@@ -19,6 +19,8 @@ public interface BoardService {
 
     public Long writeArticle(Board board);
 
+    public Long writeReply(Board board);
+
     public Board getParentArticle(Long id);
 
     public int modifyArticle(Board board);
