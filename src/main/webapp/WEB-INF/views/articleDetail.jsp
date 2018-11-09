@@ -239,6 +239,8 @@
 
 
     <div class="form-group pull-right">
+        <a href="/articles/list?category=${board.category}"><button type="button" class="btn btn-primary">목록</button></a>
+        <a href="/boards/${board.category}/articles/write?pid=${board.id}"><button type="button" class="btn btn-primary">답글</button></a>
         <button type="submit" class="btn btn-primary">수정</button>
         <button type="submit" class="btn btn-primary" onclick="location.href='/boards/${board.category}/articles/delete?id=${board.id}'">삭제</button>
     </div>

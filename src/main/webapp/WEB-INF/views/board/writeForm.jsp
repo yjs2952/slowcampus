@@ -10,6 +10,11 @@
         <!-- /.box-header -->
         <!-- form start -->
         <form id="articleWriteForm" role="form" class="form-horizontal" method="post">
+            <c:if test="${param.pid != null}">
+                <input type="hidden" name="rootBoardId" value="${board.rootBoardId}">
+                <input type="hidden" name="parentBoardId" value="${board.id}">
+                <input type="hidden" name="depth" value="${board.depth}">
+            </c:if>
             <div class="box-body">
                 <div class="form-group">
                     <label for="title" class="col-lg-2 col-md-2">제목</label>

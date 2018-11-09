@@ -88,6 +88,20 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
+    public Board getParentArticle(Long id) {
+        String sql = "SELECT id, nickname, root_board_id, parent_board_id, depth, depth_order " +
+                "FROM board " +
+                "WHERE id = :id";
+        try {
+            RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
+            Map<String, ?> map = Collections.singletonMap("id", id);
+            return jdbc.queryForObject(sql, map, rowMapper);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Board getArticleUserId(Long id) {
         String sql = "SELECT id, user_id FROM board WHERE id = :id";
         RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
@@ -102,6 +116,7 @@ public class BoardDaoImpl implements BoardDao {
 
     @Override
     public Long writeArticle(Board board) {
+
         /*String sql = "insert into board (title, read_count, nickname, category, parent_board_id, user_id, depth, depth_order, ip_addr, regdate)" +
                 " values (:title, :readCount, :nickname, :category, :parentBoardId, :userId, :depth, :depthOrder, :ipAddr, now())";*/
         board.setRegDate(new Date());
@@ -109,8 +124,25 @@ public class BoardDaoImpl implements BoardDao {
         /*KeyHolder keyHolder = new GeneratedKeyHolder();*/
         try {
             return insertBoardAction.executeAndReturnKey(params).longValue();
-            /*jdbc.update(sql, params, keyHolder);*/
-            /*return keyHolder.getKey().longValue();*/
+            /*jdbc.update(sql, params, keyHolder);
+            return keyHolder.getKey().longValue();*/
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Long writeReply(Board board) {
+        String sql = "insert into board (title, read_count, nickname, category, root_board_id, parent_board_id, user_id, depth, depth_order, ip_addr, regdate) " +
+                "SELECT :title, :readCount, :nickname, :category, :rootBoardId, :parentBoardId, :userId, :depth, MAX(depth_order) + 1, :ipAddr, now() " +
+                "FROM board " +
+                "WHERE depth = :depth";
+        SqlParameterSource params = new BeanPropertySqlParameterSource(board);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        try {
+            /*return insertBoardAction.executeAndReturnKey(params).longValue();*/
+            jdbc.update(sql, params, keyHolder);
+            return keyHolder.getKey().longValue();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
