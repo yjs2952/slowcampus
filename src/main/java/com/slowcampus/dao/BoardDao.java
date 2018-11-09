@@ -14,7 +14,11 @@ public interface BoardDao {
 
     public Board getArticleUserId(Long id);
 
+    public Board getParentArticle(Long id);
+
     public Long writeArticle(Board board);
+
+    public Long writeReply(Board board);
 
     public int setRootBoardId(Long id);
 

@@ -122,7 +122,12 @@ public class BoardController {
     }
 
     @GetMapping("/boards/{category}/articles/write")
-    public String articleWriteForm(){
+    public String articleWriteForm(@RequestParam(value = "pid", required = false) Long parentBoardId,
+                                                                ModelMap modelMap){
+        if (parentBoardId != null) {
+            Board board = boardService.getParentArticle(parentBoardId);
+            modelMap.addAttribute("board", board);
+        }
         return "board/writeForm";
     }
 
