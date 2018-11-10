@@ -5,6 +5,7 @@ import com.slowcampus.dto.*;
 import com.slowcampus.service.BoardService;
 import com.slowcampus.service.CommentService;
 import com.slowcampus.service.ImageService;
+import com.slowcampus.util.AzureApp;
 import com.slowcampus.util.PageUtil;
 import lombok.extern.java.Log;
 import net.minidev.json.JSONObject;
@@ -15,11 +16,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @Log
@@ -123,6 +130,7 @@ public class BoardController {
 
     @GetMapping("/boards/{category}/articles/write")
     public String articleWriteForm(@RequestParam(value = "pid", required = false) Long parentBoardId,
+
                                    ModelMap modelMap) {
         if (parentBoardId != null) {
             Board board = boardService.getParentArticle(parentBoardId);
@@ -132,7 +140,7 @@ public class BoardController {
     }
 
     @PostMapping("/boards/{category}/articles/write")
-    public String articleWrite(Board board, HttpServletRequest req) {
+    public String articleWrite(Board board, @RequestParam(name = "file") MultipartFile[] files, HttpServletRequest req) {
         Member member = (Member) req.getSession().getAttribute("login");
         /*HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
@@ -142,6 +150,43 @@ public class BoardController {
         board.setUserId(member.getId());
         board.setNickname(member.getNickname());
         board.setIpAddr(req.getRemoteAddr());
+
+        for(MultipartFile file : files) {
+
+            log.info("--------------- file info ---------------");
+            log.info("fileName : " + file.getOriginalFilename());
+            log.info("fileType : " + file.getContentType());
+            log.info("fileTSize : " + file.getSize());
+            log.info("//--------------- file info ---------------");
+
+            /* 기본 폴더 설정, 날짜 경로 더해주기는 파일들의 공통적인 부분. for 위로?*/
+            File dir = new File(".");
+            String path = dir.getAbsolutePath();
+
+            String datePath = AzureApp.calcPath(path);
+
+            // /tmp/2018_11_01
+            path = path + datePath;
+
+            // savedName : ~~~~~~~~~~~~~_원래이름.
+            UUID uid = UUID.randomUUID();
+            String savedName = uid.toString() + "_" + file.getOriginalFilename();
+            File sourceFile = new File(path , savedName);
+
+            Image image = new Image();
+            image.setOriginalName(file.getOriginalFilename());
+            image.setType(file.getContentType());
+            image.setSize(file.getSize());
+            image.setSaveName(savedName);
+            image.setPath(datePath + File.separator +savedName);
+            image.setRegDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+            image.setBoardId(3L);// 임시번호. 원래는 파라미터로 받아야함.
+
+            imageService.uploadImage(image);
+            // 이미지 db업로드 완료.
+
+            imageService.uploadImageToAzure(file,sourceFile,datePath,path);
+        }
 
         Long id = 0L;
         if (board.getParentBoardId() != null) {

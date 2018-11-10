@@ -36,7 +36,8 @@
                             <a href="/boards/${article.category}/articles/detail?id=${article.id}">
                                 <c:choose>
                                     <c:when test="${article.depth gt 0}">
-                                        <c:forEach begin="2" end="${article.depth}" step="1">&nbsp;&nbsp;&nbsp;&nbsp;</c:forEach>
+                                        <c:forEach begin="2" end="${article.depth}"
+                                                   step="1">&nbsp;&nbsp;&nbsp;&nbsp;</c:forEach>
                                         <c:out value="ㄴRE : ${article.title}"/>
                                     </c:when>
                                     <c:otherwise>
