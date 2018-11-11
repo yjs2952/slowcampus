@@ -142,7 +142,8 @@ public class BoardController {
 
         // 사진없으면 여기서 끝.
         // 사진이 무조건 한개는 들어가는듯...
-        if(files.length == 1) {
+        if(files.length == 1 && files[0].getOriginalFilename().equals("")) {
+            log.info("garbage picture.");
             return "redirect:/boards/{category}/articles/detail?id="+id;
         }
 
@@ -152,6 +153,13 @@ public class BoardController {
          */
         for(MultipartFile file : files) {
             /* 기본 폴더 설정, 날짜 경로 더해주기는 파일들의 공통적인 부분. for 위로?*/
+
+            if(file.getOriginalFilename().equals("")){
+                System.out.println("쓰레기.");
+                continue;
+            }
+
+
             File dir = new File(".");
             String path = dir.getAbsolutePath();
 
