@@ -10,7 +10,9 @@ public interface CommentService {
     public List<Comment> getRecommentList(Long boardId, Long parentCommentId);
     public Long getCountOfRecommentList(Long boardId, Long parentCommentId);
 
-    public int writeComment(Comment comment);
+    public Long writeComment(Comment comment);
+
+    public Long writeRecomment(Comment comment);
 
     public int modifyComment(Comment comment);
 

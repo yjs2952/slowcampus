@@ -140,7 +140,13 @@ public class BoardController {
         board.setIpAddr(req.getRemoteAddr());
         Long id = boardService.writeArticle(board);
 
+        // 사진없으면 여기서 끝.
+        // 사진이 무조건 한개는 들어가는듯...
+        if(files.length == 1) {
+            return "redirect:/boards/{category}/articles/detail?id="+id;
+        }
 
+        //System.out.println("MultipartFile files.length" + files.length);
         /*
             image upload.
          */

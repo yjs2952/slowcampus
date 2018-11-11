@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -21,10 +22,14 @@ import java.util.*;
 @Repository
 public class CommentDaoImpl implements CommentDao {
     private NamedParameterJdbcTemplate jdbc;
+    private SimpleJdbcInsert insertCommentAction;
 
     @Autowired
     public CommentDaoImpl(DataSource dataSource) {
         this.jdbc = new NamedParameterJdbcTemplate(dataSource);
+        this.insertCommentAction = new SimpleJdbcInsert(dataSource)
+                .withTableName("comment")
+                .usingGeneratedKeyColumns("id");
     }
 
 
@@ -80,9 +85,9 @@ public class CommentDaoImpl implements CommentDao {
 
     // regdate 는 어차피 디폴트 값으로 들어가니. insert 문에서 빼줌!
     @Override
-    public int writeComment(Comment comment) {
-        String sqlParentComment = "INSERT INTO comment(id, board_id, content, user_nickname, parent_nickname, group_id, ip_addr) " +
-                "VALUES(null, :boardId, :content, :userNickname, :parentNickname, (SELECT LAST_INSERT_ID() + 1), :ipAddr)";
+    public Long writeComment(Comment comment) {
+        String sqlParentComment = "INSERT INTO comment(id, board_id, content, user_nickname, parent_nickname, ip_addr) " +
+                "VALUES(null, :boardId, :content, :userNickname, :parentNickname, :ipAddr)";
         String sqlChildComment = "INSERT INTO comment(id, board_id, content, user_nickname, parent_nickname, group_id, depth, ip_addr) " +
                 "VALUES(null, :boardId, :content, :userNickname, :parentNickname, :groupId, :depth, :ipAddr)";
         SqlParameterSource params = new BeanPropertySqlParameterSource(comment);
@@ -103,21 +108,27 @@ public class CommentDaoImpl implements CommentDao {
              */
             if (comment.getDepth() == 0) {
                 // 일반 댓글(부모 댓글) Query 시작합니다.
-                KeyHolder keyHolder = new GeneratedKeyHolder();
-                jdbc.update(sqlParentComment, params, keyHolder);
-
-                return keyHolder.getKey().intValue();
+                return insertCommentAction.executeAndReturnKey(params).longValue();
 
             } else {
                 log.info("대댓글 입력 쿼리 시작.");
                 // 자식 댓글(대댓글) Query 시작
-                KeyHolder keyHolder = new GeneratedKeyHolder();
-                jdbc.update(sqlChildComment, params, keyHolder);
-
-                return keyHolder.getKey().intValue();
+                return insertCommentAction.executeAndReturnKey(params).longValue();
             }
         } catch (Exception ex) {
             throw new RuntimeException(ex);
+        }
+    }
+    @Override
+    public int setCommentGroupId(Long id) {
+        String sql = "UPDATE comment " +
+                "SET group_id = :id " +
+                "WHERE id = :id";
+        Map<String, ?> map = Collections.singletonMap("id", id);
+        try {
+            return jdbc.update(sql, map);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

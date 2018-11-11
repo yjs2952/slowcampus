@@ -107,12 +107,11 @@ public class CommentController {
     }
 
     // 대댓글 쓰기.
-    // 일반 글쓰기와. group_id, depth에 관한 sql 만 다르다.
     @RequestMapping(value="/comment/write/recomment", method=RequestMethod.POST)
     public ResponseEntity<String> writeReComment(@RequestBody Comment comment) {
         ResponseEntity<String> entity=null;
         try {
-            commentService.writeComment(comment);
+            commentService.writeRecomment(comment);
             entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
         } catch(Exception e) {
             e.printStackTrace();

@@ -198,16 +198,21 @@
 
                 <br>
                 <!-- Attachment -->
-                <div class="attachment-block clearfix">
 
-                    <c:forEach items="${images}" var="image">
-                        <img width="100" height="100"
-                             src="https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}"
-                             style="cursor: pointer;" onclick="doImgPop('https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}')" />
-                    </c:forEach>
+                    <div class="attachment-block">
 
-                </div>
-                <!-- /.attachment-block -->
+                        <c:forEach items="${images}" var="image">
+                            <c:if test="${image.path ne ''}">
+                                <img width="100" height="100"
+                                     src="https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}"
+                                     style="cursor: pointer;" onclick="doImgPop('https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}')" />
+                            </c:if>
+                        </c:forEach>
+
+                    </div>
+                    <!-- /.attachment-block -->
+
+
 
                 <!-- Social sharing buttons -->
                 <%--<button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>--%>
@@ -322,23 +327,23 @@
     console.log("getComments() 끝.");
 
 
-    function getCount(boardid,commentid) {
-        $.ajax({
-            url:'/comment/recomment/'+boardid +"/" + commentid,
-            dataType: 'json',
-            success: function(json) {
-                //console.log("ajax json : " + json + "   boardid : " + boardid + "   commentId : " + commentid);
-                str=json;
-
-                $("#countRecomment").find("[data-recomment='" + commentId + "']").html(json);
-                var testattr = $("#countRecomment").attr("data-recomment");
-                var testcomment = $("#countRecomment").attr("data-commentNo");
-                //console.log("testattr = " + testattr + "testcomment ::::::::::::: " + testcomment);
-                return json;
-            }
-
-        });
-    }
+    // function getCount(boardid,commentid) {
+    //     $.ajax({
+    //         url:'/comment/recomment/'+boardid +"/" + commentid,
+    //         dataType: 'json',
+    //         success: function(json) {
+    //             //console.log("ajax json : " + json + "   boardid : " + boardid + "   commentId : " + commentid);
+    //             str=json;
+    //
+    //             $("#countRecomment").find("[data-recomment='" + commentId + "']").html(json);
+    //             var testattr = $("#countRecomment").attr("data-recomment");
+    //             var testcomment = $("#countRecomment").attr("data-commentNo");
+    //             //console.log("testattr = " + testattr + "testcomment ::::::::::::: " + testcomment);
+    //             return json;
+    //         }
+    //
+    //     });
+    // }
 
     function getRecommentList(boardid,commentid) {
         $.getJSON("/comment/recomments/"+boardid +"/" + commentid, function(list) {
@@ -501,6 +506,7 @@
 
 
     // 위에 있을땐 실행 안되더니... 맨 아래로 옮기니까 된다?
+    // 부모댓글 입력하기.
     $("#commentWriteBtn").on("click", function() {
 
         var commentContent = $("#commentWriteContent").val();
@@ -696,10 +702,10 @@
         var recommentContent = $("#commentWriteReContent").val();
         var recommentUser= loginMember;  // 맨위에.
         var parentCommentNickname = parentUser;
-        console.log("recomment write content : " + recommentContent);
-        console.log("recomment write user : " + recommentUser);
-        console.log("recomment write parent id : " + commentId);
-        console.log("recomment write parent nick : " + parentCommentNickname);
+        // console.log("recomment write content : " + recommentContent);
+        // console.log("recomment write user : " + recommentUser);
+        // console.log("recomment write parent id : " + commentId);
+        // console.log("recomment write parent nick : " + parentCommentNickname);
 
 
         $.ajax({

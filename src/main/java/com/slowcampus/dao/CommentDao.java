@@ -10,7 +10,8 @@ public interface CommentDao {
     public List<Comment> getRecommentList(Long boardId, Long parentCommentId);
     public Long getCountOfRecommentList(Long boardId, Long parentCommentId);
 
-    public int writeComment(Comment comment);
+    public Long writeComment(Comment comment);
+    public int setCommentGroupId(Long id);
 
     public int modifyComment(Comment comment);
 
