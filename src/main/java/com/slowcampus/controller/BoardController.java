@@ -5,34 +5,40 @@ import com.slowcampus.dto.*;
 import com.slowcampus.service.BoardService;
 import com.slowcampus.service.CommentService;
 import com.slowcampus.service.ImageService;
+import com.slowcampus.util.AzureApp;
 import com.slowcampus.util.PageUtil;
 import lombok.extern.java.Log;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @Log
 public class BoardController {
     private BoardService boardService;
     private ImageService imageService;
-    private CommentService commentService;
 
     @Autowired
     public BoardController(BoardService boardService, ImageService imageService,CommentService commentService) {
         this.boardService = boardService;
         this.imageService = imageService;
-        this.commentService = commentService;
     }
 
     
@@ -112,14 +118,6 @@ public class BoardController {
         List<Image> imageList = imageService.getImageList(id);
         modelMap.addAttribute("images", imageList);
 
-        // 댓글
-
-
-
-        // 댓글 출력하기
-//        List<Comment> commentList = commentService.getCommentList(id,0);
-//        modelMap.addAttribute("comments" , commentList);
-
         return "articleDetail";
     }
 
@@ -129,7 +127,8 @@ public class BoardController {
     }
 
     @PostMapping("/boards/{category}/articles/write")
-    public String articleWrite(Board board, HttpServletRequest req) {
+    public String articleWrite(Board board, HttpServletRequest req,
+                                MultipartFile[] files, Model model) {
         Member member = (Member) req.getSession().getAttribute("login");
         /*HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
@@ -140,6 +139,45 @@ public class BoardController {
         board.setNickname(member.getNickname());
         board.setIpAddr(req.getRemoteAddr());
         Long id = boardService.writeArticle(board);
+
+
+        /*
+            image upload.
+         */
+        for(MultipartFile file : files) {
+            /* 기본 폴더 설정, 날짜 경로 더해주기는 파일들의 공통적인 부분. for 위로?*/
+            File dir = new File(".");
+            String path = dir.getAbsolutePath();
+
+            String datePath = AzureApp.calcPath(path);
+
+            // /tmp/2018_11_01
+            path = path + datePath;
+
+            // savedName : ~~~~~~~~~~~~~_원래이름.
+            UUID uid = UUID.randomUUID();
+            String savedName = uid.toString() + "_" + file.getOriginalFilename();
+
+            File sourceFile = new File(path , savedName);
+
+
+            Image image = new Image();
+
+            image.setOriginalName(file.getOriginalFilename());
+            image.setType(file.getContentType());
+            image.setSize(file.getSize());
+            image.setSaveName(savedName);
+            image.setPath(datePath + File.separator +savedName);
+            image.setRegDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+            image.setBoardId(id); // 위에 board 만들고 나면 생기는 id
+
+            imageService.uploadImage(image);
+            // 이미지 db업로드 완료.
+
+            imageService.uploadImageToAzure(file,sourceFile,datePath,path);
+
+        }
+
 
         return "redirect:/boards/{category}/articles/detail?id="+id;
     }
