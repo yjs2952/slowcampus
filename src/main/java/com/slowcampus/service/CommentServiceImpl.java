@@ -24,6 +24,21 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    public List<Comment> getRecommentList(Long boardId, Long parentCommentId) {
+        return commentDao.getRecommentList(boardId, parentCommentId);
+    }
+
+    @Override
+    @Transactional
+    public Long getCountOfRecommentList(Long boardId, Long parentCommentId) {
+        return commentDao.getCountOfRecommentList(boardId,parentCommentId);
+
+    }
+
+
+
+    @Override
+    @Transactional
     public int writeComment(Comment comment) {
         return commentDao.writeComment(comment);
     }

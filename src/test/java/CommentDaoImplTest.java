@@ -89,4 +89,25 @@ public class CommentDaoImplTest {
         count = commentDao.deleteComment(id);
         System.out.println(count);
     }
+
+    @Test
+    public void commentCount() {
+        Long boardId=172L;
+        Long groupId=98L;
+
+        Long count = commentDao.getCountOfRecommentList(boardId,groupId);
+        System.out.println(count);
+
+    }
+
+    @Test
+    public void recommentList() {
+        Long boardId=220L;
+        Long groupId=164L;
+
+        List<Comment> list = commentDao.getRecommentList(boardId,groupId);
+        for(Comment comment : list) {
+            System.out.println(comment);
+        }
+    }
 }

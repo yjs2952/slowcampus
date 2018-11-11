@@ -48,9 +48,34 @@ public class CommentDaoImpl implements CommentDao {
         select * from comment where board_id=게시판번호 and group_id=부모댓글번호 and depth=1 order by id desc;
      */
     @Override
-    public List<Comment> getCommentOfCommentList(Long boardId, Long parentCommentId) {
+    public List<Comment> getRecommentList(Long boardId, Long parentCommentId) {
+        String sql = "SELECT id, board_id, content, user_nickname, parent_nickname, group_id, depth, ip_addr,is_deleted, regdate, moddate " +
+                "FROM comment WHERE board_id = :board_id and is_deleted=0 and depth=1 and group_id=:group_id ORDER BY id DESC";
+        Map<String, Long> params = new HashMap<String, Long>();
+        try {
+            params.put("board_id" , boardId);
+            params.put("group_id" , parentCommentId);
+            RowMapper rowMapper = BeanPropertyRowMapper.newInstance(Comment.class);
 
-        return null;
+            return jdbc.query(sql, params, rowMapper);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+
+    }
+
+    @Override
+    public Long getCountOfRecommentList(Long boardId, Long parentCommentId) {
+        // boardId 는 설정 안해줘도 될거 같은데. 일단 알아보기 쉽게 해놨음.
+        String sql = "SELECT COUNT(*) FROM comment WHERE depth=1 and board_id=:board_id and group_id=:group_id";
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            map.put("board_id" , boardId);
+            map.put("group_id" , parentCommentId);
+            return jdbc.queryForObject(sql, map, Long.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // regdate 는 어차피 디폴트 값으로 들어가니. insert 문에서 빼줌!

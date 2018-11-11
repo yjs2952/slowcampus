@@ -171,6 +171,8 @@
     </dependencies>
 
     <build>
+        <finalName>${artifactId}</finalName>
+        <!--<finalName>ROOT</finalName>-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -182,18 +184,45 @@
                 </configuration>
             </plugin>
 
-            <!-- maven에서 tomcat을 실행한다. -->
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
                     <charset>UTF-8</charset>
+                    <url>http://jdragon.southeastasia.cloudapp.azure.com</url>
                     <uriEncoding>UTF-8</uriEncoding>
                     <port>8080</port>
                     <path>/</path>
+                    <!--<path>/${project.build.finalName}</path>-->
                 </configuration>
-            </plugin>-->
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+
+
+
+
+
+            <!-- maven에서 tomcat을 실행한다. -->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.tomcat.maven</groupId>-->
+                <!--<artifactId>tomcat-maven-plugin</artifactId>-->
+                <!--<version>2.1</version>-->
+                <!--<configuration>-->
+                    <!--<charset>UTF-8</charset>-->
+                    <!--<uriEncoding>UTF-8</uriEncoding>-->
+                    <!--<port>8080</port>-->
+                    <!--<path>/</path>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 

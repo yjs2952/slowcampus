@@ -112,6 +112,8 @@ public class BoardController {
         List<Image> imageList = imageService.getImageList(id);
         modelMap.addAttribute("images", imageList);
 
+        // 댓글
+
 
 
         // 댓글 출력하기

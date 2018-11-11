@@ -58,6 +58,40 @@ public class CommentController {
         return entity;
     }
 
+    @RequestMapping("/comment/recomments/{boardid}/{groupid}")
+    public ResponseEntity<List<Comment>> listRecomment(@PathVariable("boardid") Long boardid,
+                                                       @PathVariable("groupid") Long groupid) {
+
+        ResponseEntity<List<Comment>> entity = null;
+
+        try {
+            entity = new ResponseEntity<>(commentService.getRecommentList(boardid,groupid),HttpStatus.OK);
+        } catch(Exception e) {
+            e.printStackTrace();
+            entity=new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return entity;
+    }
+
+
+
+    @RequestMapping("/comment/recomment/{boardid}/{groupid}")
+    public ResponseEntity countRecomment(@PathVariable("boardid")Long boardid, @PathVariable("groupid")Long groupid) {
+
+        ResponseEntity entity = null;
+
+        try {
+            entity = new ResponseEntity(commentService.getCountOfRecommentList(boardid,groupid),HttpStatus.OK);
+        } catch(Exception e) {
+            e.printStackTrace();
+            entity=new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return entity;
+    }
+
+
     @RequestMapping(value="/comment/write" , method=RequestMethod.POST)
     public ResponseEntity<String> writeComment(@RequestBody Comment comment) {
 
@@ -73,8 +107,8 @@ public class CommentController {
     }
 
     // 대댓글 쓰기.
-
-    @RequestMapping(value="/comment/write/recomment")
+    // 일반 글쓰기와. group_id, depth에 관한 sql 만 다르다.
+    @RequestMapping(value="/comment/write/recomment", method=RequestMethod.POST)
     public ResponseEntity<String> writeReComment(@RequestBody Comment comment) {
         ResponseEntity<String> entity=null;
         try {
@@ -86,6 +120,7 @@ public class CommentController {
         }
         return entity;
     }
+
 
 
 
