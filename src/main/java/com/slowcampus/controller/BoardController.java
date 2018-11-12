@@ -145,6 +145,7 @@ public class BoardController {
         board.setUserId(member.getId());
         board.setNickname(member.getNickname());
         board.setIpAddr(req.getRemoteAddr());
+        Long id = boardService.writeArticle(board);
 
         // 사진없으면 여기서 끝.
         // 사진이 무조건 한개는 들어가는듯...

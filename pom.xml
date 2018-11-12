@@ -171,8 +171,8 @@
     </dependencies>
 
     <build>
-        <finalName>${artifactId}</finalName>
-        <!--<finalName>ROOT</finalName>-->
+        <!--<finalName>${artifactId}</finalName>-->
+        <finalName>ROOT</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
