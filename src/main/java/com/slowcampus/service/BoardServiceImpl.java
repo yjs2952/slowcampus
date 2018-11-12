@@ -18,7 +18,7 @@ public class BoardServiceImpl implements BoardService {
     private CategoryDao categoryDao;
 
     @Autowired
-    public BoardServiceImpl(BoardDao boardDao, CategoryDao categoryDao){
+    public BoardServiceImpl(BoardDao boardDao, CategoryDao categoryDao) {
         this.boardDao = boardDao;
         this.categoryDao = categoryDao;
     }
@@ -46,6 +46,12 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional(readOnly = true)
+    public Board getParentArticle(Long id) {
+        return boardDao.getParentArticle(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Board getArticleCotent(Long id) {
         return boardDao.getArticle(id);
     }
@@ -59,9 +65,35 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public Long writeArticle(Board board) {
+
+        //Long id = null;
+        /*if (board.getParentBoardId() == null) {
+            id = boardDao.writeArticle(board);
+            boardDao.setRootBoardId(id);
+
+        } else {
+            board.setDepth(board.getDepth() + 1);
+            id = boardDao.writeReply(board);
+        }*/
         Long id = boardDao.writeArticle(board);
         board.setId(id);
+
         boardDao.setRootBoardId(id);
+        boardDao.writeArticleContent(board);
+        return id;
+    }
+
+    @Override
+    public Long writeReply(Board board) {
+
+
+        boardDao.updateDepthOrder(board);
+
+        board.setDepth(board.getDepth() + 1);
+        board.setDepthOrder(board.getDepthOrder() + 1);
+        Long id = boardDao.writeArticle(board);
+
+        board.setId(id);
         boardDao.writeArticleContent(board);
         return id;
     }

@@ -14,7 +14,8 @@
                 <div class="box box-primary">
                     <div class="box-header">
                         <h3 class="box-title">${categoryList.get(var.index).name} 게시판</h3>
-                        <a class="btn btn-default btn-xs pull-right" href="/articles/list?category=${var.index + 1}">더 보기</a>
+                        <a class="btn btn-default btn-xs pull-right" href="/articles/list?category=${var.index + 1}">더
+                            보기</a>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
@@ -37,16 +38,26 @@
                                     <td>${article.id}</td>
                                     <c:choose>
                                         <c:when test="${article.isDeleted == 0}">
-                                            <td><a href="/boards/${article.category}/articles/detail?id=${article.id}">${article.title}</a></td>
+                                            <td>
+
+                                                <a href="/boards/${article.category}/articles/detail?id=${article.id}">
+                                                    <c:if test="${article.depth > 0}">
+                                                        <c:forEach begin="2" end="${article.depth}"
+                                                                   step="1">&nbsp;&nbsp;&nbsp;&nbsp;</c:forEach>
+                                                        ㄴRE :
+                                                    </c:if>
+                                                        ${article.title}
+                                                </a>
+                                            </td>
                                         </c:when>
                                         <c:otherwise>
                                             <td>삭제된 게시글 입니다.</td>
                                         </c:otherwise>
                                     </c:choose>
                                     <td>
-                                        ${article.nickname}
+                                            ${article.nickname}
                                     </td>
-                                    <td><fmt:formatDate value="${article.regDate}" pattern="yyyy-MM-dd" />
+                                    <td><fmt:formatDate value="${article.regDate}" pattern="yyyy-MM-dd"/>
                                 </tr>
                             </c:forEach>
                             </tbody>

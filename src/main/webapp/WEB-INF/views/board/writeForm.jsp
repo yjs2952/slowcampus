@@ -10,17 +10,25 @@
         <!-- /.box-header -->
         <!-- form start -->
         <form id="articleWriteForm" role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+
+            <c:if test="${param.pid != null}">
+                <input type="hidden" name="rootBoardId" value="${board.rootBoardId}">
+                <input type="hidden" name="parentBoardId" value="${board.id}">
+                <input type="hidden" name="depth" value="${board.depth}">
+                <input type="hidden" name="depthOrder" value="${board.depthOrder}">
+            </c:if>
             <div class="box-body">
                 <div class="form-group">
                     <label for="title" class="col-lg-2 col-md-2">제목</label>
                     <div class="col-lg-10 col-md-10 has-feedback">
-                    <input type="text" class="form-control" name="title" id="title" placeholder="제목">
+                        <input type="text" class="form-control" name="title" id="title" placeholder="제목">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="content" class="col-lg-2 col-md-2">내용</label>
                     <div class="col-lg-10 col-md-10 has-feedback">
-                        <textarea class="form-control" name="content" id="content" placeholder="내용" rows="10"></textarea>
+                        <textarea class="form-control" name="content" id="content" placeholder="내용"
+                                  rows="10"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -46,7 +54,7 @@
         return regex.test(value);
     });*/
 
-    $(function(){
+    $(function () {
 
         $("#articleWriteForm").validate({
             onclick: false,
@@ -63,10 +71,7 @@
                     minlength: 2,
                     maxlength: 1000
                 },
-                file: {
-
-                },
-                agree: "required"
+                file: {}
             },
             messages: {
                 title: {
