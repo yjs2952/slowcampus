@@ -12,22 +12,16 @@
 
 <style>
     div { display: block; }
-
-
     col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
         position: relative;
         min-height: 1px;
         padding-right: 15px;
         padding-left: 15px;
     }
-
-
-
     .user-block .username {
         font-size: 16px;
         font-weight: 600;
     }
-
     .user-block .description {
         color: #999;
         font-size: 13px;
@@ -108,8 +102,6 @@
 
 <script>
 
-    var isOpend=false;
-
 
 // 이미지 팝업창으로 원본 보기!!!!
     function doImgPop(img){
@@ -142,89 +134,6 @@
 
 </script>
 
-<script type="text/javascript">
-
-    // var boardid = 3;
-    var link = document.location.href.split("?");
-    console.log(link[1]);
-
-    // 파리미터값 가져오는 메소드!!!
-    function getParameterByName(name , url) {
-        if(!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex=new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results=regex.exec(url);
-        return results[2];
-    }
-    var boardid = getParameterByName('id');
-    console.log(boardid);
-
-    getComments(boardid);
-
-
-
-    var loginMember = "${sessionScope.login.nickname}";
-    console.log("ddfdafdaf : "+loginMember);
-
-    console.log("getComments() 끝.");
-
-
-
-    // 댓글 리스트 불러오는 메소드.
-    function getComments(boardid) {
-
-        $.getJSON("/comment/list/"+boardid, function(data) {
-            var str="";
-            console.log(data.length);
-
-            $(data).each(
-                function() {
-                    var myDate = new Date(this.moddate);
-                    var outputDate = myDate.getFullYear() + "-" +  (myDate.getMonth()+1) + "-" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds();
-
-
-                    str += "<div class='box-comment' >" +
-                        "<img style='float:left;' class='img-circle img-sm' width='30' height='30' src='https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg'>" +
-                        "<div class='comment-text'>\n" +
-                        " <span data-commentNo='" + this.id +"' id='commentUser' class='username'>\n" + this.id + "-" +this.userNickname + "\n";
-
-                    // 글쓴이랑 로그인 한 멤버의 닉네임이 같을 경우에만 버튼이 나오게!.
-                    if(this.userNickname == loginMember) {
-                        str += " <button id='modifyComment' type='button' class='btn btn-box-tool' data-toggle='modal' data-target='#modifyModal' title data-widget='chat-pane-toggle' data-original-title='update'><i class='fa fa-edit'></i></button>\n" +
-                            " <button id='deleteComment' type='button' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title='remove'><i class='fa fa-times'></i></button>\n";
-                    }
-
-                    // 로그인이 안됐을땐 대댓글 다는 버튼을 비활성화 해야한다.
-                    if(loginMember != ""){
-                        str += " <button id='reComment' type='button' onclick='reCommentClick("+this.id+",isOpend);' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title='Re'><i class='fa fa-align-left'></i></button>\n";
-                    }
-
-
-                    str += "                            </span><!-- /.username -->\n" +
-                        "                            <span class='text-muted pull-right'>" + outputDate + "</span>\n" +
-                        "\n" +
-                        "                            <span class='commentContent' id='commentContent'>" + this.content + "</span>\n" +
-                        "                        </div>\n" +
-                        "                        <!-- /.comment-text -->\n" +
-                        "                    </div>\n" +
-                        "                    <!-- /.box-comment -->" +
-                        " <div data-recommentNo='"+ this.id + "'  id='reCommentGroup'>\n " +
-                        " </div> ";
-                }
-            );
-            $("#comments").html(str);
-            <%--<fmt:formatDate value='${this.moddate}' pattern='yyyyMMdd' />--%>
-        });
-
-    }
-
-
-</script>
-
-<script type="text/javascript">
-
-
-</script>
 
 
 <h3 class="box-title">일단은 FreeBoard</h3>
@@ -291,16 +200,21 @@
 
                 <br>
                 <!-- Attachment -->
-                <div class="attachment-block clearfix">
 
-                    <c:forEach items="${images}" var="image">
-                        <img width="100" height="100"
-                             src="https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}"
-                             style="cursor: pointer;" onclick="doImgPop('https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}')" />
-                    </c:forEach>
+                    <div class="attachment-block">
 
-                </div>
-                <!-- /.attachment-block -->
+                        <c:forEach items="${images}" var="image">
+                            <c:if test="${image.path ne ''}">
+                                <img width="100" height="100"
+                                     src="https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}"
+                                     style="cursor: pointer;" onclick="doImgPop('https://slowcampus.blob.core.windows.net/quickstartcontainer${image.path}')" />
+                            </c:if>
+                        </c:forEach>
+
+                    </div>
+                    <!-- /.attachment-block -->
+
+
 
                 <!-- Social sharing buttons -->
                 <%--<button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>--%>
@@ -383,11 +297,218 @@
 
 
 
+<script type="text/javascript">
+
+    var isOpend=false;
+    var loginMember = "${sessionScope.login.nickname}";
+    var parentUser="";
+
+
+    // var boardid = 3;
+    var link = document.location.href.split("?");
+    console.log(link[1]);
+
+    // 파리미터값 가져오는 메소드!!!
+    function getParameterByName(name , url) {
+        if(!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex=new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results=regex.exec(url);
+        return results[2];
+    }
+    var boardid = getParameterByName('id');
+    console.log(boardid);
+
+    getComments(boardid);
+
+
+
+
+    console.log("ddfdafdaf : "+loginMember);
+
+    console.log("getComments() 끝.");
+
+
+    // function getCount(boardid,commentid) {
+    //     $.ajax({
+    //         url:'/comment/recomment/'+boardid +"/" + commentid,
+    //         dataType: 'json',
+    //         success: function(json) {
+    //             //console.log("ajax json : " + json + "   boardid : " + boardid + "   commentId : " + commentid);
+    //             str=json;
+    //
+    //             $("#countRecomment").find("[data-recomment='" + commentId + "']").html(json);
+    //             var testattr = $("#countRecomment").attr("data-recomment");
+    //             var testcomment = $("#countRecomment").attr("data-commentNo");
+    //             //console.log("testattr = " + testattr + "testcomment ::::::::::::: " + testcomment);
+    //             return json;
+    //         }
+    //
+    //     });
+    // }
+
+    function getRecommentList(boardid,commentid) {
+        $.getJSON("/comment/recomments/"+boardid +"/" + commentid, function(list) {
+                console.log(commentid + "댓글의 대댓글 개수는 " + list.length);
+                console.log("대댓글 recomment 요소값 : "+$("#countRecomment").attr("data-recomment"));
+                //$("#comments").find($("#countRecomment")).html(list.length);
+                $("#comments").find("[data-recomment='" + commentid + "']").html(list.length);
+
+                var str2="";
+                $(list).each(
+                    function() {
+                        console.log("list.id : " + this.id +  "  list.content : " + this.content+"  list.depth : " + this.depth);
+                        console.log("대댓글 붙이기.");
+
+                        getRecommentList(boardid,this.id);
+
+                        var myDate = new Date(this.moddate);
+                        var outputDate = myDate.getFullYear() + "-" +  (myDate.getMonth()+1) + "-" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds();
+
+                        str2 += "<div style='margin-left: 50px; padding: 10px;'class='box-comment' >" +
+                            "<img style='float:left;' class='img-circle img-sm' width='30' height='30' src='https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg'>" +
+                            "<div class='comment-text'>\n" +
+                            " <div data-commentNo='" + this.id +"' id='commentUser' class='username'>\n"+
+                            "<span id='modalusername'>"+this.userNickname+"</span>";
+
+                        // 글쓴이랑 로그인 한 멤버의 닉네임이 같을 경우에만 버튼이 나오게!.
+                        if(this.userNickname == loginMember) {
+                            str2 += " <button id='modifyComment' type='button' class='btn btn-box-tool' data-toggle='modal' data-target='#modifyModal' title data-widget='chat-pane-toggle' data-original-title='update'><i class='fa fa-edit'></i></button>\n" +
+                                " <button id='deleteComment' type='button' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title='remove'><i class='fa fa-times'></i></button>\n";
+                        }
+
+                        // 로그인이 안됐을땐 대댓글 다는 버튼을 비활성화 해야한다.
+                        if(loginMember != ""){
+                             str2 += " <button id='reComment' type='button' onclick='reCommentClick("+ this.id+",isOpend);' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title=''><i class='fa fa-align-left'></i></button>\n";
+                            // str2 += " <button id='reComment' type='button' onclick='reCommentClick("+ this.id+");' class='btn btn-box-tool' data-toggle='collapse' aria-expanded='false' aria-controls='reCommentDiv' data-original-title=''><i class='fa fa-align-left'></i></button>\n";
+                        }
+
+                        // str2+=" <button data-recomment='"+this.id+"' id='countRecomment' data-toggle='collapse' data-target='#reCommentGroup' aria-expanded='false' aria-controls='reCommentGroup'><span class='badge'></span></button> ";
+
+                        str2 += "<span style='font-size: 10px;'class='label label-primary'>To."+this.parentNickname+"</span>";
+
+
+                        str2 += "                            </div><!-- /.username -->\n" +
+                            " <button data-recomment='"+this.id+"' id='countRecomment' data-toggle='collapse' data-target='div[data-recommentNo="+this.id+"]' aria-expanded='false' aria-controls='reCommentGroup'><span class='badge'></span></button> "+
+                            // "<a data-recomment='"+this.id+"' id='countRecomment'href='#'></a>" +
+                            "                            <span class='text-muted pull-right'>" + outputDate + "</span>\n" +
+                            "                            <span class='commentContent' id='commentContent'>" + this.content + "</span>\n" +
+                            "                        </div>\n" +
+                            "                        <!-- /.comment-text -->\n" +
+                            "                    </div>\n" +
+                            "                    <!-- /.box-comment -->" +
+                            " <div data-recommentNo='"+ this.id + "'  id='reCommentGroup' class='collapse' aria-expanded='false'>\n " +
+                            " </div> " +
+                            " <div data-recommentInputNo='"+ this.id + "'  id='reCommentInput'>\n " +
+                            " </div> ";
+
+
+                    }
+
+                );
+            $("#comments").find("[data-recommentNo='" + commentid + "']").html(str2);
+            //$("#reCommentGroup").html(str2);
+            }
+
+        );
+    }
+
+
+    // 댓글 리스트 불러오는 메소드.
+    function getComments(boardid) {
+
+        $.getJSON("/comment/list/"+boardid, function(data) {
+            var str="";
+            // data 는 list.
+            console.log(data.length);
+
+
+            $(data).each(
+                function() {
+                    console.log("this.id : " + this.id + "  this.depth : " + this.depth + " this.groupid : " + this.groupId);
+
+                    getRecommentList(boardid,this.id);
+
+                    var myDate = new Date(this.moddate);
+                    var outputDate = myDate.getFullYear() + "-" +  (myDate.getMonth()+1) + "-" + myDate.getDate() + " " + myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds();
+
+
+
+                    str += "<div class='box-comment' >" +
+                        "<img style='float:left;' class='img-circle img-sm' width='30' height='30' src='https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg'>" +
+                        "<div class='comment-text'>\n" +
+                        " <div data-commentNo='" + this.id +"' id='commentUser' class='username'>\n"+
+                        "<span id='modalusername'>"+this.userNickname+"</span>";
+
+                    // 글쓴이랑 로그인 한 멤버의 닉네임이 같을 경우에만 버튼이 나오게!.
+                    if(this.userNickname == loginMember) {
+                        str += " <button id='modifyComment' type='button' class='btn btn-box-tool' data-toggle='modal' data-target='#modifyModal' title data-widget='chat-pane-toggle' data-original-title='update'><i class='fa fa-edit'></i></button>\n" +
+                            " <button id='deleteComment' type='button' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title='remove'><i class='fa fa-times'></i></button>\n";
+                    }
+
+                    // 로그인이 안됐을땐 대댓글 다는 버튼을 비활성화 해야한다.
+                    if(loginMember != ""){
+                        str += " <button id='reComment' type='button' onclick='reCommentClick("+ this.id+",isOpend);' class='btn btn-box-tool' data-toggle='tooltip' title data-widget='chat-pane-toggle' data-original-title=''><i class='fa fa-align-left'></i></button>\n";
+                        // str += " <button id='reComment' type='button' onclick='reCommentClick("+ this.id+");' class='btn btn-box-tool' data-toggle='collapse' aria-expanded='false' aria-controls='reCommentDiv' data-original-title=''><i class='fa fa-align-left'></i></button>\n";
+
+                    }
+
+                    // str+=" <span data-recomment='"+this.id+"' id='countRecomment' class='badge'>1</span> ";
+
+
+
+                    console.log("test~~~~~~~~~~~~~~~~  :  " + this.id);
+
+                    /*
+                         data-target='div[data-recommentNo="+this.id+"]' 중요!
+                         그냥 data-target='#reCommentGroup' 으로 했으면 가장 위에 있는 div 만 선택이 된다.
+                         좀 더 구체적으로 타겟을 정해줘야 한다.
+                     */
+
+                    str += "                            </div><!-- /.username -->\n" +
+                        " <button data-recomment='"+this.id+"' id='countRecomment' data-toggle='collapse' data-target='div[data-recommentNo="+this.id+"]' aria-expanded='false' aria-controls='reCommentGroup'><span class='badge'></span></button> "+
+                        // " <button data-recomment='"+this.id+"' id='countRecomment' data-toggle='collapse' data-target='#reCommentGroup ' aria-expanded='false' aria-controls='reCommentGroup'><span class='badge'></span></button> "+
+                        // "<a data-recomment='"+this.id+"' id='countRecomment'href='#'></a>" +
+                        "                            <span class='text-muted pull-right'>" + outputDate + "</span>\n" +
+                        "                            <span class='commentContent' id='commentContent'>" + this.content + "</span>\n" +
+                        "                        </div>\n" +
+                        "                        <!-- /.comment-text -->\n" +
+                        "                    </div>\n" +
+                        "                    <!-- /.box-comment -->" +
+                        " <div data-recommentNo='"+ this.id + "'  id='reCommentGroup' class='collapse' aria-expanded='false'>\n " +
+                        " </div> " +
+                        " <div data-recommentInputNo='"+ this.id + "'  id='reCommentInput'>\n " +
+                        " </div> ";
+
+                }
+            );
+            console.log("data-recommentNo : " + $("#reCommentGroup").attr("data-recommentNo"));
+
+            $("#comments").html(str);
+            <%--<fmt:formatDate value='${this.moddate}' pattern='yyyyMMdd' />--%>
+        });
+
+    }
+
+
+</script>
+
+<script type="text/javascript">
+
+
+
+</script>
+
+
+
+
 
 
 <script type="text/javascript">
 
+
     // 위에 있을땐 실행 안되더니... 맨 아래로 옮기니까 된다?
+    // 부모댓글 입력하기.
     $("#commentWriteBtn").on("click", function() {
 
         var commentContent = $("#commentWriteContent").val();
@@ -425,23 +546,19 @@
     // modal 창에 값 넣기.
     $("#comments").on("click", ".box-comment", function() {
         var reply = $(this);
-        var commentUser = reply.find(".username").text().trim();
+        var commentUser = reply.find("#modalusername").text().trim();
         var commentContent = reply.find(".commentContent").text();
         var commentId = reply.find(".username").attr("data-commentNo");
 
 
-
-        // console.log("this : " + reply);
-        // console.log(commentUser);
-        // console.log(commentContent);
-        // console.log(commentId);
-
-
+        // 댓글 옆에 버튼들 누르기 전에.
+        // 버튼위에 커서 올리면 나타나는 글자??  remove는 commentUser 에 포함이 안되는데.
+        // 계속 Re 뜨는것만 포함길래... 지움...
+        // 이유 모르겠다...
+        parentUser = commentUser;
         $("#modalCommentId").val(commentId);
         $("#modalCommentUser").val(commentUser);
         $("#modalCommentContent").val(commentContent);
-
-
     });
 
     // 댓글 아이디 옆에 나타나는 삭제 아이콘 누르면 실행되는 메소드.
@@ -537,31 +654,90 @@
     });
 
 
+    var commentId;
 
-    // 댓글 목록에서 대댓글 달기 버튼 누르면 보이는 것!
+    // 댓글 목록에서 대댓글 달기 버튼 누르면 보이는 대댓글 입력폼
     function reCommentClick(idid) {
+        commentId= idid;
+        // console.log("aria-expand: "+ $("#reComment").attr("aria-expanded"));
+        // $("#reComment").attr("aria-expanded" , true);
+
+        // if($("#reComment").attr("aria-expanded") == "false") {
         if(isOpend == false) {
-            console.log("commentid : " + idid + "   check 0 -> 1");
+            console.log("commentid : " + idid );
             var str = "<div id='reCommentDiv' class=\"box-footer\">\n" +
                 "       <img style=\"float: left;\"class=\"img-circle img-sm\" width=\"30\" height=\"30\" src=\"https://slowcampus.blob.core.windows.net/quickstartcontainer/2018_11_01/a623e6f3-20d0-43ca-98a0-4b8fa9b94e8a_dahyun.jpg\">\n" +
                 "       <!-- .img-push is used to add margin to elements next to floating images -->\n" +
                 "       <div class=\"input-group margin\">\n" +
                 "           <input type=\"text\" name=\"commentWriteReContent\" id=\"commentWriteReContent\" class=\"form-control\" placeholder=\"Press enter to post comment\">\n" +
                 "           <span class=\"input-group-btn\">\n" +
-                "               <button type=\"button\" id=\"recommentWriteBtn\"class=\"btn btn-info btn-flat\">Input!</button>\n" +
+                "               <button type='button' onclick='reCommentWrite();'  id=\"recommentWriteBtn\"class=\"btn btn-info btn-flat\">Input!</button>\n" +
                 "           </span>\n" +
                 "       </div>\n" +
-                " </div> <!-- /.box-footer -->";
+                " </div> <!-- /.box-footer -->"
 
+            $("#comments").find("[data-recommentInputNo='" + idid + "']").html(str);
 
-            console.log("recommentgroup  : "+ $("#reCommentGroup").attr("data-recommentNo"));
-            $("#comments").find("[data-recommentNo='" + idid + "']").html(str);
+            // $("#reComment").attr("aria-expanded" , true);
         } else {
             console.log("대댓글 입력창 지워보리기~");
-            $("#comments").find("[data-recommentNo='" + idid + "']").html("");
+            $("#comments").find("[data-recommentInputNo='" + idid + "']").html("");
+
+            // $("#reComment").attr("aria-expanded" , false);
         }
 
+        // isOpend 가 전역변수라서... 문제가 발생함.
+        // 1번 댓글의 대댓글창 열고 2번 댓글의 대댓글창 열려고 하면
+        // 안열림. 한번 더 눌러야 열림.
+
         isOpend = !isOpend;
+
+    }
+
+
+
+
+
+    // 대댓글 입력하기.
+    function reCommentWrite() {
+
+        var recommentContent = $("#commentWriteReContent").val();
+        var recommentUser= loginMember;  // 맨위에.
+        var parentCommentNickname = parentUser;
+        // console.log("recomment write content : " + recommentContent);
+        // console.log("recomment write user : " + recommentUser);
+        // console.log("recomment write parent id : " + commentId);
+        // console.log("recomment write parent nick : " + parentCommentNickname);
+
+
+        $.ajax({
+            type : 'post',
+            url : '/comment/write/recomment',
+            headers : {
+                "Content-Type" : "application/json",
+                "X-HTTP-Method-Override" : "POST"
+            },
+            dataType : 'text',
+            data : JSON.stringify({
+                boardId : boardid,
+                content : recommentContent,
+                userNickname : recommentUser,
+                parentNickname : parentCommentNickname,
+                depth : 1,
+                groupId : commentId,
+                ipAddr : "192.168.0.123"
+
+            }),
+            success : function(result) {
+                if (result == 'SUCCESS') {
+                    alert("대댓글 등록완료!");
+                    getComments(boardid);
+                    $("#commentWriteContent").val("");
+                }
+            }
+        });
+
+
 
     }
 

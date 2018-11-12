@@ -11,6 +11,7 @@ import lombok.extern.java.Log;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -33,13 +34,11 @@ import java.util.UUID;
 public class BoardController {
     private BoardService boardService;
     private ImageService imageService;
-    private CommentService commentService;
 
     @Autowired
     public BoardController(BoardService boardService, ImageService imageService, CommentService commentService) {
         this.boardService = boardService;
         this.imageService = imageService;
-        this.commentService = commentService;
     }
 
 
@@ -119,12 +118,6 @@ public class BoardController {
         List<Image> imageList = imageService.getImageList(id);
         modelMap.addAttribute("images", imageList);
 
-
-
-        // 댓글 출력하기
-//        List<Comment> commentList = commentService.getCommentList(id,0);
-//        modelMap.addAttribute("comments" , commentList);
-
         return "articleDetail";
     }
 
@@ -140,7 +133,9 @@ public class BoardController {
     }
 
     @PostMapping("/boards/{category}/articles/write")
-    public String articleWrite(Board board, @RequestParam(name = "file") MultipartFile[] files, HttpServletRequest req) {
+    public String articleWrite(Board board, HttpServletRequest req,
+                                MultipartFile[] files, Model model) {
+
         Member member = (Member) req.getSession().getAttribute("login");
         /*HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
@@ -151,15 +146,26 @@ public class BoardController {
         board.setNickname(member.getNickname());
         board.setIpAddr(req.getRemoteAddr());
 
+        // 사진없으면 여기서 끝.
+        // 사진이 무조건 한개는 들어가는듯...
+        if(files.length == 1 && files[0].getOriginalFilename().equals("")) {
+            log.info("garbage picture.");
+            return "redirect:/boards/{category}/articles/detail?id="+id;
+        }
+
+        //System.out.println("MultipartFile files.length" + files.length);
+        /*
+            image upload.
+         */
         for(MultipartFile file : files) {
-
-            log.info("--------------- file info ---------------");
-            log.info("fileName : " + file.getOriginalFilename());
-            log.info("fileType : " + file.getContentType());
-            log.info("fileTSize : " + file.getSize());
-            log.info("//--------------- file info ---------------");
-
             /* 기본 폴더 설정, 날짜 경로 더해주기는 파일들의 공통적인 부분. for 위로?*/
+
+            if(file.getOriginalFilename().equals("")){
+                System.out.println("쓰레기.");
+                continue;
+            }
+
+
             File dir = new File(".");
             String path = dir.getAbsolutePath();
 
@@ -171,32 +177,29 @@ public class BoardController {
             // savedName : ~~~~~~~~~~~~~_원래이름.
             UUID uid = UUID.randomUUID();
             String savedName = uid.toString() + "_" + file.getOriginalFilename();
+
             File sourceFile = new File(path , savedName);
 
+
             Image image = new Image();
+
             image.setOriginalName(file.getOriginalFilename());
             image.setType(file.getContentType());
             image.setSize(file.getSize());
             image.setSaveName(savedName);
             image.setPath(datePath + File.separator +savedName);
             image.setRegDate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-            image.setBoardId(3L);// 임시번호. 원래는 파라미터로 받아야함.
+            image.setBoardId(id); // 위에 board 만들고 나면 생기는 id
 
             imageService.uploadImage(image);
             // 이미지 db업로드 완료.
 
             imageService.uploadImageToAzure(file,sourceFile,datePath,path);
+
         }
 
-        Long id = 0L;
-        if (board.getParentBoardId() != null) {
-            id = boardService.writeReply(board);
-        } else {
-            id = boardService.writeArticle(board);
-        }
+        return "redirect:/boards/{category}/articles/detail?id="+id;
 
-
-        return "redirect:/boards/{category}/articles/detail?id=" + id;
     }
 
     @GetMapping("/boards/{category}/articles/modify")

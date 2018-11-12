@@ -1,6 +1,7 @@
 import com.slowcampus.config.ApplicationConfig;
 import com.slowcampus.dao.CommentDaoImpl;
 import com.slowcampus.dto.Comment;
+import com.slowcampus.service.CommentService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,8 @@ public class CommentDaoImplTest {
     // CommentDaoImpl SQL 테스트를 위한 임시 Class 입니다.
     @Autowired
     CommentDaoImpl commentDao;
+    @Autowired
+    CommentService commentService;
 
     @Test
     public void commentDaoTest(){
@@ -34,24 +37,19 @@ public class CommentDaoImplTest {
     @Test
     public void commentParentWriteDaoTest() throws Exception {
         Comment comment = new Comment();
-        int count = 0;
-
         comment.setBoardId(3L);
         comment.setContent("Reply 출력하기 테스트!7");
         comment.setUserNickname("아이러브김치");
         comment.setParentNickname("아이러브김치");
         comment.setIpAddr("192.168.0.136");
-        comment.setGroupId(42L);
-        comment.setRegdate(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-
-        count = commentDao.writeComment(comment);
-        System.out.println(count);
+        Long result = commentService.writeComment(comment);
+        System.out.println(result);
     }
 
     @Test
     public void commentChildWriteDaoTest() {
         Comment comment = new Comment();
-        int count = 0;
+        Long count =0l;
 
         comment.setBoardId(3L);
         comment.setContent("Comment 자식 댓글 테스트1");
@@ -88,5 +86,26 @@ public class CommentDaoImplTest {
 
         count = commentDao.deleteComment(id);
         System.out.println(count);
+    }
+
+    @Test
+    public void commentCount() {
+        Long boardId=172L;
+        Long groupId=98L;
+
+        Long count = commentDao.getCountOfRecommentList(boardId,groupId);
+        System.out.println(count);
+
+    }
+
+    @Test
+    public void recommentList() {
+        Long boardId=220L;
+        Long groupId=164L;
+
+        List<Comment> list = commentDao.getRecommentList(boardId,groupId);
+        for(Comment comment : list) {
+            System.out.println(comment);
+        }
     }
 }

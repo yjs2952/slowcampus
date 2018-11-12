@@ -10,6 +10,7 @@
         <!-- /.box-header -->
         <!-- form start -->
         <form id="articleWriteForm" role="form" class="form-horizontal" method="post" enctype="multipart/form-data">
+
             <c:if test="${param.pid != null}">
                 <input type="hidden" name="rootBoardId" value="${board.rootBoardId}">
                 <input type="hidden" name="parentBoardId" value="${board.id}">
@@ -33,8 +34,8 @@
                 <div class="form-group">
                     <label for="exampleInputFile" class="col-lg-2 col-md-2">파일 첨부</label>
                     <div class="col-lg-10 col-md-10">
-                        <input type="file" name="file" id="exampleInputFile" multiple>
-                    </div>
+                    <input type="file" name="files" multiple="multiple" id="exampleInputFile">
+                </div>
                 </div>
             </div>
             <!-- /.box-body -->
